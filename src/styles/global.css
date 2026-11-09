@@ -1,0 +1,67 @@
+/* ============================================
+   个人放映室 · 全局样式
+   配色：暗厅（默认深色）+ 薄荷绿 CRT 大屏 + 粉色字
+   参考：L-TV Scilloscope 的复古电视示波器色系
+   ============================================ */
+
+:root {
+  /* 放映厅（外层） */
+  --theater: #06080a;
+  --theater-line: #151b21;
+  --theater-dim: #3d4a52;
+
+  /* 大屏幕（薄荷绿 CRT） */
+  --screen-a: #a9dcd0;
+  --screen-b: #8cc9b9;
+  --ink: #14333b;          /* 屏上的深色文字 */
+  --ink-soft: #2e5a62;
+  --frame: rgba(20, 51, 58, 0.28);
+  --card: rgba(255, 255, 255, 0.20);
+
+  /* 粉色（标题/强调） */
+  --pink: #ee6fa4;
+  --pink-deep: #d84e8e;
+
+  /* 两侧菜单 + 画框 */
+  --rail-dim: #4d5d67;
+  --rail-hover: #c2e9de;
+  --panel-line: #1d4a52;   /* ASCII 头像画框描边 */
+  --mint-soft: #c2e9de;    /* 提示气泡文字 */
+}
+
+/* 浅色 = 整体反色（参考 zacharyzhang 的换色思路：同一套设计，亮度反转） */
+[data-theme='light'] {
+  --theater: #e7ebee;
+  --theater-line: #c7d0d6;
+  --theater-dim: #6f7e87;
+
+  --screen-a: #1f4b54;     /* 银幕变深青 */
+  --screen-b: #173a43;
+  --ink: #d3ece4;          /* 屏上的亮色文字 */
+  --ink-soft: #a3c8c0;
+  --frame: rgba(214, 236, 229, 0.20);
+  --card: rgba(255, 255, 255, 0.07);
+
+  --pink: #e0619a;
+  --pink-deep: #ef85b4;
+
+  --rail-dim: #5a6a74;
+  --rail-hover: #23423d;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  overflow: hidden; /* 滚动只发生在屏幕内部 */
+  background: var(--theater);
+  color: var(--mint-soft);
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, Menlo, monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--pink); color: #fff; }
+
+a { color: inherit; }

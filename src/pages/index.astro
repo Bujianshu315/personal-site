@@ -1,0 +1,664 @@
+---
+import Base from '../layouts/Base.astro';
+import GrainCanvas from '../components/GrainCanvas.astro';
+import ScreenGrain from '../components/ScreenGrain.astro';
+import AsciiAvatar from '../components/AsciiAvatar.astro';
+---
+
+<Base title="Bujianshu · 个人放映室">
+  <GrainCanvas />
+
+  <main class="theater">
+    <!-- 左：场刊目录（银幕外的独立部件） -->
+    <nav class="rail rail-scenes" aria-label="影片目录">
+        <button class="rail-item active" data-goto="0" type="button">
+          <span class="ri-name">关于我</span>
+        </button>
+        <button class="rail-item" data-goto="1" type="button">
+          <span class="ri-name">AI作品</span>
+        </button>
+        <button class="rail-item" data-goto="2" type="button">
+          <span class="ri-name">博客</span>
+        </button>
+        <button class="rail-item" data-goto="3" type="button">
+          <span class="ri-name">摄影作品</span>
+        </button>
+    </nav>
+
+    <!-- ============ 大银幕（铺满剩余空间） ============ -->
+    <div class="screen-col">
+      <div class="screen-shell">
+        <div class="screen">
+          <div class="screen-main">
+        <!-- 顶部：片头横幅（常驻） -->
+        <header class="marquee-bar">
+          <span class="mb-logo"><em>B-TV</em> 放映室</span>
+          <span class="mb-meta">REEL <b id="reel-num">01</b>/04 · 60 FPS · NO SPOILERS</span>
+        </header>
+
+        <!-- 内容：滚动换片（scroll-snap） -->
+        <section class="content" id="content" aria-label="银幕内容">
+          <!-- 01 关于我 -->
+          <article class="scene scene-intro" data-idx="0">
+            <h2 class="s-title">关于我</h2>
+            <p class="s-sub">┌─ $ whoami —— 拉吉塔尼的鹦鹉会笑</p>
+            <div class="intro-grid">
+              <div class="intro-avatar"><AsciiAvatar /></div>
+              <div class="intro-kv">
+                <div class="kv"><dt>$ born</dt><dd>2004 年出生 · 深圳</dd></div>
+                <div class="kv"><dt>$ interests</dt><dd>摄影 / 电影 / 游泳 / 动漫 / 衣服</dd></div>
+                <div class="kv"><dt>$ learning</dt><dd>AI 编程 / 生成视频 / 在世界上留下一些痕迹</dd></div>
+                <div class="kv"><dt>$ motto</dt><dd class="motto">感恩</dd></div>
+                <div class="kv"><dt>$ contact</dt><dd><a href="mailto:bujianshu315@outlook.com">bujianshu315@outlook.com</a> · <a href="https://github.com/Bujianshu315" target="_blank" rel="noopener">@Bujianshu315</a></dd></div>
+              </div>
+            </div>
+            <p class="s-note">滚动换片 ↓ 或点左侧胶片目录选片 · 本站全部由 AI 辅助开发，公开承认</p>
+          </article>
+
+          <!-- 02 AI作品 -->
+          <article class="scene" data-idx="1">
+            <h2 class="s-title">AI作品</h2>
+            <p class="s-sub">┌─ $ ai-works —— 人出想法，机器出体力</p>
+            <div class="cards">
+              <a class="card" href="https://github.com/Bujianshu315/shenzhen-photo-map" target="_blank" rel="noopener">
+                <h3>shenzhen-photo-map</h3>
+                <p>深圳摄影机位地图：40 个机位、地铁缓冲分析、路线排序、深浅主题。给摄影师和模特找拍摄点用的一张地图。</p>
+                <div class="c-foot"><span class="badge">HTML</span><span class="badge">MapLibre</span><span class="badge">★ 2</span></div>
+              </a>
+              <a class="card" href="https://github.com/Bujianshu315/OpenAlice" target="_blank" rel="noopener">
+                <h3>OpenAlice</h3>
+                <p>一个人规模的华尔街：覆盖股票 / 加密货币 / 外汇 / 宏观的 AI 交易 Agent，从研究到持仓、风控到退出。（fork）</p>
+                <div class="c-foot"><span class="badge">TypeScript</span><span class="badge">Fork</span></div>
+              </a>
+              <div class="card ghost">
+                <h3>???</h3>
+                <p>下一部片子还在拍。这个位置留给生成视频实验和正在写的博客系统。</p>
+                <div class="c-foot"><span class="badge">拍摄中</span></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 03 博客 -->
+          <article class="scene" data-idx="2">
+            <h2 class="s-title">博客</h2>
+            <p class="s-sub">┌─ $ blog —— 场刊文章</p>
+            <div class="posts">
+              <!-- 占位文章：等博客系统搭好后从 content/ 目录自动生成 -->
+              <a class="post" href="#blog">
+                <time>2026-11-09</time>
+                <h3>为什么我又开始写博客了</h3>
+                <span class="meta">草稿</span>
+              </a>
+              <a class="post" href="#blog">
+                <time>2026-11-01</time>
+                <h3>深圳机位地图：从一个想法到上线</h3>
+                <span class="meta">草稿</span>
+              </a>
+              <a class="post" href="#blog">
+                <time>2026-10-20</time>
+                <h3>AI 辅助开发一个月，我学会了什么</h3>
+                <span class="meta">草稿</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- 04 摄影作品 -->
+          <article class="scene" data-idx="3">
+            <h2 class="s-title">摄影作品</h2>
+            <p class="s-sub">┌─ $ photos —— 待冲洗的底片</p>
+            <div class="ph-grid">
+              <div class="ph g1"><span>机位 · 待冲洗</span></div>
+              <div class="ph g2"><span>机位 · 待冲洗</span></div>
+              <div class="ph g3"><span>机位 · 待冲洗</span></div>
+              <div class="ph g4"><span>首卷 · loading</span></div>
+            </div>
+            <p class="s-note">// 照片墙 + 机位地图施工中：照片会按 EXIF GPS 落到地图上</p>
+          </article>
+        </section>
+
+        <!-- 快门换片：黑块只在银幕内容区划过，胶片菜单保持可见 -->
+        <div class="shutter" id="shutter" aria-hidden="true"><div class="panel"></div></div>
+        </div>
+
+        <!-- 银幕内的胶片颗粒（噪点只属于画面） -->
+        <ScreenGrain />
+      </div>
+    </div>
+  </div>
+
+    <!-- 右：放映厅服务（与左侧场刊目录同一设计语言） -->
+    <nav class="rail rail-end" aria-label="放映厅服务">
+      <button class="rail-item" id="theme-toggle" type="button" aria-label="切换明暗主题">
+        <span class="ri-name"><span class="ico-sun">☀</span><span class="ico-moon">☾</span> 深浅色</span>
+      </button>
+      <a class="rail-item" href="https://bujianshu315.github.io/shenzhen-photo-map/" target="_blank" rel="noopener">
+        <span class="ri-name">照片地图</span>
+      </a>
+      <button class="rail-item" data-goto="0" type="button">
+        <span class="ri-name">关于我</span>
+      </button>
+      <button class="rail-item" id="lang-toggle" type="button">
+        <span class="ri-name">语言 中/EN</span>
+      </button>
+      <a class="rail-item" href="https://github.com/Bujianshu315" target="_blank" rel="noopener">
+        <span class="ri-name">GitHub</span>
+      </a>
+    </nav>
+
+    <!-- 底部：版权与场刊信息 -->
+    <footer class="bottom-bar">
+      <span>© 2026 Bujianshu · 由 Astro 放映 · ASCII 头像由「泉此方」转写</span>
+      <span class="bb-right">放映厅规则：保持安静 · 欢迎鼓掌</span>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+</Base>
+
+<style>
+  /* ============ 放映厅 ============ */
+  .theater {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr auto;
+    gap: 6px 18px;
+    padding: 12px 18px 4px;
+  }
+  .rail-scenes { grid-column: 1; grid-row: 1; }
+  .screen-col { grid-column: 2; grid-row: 1; }
+  .rail-end { grid-column: 3; grid-row: 1; }
+  .bottom-bar { grid-column: 1 / -1; grid-row: 2; }
+
+  /* ============ 右列：银幕 ============ */
+  .screen-col {
+    flex: 1;
+    min-width: 0;
+    min-height: 0; /* 关键：不让场景内容撑破 1fr 行高 */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ============ 银幕：投影 + 环境光，无边框 ============ */
+  .screen-shell {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    box-shadow:
+      0 26px 70px rgba(0, 0, 0, 0.45),
+      0 0 90px rgba(143, 224, 205, 0.07); /* 银幕照亮放映厅的环境光 */
+  }
+  .screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background: linear-gradient(165deg, var(--screen-a), var(--screen-b));
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(10, 30, 34, 0.05) 0 1px, transparent 1px 3px);
+  }
+  .screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+    pointer-events: none;
+    background:
+      /* 四角暗角：老 CRT/照片式的柔和收光 */
+      radial-gradient(58% 48% at 0% 0%, rgba(6, 24, 29, 0.42), transparent 75%),
+      radial-gradient(58% 48% at 100% 0%, rgba(6, 24, 29, 0.42), transparent 75%),
+      radial-gradient(58% 48% at 0% 100%, rgba(6, 24, 29, 0.36), transparent 75%),
+      radial-gradient(58% 48% at 100% 100%, rgba(6, 24, 29, 0.36), transparent 75%),
+      radial-gradient(120% 60% at 30% 0%, rgba(255, 255, 255, 0.20), transparent 45%),
+      /* 圆柱幕的中央受光带 */
+      linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.09) 50%, transparent 76%),
+      /* 左右边缘受光衰减 */
+      linear-gradient(90deg, rgba(10, 40, 46, 0.24), rgba(10, 40, 46, 0.05) 18%, transparent 30%, transparent 70%, rgba(10, 40, 46, 0.05) 82%, rgba(10, 40, 46, 0.24)),
+      linear-gradient(0deg, rgba(10, 40, 46, 0.16), transparent 12%, transparent 89%, rgba(10, 40, 46, 0.16));
+  }
+
+  /* ============ 两侧菜单：同一设计语言，安静的小字 ============ */
+  .rail {
+    position: relative;
+    z-index: 10;
+    width: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0;
+  }
+
+  .rail-item {
+    padding: 5px 2px;
+    border: none;
+    background: none;
+    color: var(--rail-dim);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    transition: color 0.2s;
+  }
+  .rail-item:hover { color: var(--rail-hover); }
+  .rail-item.active { color: var(--pink); }
+  .rail-item.active .ri-name { text-shadow: 0 0 14px rgba(238, 111, 164, 0.45); }
+  .rail-item::after {
+    content: '';
+    width: 14px;
+    height: 2px;
+    margin-top: 3px;
+    background: transparent;
+    transition: background 0.2s;
+  }
+  .rail-item.active::after { background: var(--pink); }
+  .ri-name { font-size: 11px; letter-spacing: 0.06em; white-space: nowrap; }
+
+  /* ============ 银幕主区 ============ */
+  .screen-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+
+  .marquee-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px 26px 13px;
+    border-bottom: 1px solid var(--frame);
+    background: rgba(255, 255, 255, 0.13);
+  }
+  .mb-logo { color: var(--pink-deep); font-size: 15px; letter-spacing: 0.04em; }
+  .mb-logo em { font-style: normal; display: inline-block; transform: skewX(-8deg); font-weight: 500; }
+  .mb-meta { font-size: 10px; letter-spacing: 0.14em; color: var(--ink-soft); }
+  .mb-meta b { color: var(--pink-deep); font-weight: 500; display: inline-block; }
+  .mb-meta b.tick { animation: tick 0.4s ease; }
+  @keyframes tick { 0% { transform: translateY(-6px); opacity: 0; } 100% { transform: none; opacity: 1; } }
+
+  /* ============ 内容：滚动换片 ============ */
+  .content {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    color: var(--ink);
+    scrollbar-width: none;
+    transition: transform 0.12s ease-out; /* 轻滚预告的底片移动 */
+  }
+  .content::-webkit-scrollbar { display: none; }
+
+  .scene {
+    min-height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding: 30px 40px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+  .s-title {
+    margin: 0;
+    font-size: clamp(30px, 3.6vw, 44px);
+    font-weight: 500;
+    color: var(--pink);
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.22);
+  }
+  .s-sub { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-soft); }
+  .s-note { margin: 14px 0 0; font-size: 11px; color: var(--ink-soft); opacity: 0.8; }
+
+  /* 01 关于我 */
+  .intro-grid {
+    display: flex;
+    gap: 30px;
+    margin-top: 24px;
+    align-items: flex-start;
+    flex: 1;
+  }
+  .intro-avatar { width: min(300px, 34%); flex-shrink: 0; }
+  /* 正方形画框，ASCII 头像由组件自动居中 */
+  .intro-avatar :global(.aa-wrap) { width: 100%; aspect-ratio: 1 / 1; }
+  .intro-avatar :global(#ascii-avatar) { height: 100%; }
+  .intro-kv {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px 26px;
+    align-content: center;
+  }
+  .kv dt { font-size: 11.5px; color: var(--pink-deep); }
+  .kv dd { margin: 4px 0 0; font-size: 13.5px; line-height: 1.7; color: var(--ink); }
+  .kv dd a { color: var(--pink-deep); text-decoration: none; }
+  .kv dd a:hover { text-decoration: underline; }
+  .kv .motto { font-size: 22px; color: var(--pink); letter-spacing: 0.3em; }
+
+  /* 02 AI作品 */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 22px; }
+  .card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--frame);
+    border-radius: 0;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+  }
+  a.card:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(20, 51, 58, 0.16); }
+  .card h3 { margin: 0 0 7px; font-size: 15px; font-weight: 500; color: var(--ink); }
+  a.card:hover h3 { color: var(--pink-deep); }
+  .card p { margin: 0; font-size: 12.5px; line-height: 1.75; color: var(--ink-soft); }
+  .card.ghost { border-style: dashed; background: transparent; }
+  .c-foot { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .badge { font-size: 10px; padding: 2px 8px; border: 1px solid var(--frame); border-radius: 0; color: var(--ink-soft); }
+
+  /* 03 博客 */
+  .posts { display: flex; flex-direction: column; margin-top: 16px; }
+  .post {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    padding: 14px 4px;
+    border-bottom: 1px dashed var(--frame);
+    text-decoration: none;
+  }
+  .post time { font-size: 12px; color: var(--pink-deep); flex-shrink: 0; }
+  .post h3 { margin: 0; font-size: 14.5px; font-weight: 400; color: var(--ink); transition: color 0.15s; }
+  .post:hover h3 { color: var(--pink-deep); }
+  .post .meta { margin-left: auto; font-size: 10.5px; color: var(--ink-soft); }
+
+  /* 04 摄影作品 */
+  .ph-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 22px; }
+  .ph { aspect-ratio: 4 / 3; border-radius: 0; border: 1px solid var(--frame); position: relative; overflow: hidden; }
+  .ph.g1 { background: linear-gradient(135deg, #7fc3b2, #4e8f86); }
+  .ph.g2 { background: linear-gradient(135deg, #9ad4c5, #5b9a90); }
+  .ph.g3 { background: linear-gradient(135deg, #f3a8c6, #c76e9c); }
+  .ph.g4 { background: linear-gradient(135deg, #35555e, #16333b); }
+  .ph span {
+    position: absolute;
+    left: 9px;
+    bottom: 7px;
+    font-size: 10px;
+    color: #fff;
+    opacity: 0.9;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+  }
+
+  /* ============ 快门换片：黑块划过 ============ */
+  .shutter {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    overflow: hidden;
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .shutter.rolling { visibility: visible; }
+  .shutter .panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 104%;
+    background: #0b1014; /* 比放映厅底色略亮：黑幕下银幕边界仍然可读 */
+    border-bottom: 3px solid #22303a;
+    transform: translateY(-101%);
+  }
+  .shutter .panel::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    height: 6px;
+    background-image: repeating-linear-gradient(
+      to right,
+      rgba(194, 233, 222, 0.22) 0 6px,
+      transparent 6px 16px
+    );
+  }
+  .shutter.rolling .panel { animation: shutterWipe 0.66s cubic-bezier(0.65, 0, 0.35, 1); }
+  @keyframes shutterWipe {
+    0% { transform: translateY(-101%); }
+    44% { transform: translateY(0); }
+    56% { transform: translateY(0); }
+    100% { transform: translateY(101%); }
+  }
+
+  /* ============ 底部：版权与场刊信息 ============ */
+  .bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 0 6px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--theater-dim);
+  }
+  .bottom-bar .bb-right { text-align: right; }
+  /* 反色日场：提示气泡同步反转 */
+  :global([data-theme='light']) .toast {
+    background: #eef1f4;
+    color: #2c3a42;
+    border-color: #c7d0d6;
+  }
+  :global([data-theme='dark']) .ico-moon { display: none; }
+  :global([data-theme='light']) .ico-sun { display: none; }
+
+  /* ============ 提示气泡 ============ */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    z-index: 40;
+    background: #0d1216;
+    color: var(--mint-soft);
+    border: 1px solid #2a3742;
+    border-radius: 0;
+    padding: 8px 16px;
+    font-size: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ============ 移动端 ============ */
+  @media (max-width: 880px) {
+    .theater {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr auto auto;
+      gap: 8px;
+      padding: 8px 10px 2px;
+    }
+    .rail-scenes { grid-column: 1; grid-row: 1; }
+    .screen-col { grid-column: 1; grid-row: 2; min-height: 0; }
+    .rail-end { grid-column: 1; grid-row: 3; }
+    .bottom-bar { grid-column: 1; grid-row: 4; }
+    .rail { width: 100%; flex-direction: row; gap: 12px; }
+    .rail-item { padding: 4px 2px; }
+    .scene { padding: 20px 20px 14px; }
+    .intro-grid { flex-direction: column; gap: 16px; }
+    .intro-avatar { width: min(240px, 72%); }
+    .marquee-bar { padding: 10px 16px; }
+    .toast { bottom: 24px; }
+  }
+
+  /* 主题切换动画 */
+  :global(::view-transition-old(root)),
+  :global(::view-transition-new(root)) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+</style>
+
+<script>
+  const content = document.getElementById('content')!;
+  const scenes = Array.from(content.querySelectorAll<HTMLElement>('.scene'));
+  const railItems = Array.from(document.querySelectorAll<HTMLElement>('.rail-item'));
+  const reelNum = document.getElementById('reel-num')!;
+  const shutter = document.getElementById('shutter')!;
+  const toast = document.getElementById('toast')!;
+  const root = document.documentElement;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let active = 0;
+  let toastTimer: number | undefined;
+
+  function showToast(msg: string) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  // 换片：更新胶片目录 / REEL 计数（画面切换由快门负责）
+  function setActive(i: number) {
+    if (i === active) return;
+    active = i;
+    railItems.forEach((el, k) => el.classList.toggle('active', k === i));
+    reelNum.textContent = String(i + 1).padStart(2, '0');
+    reelNum.classList.remove('tick');
+    void reelNum.offsetWidth;
+    reelNum.classList.add('tick');
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (lock) return; // 补间期间跳过的中间卷不回写高亮
+      for (const en of entries) {
+        if (en.isIntersecting) setActive(Number((en.target as HTMLElement).dataset.idx));
+      }
+    },
+    { root: content, threshold: 0.55 }
+  );
+  scenes.forEach((s) => io.observe(s));
+
+  // 换片入口：黑幕自上而下划过（胶片向下走），黑幕抬起时内容正平滑滑入位
+  let lock = false;
+  function tweenScroll(target: number, dur: number) {
+    const from = content.scrollTop;
+    const t0 = performance.now();
+    const step = (now: number) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      content.scrollTo({ top: from + (target - from) * e, behavior: 'auto' });
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  function goTo(i: number) {
+    i = Math.max(0, Math.min(scenes.length - 1, i));
+    if (i === active || lock) return;
+    content.style.transform = '';
+    if (reduced) {
+      content.scrollTo({ top: scenes[i].offsetTop, behavior: 'auto' });
+      setActive(i);
+      return;
+    }
+    lock = true;
+    setActive(i);
+    shutter.classList.remove('rolling');
+    void shutter.offsetWidth;
+    shutter.classList.add('rolling');
+    // 黑幕 44% 时完全遮住；此刻开始平滑滑动，黑幕抬起后正好看到内容滑入位
+    window.setTimeout(() => {
+      tweenScroll(scenes[i].offsetTop, 520);
+    }, 260);
+    window.setTimeout(() => {
+      shutter.classList.remove('rolling');
+      lock = false;
+    }, 820);
+  }
+  document.querySelectorAll<HTMLElement>('[data-goto]').forEach((el) => {
+    el.addEventListener('click', () => goTo(Number(el.dataset.goto)));
+  });
+
+  // 桌面滚轮：直接驱动换片（触屏保留原生滚动 + scroll-snap）
+  const fine = window.matchMedia('(pointer: fine)').matches;
+  let acc = 0;
+  let accTimer: number | undefined;
+  if (fine && !reduced) {
+    content.addEventListener(
+      'wheel',
+      (e) => {
+        e.preventDefault();
+        if (lock) return;
+        acc += e.deltaY;
+        window.clearTimeout(accTimer);
+        accTimer = window.setTimeout(() => {
+          acc = 0;
+          content.style.transform = '';
+        }, 200);
+        // 轻滚：底片先轻微移动，预告即将换片
+        if (Math.abs(acc) < 24) {
+          if (Math.abs(acc) > 5) content.style.transform = `translateY(${acc > 0 ? -3 : 3}px)`;
+          else content.style.transform = '';
+          return;
+        }
+        const dir = acc > 0 ? 1 : -1;
+        acc = 0;
+        goTo(active + dir);
+      },
+      { passive: false }
+    );
+  }
+
+  // 键盘翻片（无障碍：不用滚轮也能换片）
+  window.addEventListener('keydown', (e) => {
+    const tag = (e.target as HTMLElement | null)?.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+      e.preventDefault();
+      goTo(active + 1);
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      goTo(active - 1);
+    }
+  });
+
+  // 语言切换（施工中，先诚实告知）
+  document.getElementById('lang-toggle')?.addEventListener('click', () => {
+    showToast('字幕组招募中 · 语言切换施工中');
+  });
+
+  // 明暗主题：圆形扩散（View Transitions）
+  const btn = document.getElementById('theme-toggle');
+  btn?.addEventListener('click', (e) => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    const apply = () => { root.dataset.theme = next; };
+    if (!reduced && document.startViewTransition) {
+      const x = e.clientX || window.innerWidth / 2;
+      const y = e.clientY || window.innerHeight - 60;
+      const vt = document.startViewTransition(apply);
+      vt.ready
+        .then(() => {
+          const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+          document.documentElement.animate(
+            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
+            { duration: 520, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
+          );
+        })
+        .catch(() => {});
+    } else {
+      apply();
+    }
+  });
+</script>

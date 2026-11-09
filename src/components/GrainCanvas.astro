@@ -1,0 +1,119 @@
+---
+// 放映厅的环境光：银幕是房间里唯一的光源。
+// 只画光（辐射环境光 + 指针微光 + 暗角），不画噪点——噪点只属于银幕（见 ScreenGrain.astro）。
+---
+
+<canvas id="room-light" role="img" aria-label="放映厅环境光：银幕散发的微光照亮房间，越近越亮"></canvas>
+
+<style>
+  #room-light {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 30;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('room-light') as HTMLCanvasElement | null;
+  if (canvas && canvas.getContext) {
+    const ctx = canvas.getContext('2d')!;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 0, h = 0;
+    const pt = { x: 0, y: 0, active: false };
+
+    const THEMES = {
+      dark: {
+        ambient: [
+          [0, 'rgba(143, 224, 205, 0.11)'],
+          [0.5, 'rgba(143, 224, 205, 0.035)'],
+          [1, 'rgba(0, 0, 0, 0)'],
+        ],
+        pointer: [
+          [0, 'rgba(150, 235, 205, 0.07)'],
+          [0.45, 'rgba(240, 130, 175, 0.025)'],
+          [1, 'rgba(0, 0, 0, 0)'],
+        ],
+        vigIn: 'rgba(0, 0, 0, 0)',
+        vigOut: 'rgba(0, 0, 0, 0.45)',
+      },
+      light: {
+        /* 反色日场：深青银幕在浅墙上留下冷色投影 */
+        ambient: [
+          [0, 'rgba(31, 75, 84, 0.10)'],
+          [0.5, 'rgba(31, 75, 84, 0.03)'],
+          [1, 'rgba(0, 0, 0, 0)'],
+        ],
+        pointer: [
+          [0, 'rgba(31, 75, 84, 0.06)'],
+          [0.45, 'rgba(31, 75, 84, 0.02)'],
+          [1, 'rgba(0, 0, 0, 0)'],
+        ],
+        vigIn: 'rgba(0, 0, 0, 0)',
+        vigOut: 'rgba(0, 0, 0, 0.12)',
+      },
+    };
+    function cfg() {
+      return document.documentElement.dataset.theme === 'light' ? THEMES.light : THEMES.dark;
+    }
+    function screenCenter() {
+      const s = document.querySelector('.screen');
+      if (!s) return { x: w / 2, y: h * 0.42 };
+      const r = s.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    }
+    function resize() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas!.width = Math.max(1, Math.round(w * DPR));
+      canvas!.height = Math.max(1, Math.round(h * DPR));
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      if (reduced) frame(1.2);
+    }
+    function frame(t: number) {
+      const c = cfg();
+      const sc = screenCenter();
+      ctx.clearRect(0, 0, w, h);
+      // 环境光：以银幕为中心照亮房间（纵深：越近银幕越亮）
+      const g = ctx.createRadialGradient(sc.x, sc.y, 0, sc.x, sc.y, Math.max(w, h) * 0.78);
+      for (const [o, col] of c.ambient) g.addColorStop(o as number, col as string);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+      // 指针微光：放映机的光随你移动（不动时自己游走）
+      const px = pt.active ? pt.x : w * (0.5 + 0.28 * Math.sin(t * 0.55));
+      const py = pt.active ? pt.y : h * (0.5 + 0.30 * Math.cos(t * 0.42));
+      ctx.globalCompositeOperation = 'lighter';
+      const p = ctx.createRadialGradient(px, py, 0, px, py, Math.max(180, w * 0.3));
+      for (const [o, col] of c.pointer) p.addColorStop(o as number, col as string);
+      ctx.fillStyle = p;
+      ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = 'source-over';
+      // 暗角
+      const vg = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.36, w / 2, h / 2, Math.max(w, h) * 0.74);
+      vg.addColorStop(0, c.vigIn);
+      vg.addColorStop(1, c.vigOut);
+      ctx.fillStyle = vg;
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    window.addEventListener('pointermove', (e) => {
+      pt.x = e.clientX; pt.y = e.clientY; pt.active = true;
+      if (reduced) frame(1.2);
+    });
+    document.addEventListener('mouseleave', () => { pt.active = false; });
+    window.addEventListener('resize', resize);
+    resize();
+
+    if (!reduced) {
+      (function loop() {
+        frame(performance.now() / 1000);
+        requestAnimationFrame(loop);
+      })();
+    } else {
+      frame(1.2);
+    }
+  }
+</script>

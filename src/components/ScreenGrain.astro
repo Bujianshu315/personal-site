@@ -1,0 +1,90 @@
+---
+// 银幕内的胶片颗粒：噪点只属于画面本身，且被银幕的曲面裁剪。
+// 指针在银幕上移动时画面会被轻微照亮（放映机回应观众）。
+---
+
+<canvas id="screen-grain" role="img" aria-label="银幕上的胶片颗粒质感"></canvas>
+
+<style>
+  #screen-grain {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 8; /* 扫描线之上、玻璃反光之下 */
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('screen-grain') as HTMLCanvasElement | null;
+  if (canvas && canvas.getContext) {
+    const ctx = canvas.getContext('2d')!;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const noise = document.createElement('canvas');
+    const nctx = noise.getContext('2d')!;
+    let nimg: ImageData | null = null;
+    let w = 0, h = 0, tick = 0;
+    const pt = { x: 0, y: 0, active: false };
+
+    function resize() {
+      const host = canvas!.parentElement;
+      w = host ? host.clientWidth : 0;
+      h = host ? host.clientHeight : 0;
+      canvas!.width = Math.max(1, Math.round(w * DPR));
+      canvas!.height = Math.max(1, Math.round(h * DPR));
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      noise.width = Math.max(1, Math.ceil(w / 2));
+      noise.height = Math.max(1, Math.ceil(h / 2));
+      nimg = nctx.createImageData(noise.width, noise.height);
+      if (reduced) frame(1.2);
+    }
+
+    function frame(t: number) {
+      ctx.clearRect(0, 0, w, h);
+      tick++;
+      if (nimg && tick % 2 === 0) {
+        const d = nimg.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const v = (Math.random() * 255) | 0;
+          d[i] = 225; d[i + 1] = 255; d[i + 2] = 238;
+          d[i + 3] = (v * 20) >> 8;
+        }
+        nctx.putImageData(nimg, 0, 0);
+      }
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(noise, 0, 0, w, h);
+      // 指针微光：银幕画面被轻轻照亮
+      const px = pt.active ? pt.x : w * (0.5 + 0.25 * Math.sin(t * 0.5));
+      const py = pt.active ? pt.y : h * (0.5 + 0.28 * Math.cos(t * 0.4));
+      ctx.globalCompositeOperation = 'lighter';
+      const g = ctx.createRadialGradient(px, py, 0, px, py, Math.max(160, w * 0.28));
+      g.addColorStop(0, 'rgba(165, 245, 212, 0.07)');
+      g.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    window.addEventListener('pointermove', (e) => {
+      const r = canvas!.getBoundingClientRect();
+      pt.x = e.clientX - r.left;
+      pt.y = e.clientY - r.top;
+      pt.active = true;
+      if (reduced) frame(1.2);
+    });
+    document.addEventListener('mouseleave', () => { pt.active = false; });
+    window.addEventListener('resize', resize);
+    resize();
+
+    if (!reduced) {
+      (function loop() {
+        frame(performance.now() / 1000);
+        requestAnimationFrame(loop);
+      })();
+    } else {
+      frame(1.2);
+    }
+  }
+</script>
