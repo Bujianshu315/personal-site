@@ -33,32 +33,39 @@
   --ph2a: #9ad4c5; --ph2b: #5b9a90;
   --ph3a: #f3a8c6; --ph3b: #c76e9c;
   --ph4a: #35555e; --ph4b: #16333b;
+
+  /* 银幕边缘与片头横幅底 */
+  --screen-edge: transparent;           /* 暗色下无边，浅色下加粗 */
+  --marquee-bg: rgba(255, 255, 255, 0.13);
 }
 
-/* 浅色 = 整体反色（参考 zacharyzhang 的换色思路：同一套设计，亮度反转） */
+/* 浅色 = 白昼放映厅：银幕变白（投影幕布本色），屏上文字回到深色 */
 [data-theme='light'] {
   --theater: #e7ebee;
   --theater-line: #c7d0d6;
   --theater-dim: #6f7e87;
 
-  --screen-a: #1f4b54;     /* 银幕变深青 */
-  --screen-b: #173a43;
-  --ink: #d3ece4;          /* 屏上的亮色文字 */
-  --ink-soft: #a3c8c0;
-  --frame: rgba(214, 236, 229, 0.20);
-  --card: rgba(255, 255, 255, 0.07);
+  --screen-a: #ffffff;     /* 银幕变白 */
+  --screen-b: #eef4f6;
+  --ink: #14333b;          /* 白幕上的深色文字 */
+  --ink-soft: #2e5a62;
+  --frame: rgba(20, 51, 58, 0.28);
+  --card: rgba(20, 51, 58, 0.05);
 
-  --pink: #e0619a;
-  --pink-deep: #ef85b4;
+  --pink: #d84e8e;
+  --pink-deep: #b63a78;
 
   --rail-dim: #5a6a74;
   --rail-hover: #23423d;
 
-  /* 反色日场的摄影占位块：压暗成深青/深粉，贴合深色银幕 */
-  --ph1a: #2e6b63; --ph1b: #1d4a52;
-  --ph2a: #357a6f; --ph2b: #215c58;
-  --ph3a: #7a3a56; --ph3b: #57283f;
-  --ph4a: #123641; --ph4b: #0c2229;
+  /* 白幕上的摄影占位块：恢复亮色系 */
+  --ph1a: #7fc3b2; --ph1b: #4e8f86;
+  --ph2a: #9ad4c5; --ph2b: #5b9a90;
+  --ph3a: #f3a8c6; --ph3b: #c76e9c;
+  --ph4a: #7a98a1; --ph4b: #35555e;
+
+  --screen-edge: rgba(20, 51, 58, 0.35);  /* 白幕在浅墙上需要一条看得见的边 */
+  --marquee-bg: rgba(20, 51, 58, 0.05);
 }
 
 * { box-sizing: border-box; }

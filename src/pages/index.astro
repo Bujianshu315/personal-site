@@ -33,7 +33,7 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
         <!-- 顶部：片头横幅（常驻） -->
         <header class="marquee-bar">
           <span class="mb-logo"><em>B-TV</em> 放映室</span>
-          <span class="mb-meta">REEL <b id="reel-num">01</b>/04 · 60 FPS · NO SPOILERS</span>
+          <span class="mb-meta">REEL <b id="reel-num">01</b>/04 · 60 FPS · 累计观众 <b id="busuanzi_value_site_uv">--</b></span>
         </header>
 
         <!-- 内容：滚动换片（scroll-snap） -->
@@ -134,9 +134,6 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
       <a class="rail-item" href="https://bujianshu315.github.io/shenzhen-photo-map/" target="_blank" rel="noopener">
         <span class="ri-name">照片地图</span>
       </a>
-      <button class="rail-item" data-goto="0" type="button">
-        <span class="ri-name">关于我</span>
-      </button>
       <button class="rail-item" id="lang-toggle" type="button">
         <span class="ri-name">语言 中/EN</span>
       </button>      <a class="rail-item" href="https://github.com/Bujianshu315" target="_blank" rel="noopener">
@@ -166,8 +163,8 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-rows: 1fr auto;
-    gap: 6px 18px;
-    padding: 12px 18px 4px;
+    gap: 6px 12px;        /* 银幕横向加宽：两侧间隙收窄 */
+    padding: 12px 14px 4px;
   }
   .rail-scenes { grid-column: 1; grid-row: 1; }
   .screen-col { grid-column: 2; grid-row: 1; }
@@ -198,6 +195,7 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     height: 100%;
     display: flex;
     background: linear-gradient(165deg, var(--screen-a), var(--screen-b));
+    border: 1.5px solid var(--screen-edge); /* 浅色白幕的边缘线，暗色下透明 */
     border-radius: 0;
     overflow: hidden;
   }
@@ -233,7 +231,7 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
   .rail {
     position: relative;
     z-index: 10;
-    width: 52px;
+    width: 48px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -286,7 +284,7 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     justify-content: space-between;
     padding: 17px 26px 13px;
     border-bottom: 1px solid var(--frame);
-    background: rgba(255, 255, 255, 0.13);
+    background: var(--marquee-bg);
   }
   .mb-logo { color: var(--pink-deep); font-size: 15px; letter-spacing: 0.04em; }
   .mb-logo em { font-style: normal; display: inline-block; transform: skewX(-8deg); font-weight: 500; }
