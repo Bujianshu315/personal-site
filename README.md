@@ -39,11 +39,18 @@ public/
 - **换头像**：覆盖 `public/avatar.png`（白底最佳），跑 `npm run ascii`
 - **改文案**：直接编辑 `src/pages/index.astro` 里对应 `<article class="scene">`
 - **改配色**：全部在 `src/styles/global.css` 顶部变量（暗色 :root + 浅色 [data-theme='light'] 成对修改）
+- **改分享卡**：编辑 `scripts/make-og.mjs` 后跑 `npm run og`（微信/QQ 分享时显示的卡片图）
+- **主题记忆**：选择存在 localStorage，首次访问跟随系统偏好（Base.astro 内联脚本）
 - **以后加博客**：计划用 Astro content collections，写 Markdown 进 `src/content/blog/` 自动出现在博客卷
+
+## 部署
+
+- 线上地址：https://notree-cinema.pages.dev （Cloudflare Pages，连 GitHub 仓库，push main 自动部署）
+- 仓库：https://github.com/Bujianshu315/personal-site
 
 ## 待办（按优先级）
 
 1. 博客系统（content collections + 文章页 + RSS）
 2. 摄影页（画廊 + EXIF GPS 机位地图）
 3. 来访计数挂件（不蒜子 / Cloudflare Workers）
-4. 部署：git init → GitHub → Cloudflare Pages（xxx.pages.dev）
+4. ~~部署：git init → GitHub → Cloudflare Pages（xxx.pages.dev）~~ ✅ 完成

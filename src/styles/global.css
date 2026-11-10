@@ -27,6 +27,12 @@
   --rail-hover: #c2e9de;
   --panel-line: #1d4a52;   /* ASCII 头像画框描边 */
   --mint-soft: #c2e9de;    /* 提示气泡文字 */
+
+  /* 摄影占位块（浅色模式下随银幕反色，避免色系断裂） */
+  --ph1a: #7fc3b2; --ph1b: #4e8f86;
+  --ph2a: #9ad4c5; --ph2b: #5b9a90;
+  --ph3a: #f3a8c6; --ph3b: #c76e9c;
+  --ph4a: #35555e; --ph4b: #16333b;
 }
 
 /* 浅色 = 整体反色（参考 zacharyzhang 的换色思路：同一套设计，亮度反转） */
@@ -47,6 +53,12 @@
 
   --rail-dim: #5a6a74;
   --rail-hover: #23423d;
+
+  /* 反色日场的摄影占位块：压暗成深青/深粉，贴合深色银幕 */
+  --ph1a: #2e6b63; --ph1b: #1d4a52;
+  --ph2a: #357a6f; --ph2b: #215c58;
+  --ph3a: #7a3a56; --ph3b: #57283f;
+  --ph4a: #123641; --ph4b: #0c2229;
 }
 
 * { box-sizing: border-box; }

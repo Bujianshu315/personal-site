@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { title, description = 'Bujianshu 的个人放映室：博客、摄影与项目的放映现场。' } = Astro.props;
+const SITE = 'https://notree-cinema.pages.dev';
 ---
 
 <!doctype html>
@@ -17,7 +18,26 @@ const { title, description = 'Bujianshu 的个人放映室：博客、摄影与�
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={SITE} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={SITE} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${SITE}/og.png`} />
+    <meta property="og:locale" content="zh_CN" />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
+    <script is:inline>
+      // 主题记忆：localStorage 优先，其次跟随系统，默认暗色。内联执行防闪烁。
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem('theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') {
+          t = matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.dataset.theme = t;
+      })();
+    </script>
   </head>
   <body>
     <slot />

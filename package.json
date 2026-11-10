@@ -7,9 +7,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "ascii": "node scripts/png2ascii.mjs"
+    "ascii": "node scripts/png2ascii.mjs",
+    "og": "node scripts/make-og.mjs"
   },
   "dependencies": {
     "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5"
   }
 }
