@@ -33,7 +33,7 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
         <!-- 顶部：片头横幅（常驻） -->
         <header class="marquee-bar">
           <span class="mb-logo"><em>B-TV</em> 放映室</span>
-          <span class="mb-meta">REEL <b id="reel-num">01</b>/04 · 60 FPS · 累计观众 <b id="busuanzi_value_site_uv">--</b></span>
+          <span class="mb-meta">REEL <b id="reel-num">01</b>/04 · 60 FPS · 累计观众 <b id="audience">--</b><span id="busuanzi_value_site_uv" hidden></span></span>
         </header>
 
         <!-- 内容：滚动换片（scroll-snap） -->
@@ -116,8 +116,8 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
           </article>
         </section>
 
-        <!-- 快门换片：黑块只在银幕内容区划过，胶片菜单保持可见 -->
-        <div class="shutter" id="shutter" aria-hidden="true"><div class="panel"></div></div>
+        <!-- 换片熄灯：银幕整体暗下，黑暗中跳切到目标卷，再亮灯 -->
+        <div class="shutter" id="shutter" aria-hidden="true"></div>
         </div>
 
         <!-- 银幕内的胶片颗粒（噪点只属于画面） -->
@@ -148,6 +148,9 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- 主题切换黑场：全场熄灯再亮灯（覆盖整个放映厅，不只银幕） -->
+    <div class="dimmer" id="dimmer" aria-hidden="true"></div>
   </main>
 </Base>
 
@@ -226,18 +229,40 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
       linear-gradient(90deg, rgba(10, 40, 46, 0.24), rgba(10, 40, 46, 0.05) 18%, transparent 30%, transparent 70%, rgba(10, 40, 46, 0.05) 82%, rgba(10, 40, 46, 0.24)),
       linear-gradient(0deg, rgba(10, 40, 46, 0.16), transparent 12%, transparent 89%, rgba(10, 40, 46, 0.16));
   }
+  /* 日场逻辑：白幕是"开着灯"的放映厅，CRT 暗角不该存在——只保留受光带 */
+  :global([data-theme='light']) .screen::after {
+    background:
+      radial-gradient(120% 60% at 30% 0%, rgba(210, 228, 233, 0.35), transparent 45%),
+      linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.5) 50%, transparent 76%);
+  }
 
-  /* ============ 两侧菜单：同一设计语言，安静的小字 ============ */
+  /* ============ 两侧菜单：胶片导轨——齿孔条把菜单"接"进放映系统 ============ */
   .rail {
     position: relative;
     z-index: 10;
-    width: 48px;
+    width: 52px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    padding: 0;
+    padding: 14px 9px;
+    background: var(--rail-bg);
+    border-left: 1px solid var(--rail-line);
+    border-right: 1px solid var(--rail-line);
+  }
+  /* 齿孔：沿导轨两缘等距打孔，孔里透出放映厅底色 */
+  .rail::before {
+    content: '';
+    position: absolute;
+    inset: 8px 3px;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(to bottom, var(--theater) 0 7px, transparent 7px 24px),
+      repeating-linear-gradient(to bottom, var(--theater) 0 7px, transparent 7px 24px);
+    background-size: 5px 100%;
+    background-position: left top, right top;
+    background-repeat: no-repeat;
   }
 
   .rail-item {
@@ -265,7 +290,7 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     transition: background 0.2s;
   }
   .rail-item.active::after { background: var(--pink); }
-  .ri-name { font-size: 11px; letter-spacing: 0.06em; white-space: nowrap; }
+  .ri-name { font-size: 11px; letter-spacing: 0.14em; white-space: nowrap; writing-mode: vertical-rl; }
 
   /* ============ 银幕主区 ============ */
   .screen-main {
@@ -407,45 +432,22 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
   }
 
-  /* ============ 快门换片：黑块划过 ============ */
+  /* ============ 换片熄灯：整块银幕暗下再亮起（影院熄灯，不是翻页） ============ */
   .shutter {
     position: absolute;
     inset: 0;
     z-index: 20;
-    overflow: hidden;
-    pointer-events: none;
+    background: #04070a;
+    opacity: 0;
     visibility: hidden;
+    pointer-events: none;
   }
-  .shutter.rolling { visibility: visible; }
-  .shutter .panel {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 104%;
-    background: #0b1014; /* 比放映厅底色略亮：黑幕下银幕边界仍然可读 */
-    border-bottom: 3px solid #22303a;
-    transform: translateY(-101%);
-  }
-  .shutter .panel::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 10px;
-    height: 6px;
-    background-image: repeating-linear-gradient(
-      to right,
-      rgba(194, 233, 222, 0.22) 0 6px,
-      transparent 6px 16px
-    );
-  }
-  .shutter.rolling .panel { animation: shutterWipe 0.66s cubic-bezier(0.65, 0, 0.35, 1); }
-  @keyframes shutterWipe {
-    0% { transform: translateY(-101%); }
-    44% { transform: translateY(0); }
-    56% { transform: translateY(0); }
-    100% { transform: translateY(101%); }
+  .shutter.rolling { visibility: visible; animation: lightsOut 0.72s ease-in-out; }
+  @keyframes lightsOut {
+    0% { opacity: 0; }
+    38% { opacity: 1; }   /* 熄灯 */
+    62% { opacity: 1; }   /* 全黑停留：换片发生在这里 */
+    100% { opacity: 0; }  /* 亮灯 */
   }
 
   /* ============ 底部：版权与场刊信息 ============ */
@@ -500,7 +502,20 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     .screen-col { grid-column: 1; grid-row: 2; min-height: 0; }
     .rail-end { grid-column: 1; grid-row: 3; }
     .bottom-bar { grid-column: 1; grid-row: 4; }
-    .rail { width: 100%; flex-direction: row; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .rail {
+      width: 100%;
+      flex-direction: row;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 6px 10px;
+    }
+    .rail::before { inset: 3px 8px; background-size: 100% 4px; background-position: left top, left bottom;
+      background-image:
+        repeating-linear-gradient(to right, var(--theater) 0 7px, transparent 7px 24px),
+        repeating-linear-gradient(to right, var(--theater) 0 7px, transparent 7px 24px);
+    }
+    .ri-name { writing-mode: horizontal-tb; letter-spacing: 0.06em; }
     .rail-item { padding: 4px 2px; }
     .scene { padding: 20px 20px 14px; }
     .intro-grid { flex-direction: column; gap: 16px; }
@@ -516,12 +531,18 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     .bottom-bar { font-size: 9px; flex-wrap: wrap; }
   }
 
-  /* 主题切换动画 */
-  :global(::view-transition-old(root)),
-  :global(::view-transition-new(root)) {
-    animation: none;
-    mix-blend-mode: normal;
+  /* 主题切换黑场：与换片熄灯同一语言，但覆盖全厅（含菜单与横幅） */
+  .dimmer {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: #04070a;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
+  .dimmer.on { visibility: visible; animation: lightsOut 0.6s ease-in-out; }
+
 </style>
 
 <script>
@@ -569,19 +590,8 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
   );
   scenes.forEach((s) => io.observe(s));
 
-  // 换片入口：黑幕自上而下划过（胶片向下走），黑幕抬起时内容正平滑滑入位
+  // 换片入口：熄灯 → 全黑瞬间跳切到目标卷 → 亮灯（影院逻辑：黑暗中换片，观众不看滑动）
   let lock = false;
-  function tweenScroll(target: number, dur: number) {
-    const from = content.scrollTop;
-    const t0 = performance.now();
-    const step = (now: number) => {
-      const p = Math.min(1, (now - t0) / dur);
-      const e = 1 - Math.pow(1 - p, 3);
-      content.scrollTo({ top: from + (target - from) * e, behavior: 'auto' });
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }
   function goTo(i: number) {
     i = Math.max(0, Math.min(scenes.length - 1, i));
     if (i === active || lock) return;
@@ -596,14 +606,14 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     shutter.classList.remove('rolling');
     void shutter.offsetWidth;
     shutter.classList.add('rolling');
-    // 黑幕 44% 时完全遮住；此刻开始平滑滑动，黑幕抬起后正好看到内容滑入位
+    // 0.72s 动画的 38% ≈ 274ms 时全黑，此刻瞬时跳切
     window.setTimeout(() => {
-      tweenScroll(scenes[i].offsetTop, 520);
-    }, 260);
+      content.scrollTo({ top: scenes[i].offsetTop, behavior: 'auto' });
+    }, 290);
     window.setTimeout(() => {
       shutter.classList.remove('rolling');
       lock = false;
-    }, 820);
+    }, 740);
   }
   document.querySelectorAll<HTMLElement>('[data-goto]').forEach((el) => {
     el.addEventListener('click', () => goTo(Number(el.dataset.goto)));
@@ -662,29 +672,58 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     el.addEventListener('click', () => showToast('场刊印刷中 · 博客施工中'));
   });
 
-  // 明暗主题：圆形扩散（View Transitions）+ localStorage 记忆
+  // 累计观众：不蒜子按需加载。同机 10 分钟内只计一次（localStorage 去重），
+  // 显示值 = 原始 UV - OFFSET（清零基准）；被广告拦截时回退缓存或 "—"。
+  (function audience() {
+    const shown = document.getElementById('audience')!;
+    const rawEl = document.getElementById('busuanzi_value_site_uv')!;
+    const OFFSET = 2;                    // 清零基准（2026-11-10 实测原始值）
+    const TTL = 10 * 60 * 1000;          // 同一台机器 10 分钟内重复访问不计数
+    const KEY = 'btv-audience';
+    let cache: { v: number; t: number } | null = null;
+    try { cache = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch {}
+    const render = (raw: number) => { shown.textContent = String(Math.max(0, raw - OFFSET)); };
+    if (cache) render(cache.v);
+    if (cache && Date.now() - cache.t < TTL) return; // 10 分钟内：只看不算
+    const s = document.createElement('script');
+    s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+    s.async = true;
+    let settled = false;
+    const poll = window.setInterval(() => {
+      const raw = parseInt(rawEl.textContent || '', 10);
+      if (!Number.isNaN(raw)) {
+        settled = true;
+        window.clearInterval(poll);
+        render(raw);
+        try { localStorage.setItem(KEY, JSON.stringify({ v: raw, t: Date.now() })); } catch {}
+      }
+    }, 120);
+    const giveUp = () => {
+      if (settled) return;
+      settled = true;
+      window.clearInterval(poll);
+      if (!cache) shown.textContent = '—'; // 被拦截且没有缓存：体面收场
+    };
+    s.onerror = giveUp;
+    window.setTimeout(giveUp, 5000);
+    document.head.appendChild(s);
+  })();
+
+  // 明暗主题：全场熄灯再亮灯（与换片同一语言，不用圆形扩散）+ localStorage 记忆
   const btn = document.getElementById('theme-toggle');
-  btn?.addEventListener('click', (e) => {
+  const dimmer = document.getElementById('dimmer')!;
+  btn?.addEventListener('click', () => {
     const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
     const apply = () => {
       root.dataset.theme = next;
       try { localStorage.setItem('theme', next); } catch {}
     };
-    if (!reduced && document.startViewTransition) {
-      const x = e.clientX || window.innerWidth / 2;
-      const y = e.clientY || window.innerHeight - 60;
-      const vt = document.startViewTransition(apply);
-      vt.ready
-        .then(() => {
-          const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-          document.documentElement.animate(
-            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
-            { duration: 520, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
-          );
-        })
-        .catch(() => {});
-    } else {
-      apply();
-    }
+    if (reduced) { apply(); return; }
+    dimmer.classList.remove('on');
+    void dimmer.offsetWidth;
+    dimmer.classList.add('on');
+    // 0.6s 动画 38% ≈ 228ms 时全黑，此刻换主题
+    window.setTimeout(apply, 235);
+    window.setTimeout(() => dimmer.classList.remove('on'), 620);
   });
 </script>

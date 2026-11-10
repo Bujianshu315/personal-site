@@ -25,6 +25,8 @@
   /* 两侧菜单 + 画框 */
   --rail-dim: #4d5d67;
   --rail-hover: #c2e9de;
+  --rail-bg: #0a0f14;      /* 胶片导轨底色：比放映厅略亮一度 */
+  --rail-line: #1a232b;
   --panel-line: #1d4a52;   /* ASCII 头像画框描边 */
   --mint-soft: #c2e9de;    /* 提示气泡文字 */
 
@@ -57,6 +59,8 @@
 
   --rail-dim: #5a6a74;
   --rail-hover: #23423d;
+  --rail-bg: #dde3e8;
+  --rail-line: #c7d0d6;
 
   /* 白幕上的摄影占位块：恢复亮色系 */
   --ph1a: #7fc3b2; --ph1b: #4e8f86;
