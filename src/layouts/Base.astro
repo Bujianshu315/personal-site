@@ -38,6 +38,15 @@ const SITE = 'https://notree-cinema.pages.dev';
         }
         document.documentElement.dataset.theme = t;
       })();
+      // 开场 flash：每会话一次，reduced-motion 直接跳过。pending 期间 UI 处于候场状态。
+      (function () {
+        try {
+          if (!sessionStorage.getItem('btv-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.dataset.intro = 'pending';
+            sessionStorage.setItem('btv-intro', '1');
+          }
+        } catch (e) {}
+      })();
     </script>
   </head>
   <body>

@@ -72,8 +72,15 @@
   --marquee-bg: rgba(20, 51, 58, 0.05);
 }
 
-* { box-sizing: border-box; }
+/* 窗口 chrome 专用像素字体：缝合像素 12px 比例体（OFL），子集 670 字符 ≈ 25KB
+   只用于菜单/横幅/角标等小字；正文仍走系统等宽栈。新增文案字符需重新子集化 */
+@font-face {
+  font-family: 'FusionPixel';
+  src: url('/fonts/fusion-pixel.woff2') format('woff2');
+  font-display: swap;
+}
 
+* { box-sizing: border-box; }
 html, body { height: 100%; }
 
 body {

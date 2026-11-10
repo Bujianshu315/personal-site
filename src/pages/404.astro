@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import ScreenGrain from '../components/ScreenGrain.astro';
+---
+
+<Base title="散场 · 404 暂无片源 — Bujianshu">
+  <main class="empty-house">
+    <div class="screen-shell">
+      <div class="screen">
+        <div class="reel-mark">REEL ∅</div>
+        <h1 class="title">散场</h1>
+        <p class="code">404 · 暂无片源</p>
+        <p class="note">这卷胶片还没拍，或者拷贝在运输途中丢了。<br />放映厅的灯还亮着，随时可以回去。</p>
+        <a class="back" href="/">← 返回放映厅</a>
+        <ScreenGrain />
+      </div>
+    </div>
+    <p class="foot">B-TV 放映室 · 本场取消，票根留作纪念</p>
+  </main>
+</Base>
+
+<style>
+  .empty-house {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 24px;
+    background: var(--theater);
+  }
+  .screen-shell { width: min(680px, 100%); box-shadow: 0 26px 70px rgba(0, 0, 0, 0.45); }
+  .screen {
+    position: relative;
+    background: linear-gradient(165deg, var(--screen-a), var(--screen-b));
+    border: 1.5px solid var(--screen-edge);
+    padding: 64px 40px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .reel-mark { font-size: 11px; letter-spacing: 0.3em; color: var(--ink-soft); }
+  .title {
+    margin: 18px 0 0;
+    font-size: clamp(56px, 10vw, 88px);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--pink);
+  }
+  .code { margin: 10px 0 0; font-size: 14px; letter-spacing: 0.14em; color: var(--ink); }
+  .note { margin: 26px 0 0; font-size: 12.5px; line-height: 2; color: var(--ink-soft); }
+  .back {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 22px;
+    border: 1px solid var(--frame);
+    color: var(--pink-deep);
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+  .back:hover { background: var(--card); }
+  .foot { margin: 0; font-size: 10px; letter-spacing: 0.14em; color: var(--theater-dim); }
+</style>

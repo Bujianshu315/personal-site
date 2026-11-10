@@ -3,9 +3,11 @@ import Base from '../layouts/Base.astro';
 import GrainCanvas from '../components/GrainCanvas.astro';
 import ScreenGrain from '../components/ScreenGrain.astro';
 import AsciiAvatar from '../components/AsciiAvatar.astro';
+import Intro from '../components/Intro.astro';
 ---
 
 <Base title="Bujianshu · 个人放映室">
+  <Intro />
   <GrainCanvas />
 
   <main class="theater">
@@ -290,7 +292,16 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     transition: background 0.2s;
   }
   .rail-item.active::after { background: var(--pink); }
-  .ri-name { font-size: 11px; letter-spacing: 0.14em; white-space: nowrap; writing-mode: vertical-rl; }
+  .ri-name { font-size: 12px; letter-spacing: 0.14em; white-space: nowrap; writing-mode: vertical-rl; }
+
+  /* 窗口 chrome 用像素字体：菜单、横幅、角标、底部信息（12px 起，保持像素锐利） */
+  .ri-name, .mb-logo, .mb-meta, .bottom-bar, .badge, .post time, .post .meta, .s-note {
+    font-family: 'FusionPixel', ui-monospace, Consolas, monospace;
+  }
+  .mb-meta { font-size: 12px; letter-spacing: 0.1em; }
+  .badge { font-size: 12px; }
+  .post time, .post .meta { font-size: 12px; }
+  .bottom-bar { font-size: 12px; }
 
   /* ============ 银幕主区 ============ */
   .screen-main {
@@ -449,6 +460,15 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
     62% { opacity: 1; }   /* 全黑停留：换片发生在这里 */
     100% { opacity: 0; }  /* 亮灯 */
   }
+
+  /* ============ 开场候场/落座：Intro 播放期间 UI 候场，done 后推入 ============ */
+  .rail, .bottom-bar, .screen-col { transition: opacity 0.5s ease, transform 0.5s ease; }
+  .scene-intro .kv { transition: opacity 0.4s ease, transform 0.4s ease; }
+  :global(html[data-intro='pending']) .rail-scenes { opacity: 0; transform: translateX(-18px); }
+  :global(html[data-intro='pending']) .rail-end { opacity: 0; transform: translateX(18px); }
+  :global(html[data-intro='pending']) .bottom-bar { opacity: 0; transform: translateY(10px); }
+  :global(html[data-intro='pending']) .screen-col { opacity: 0; }
+  :global(html[data-intro='pending']) .scene-intro .kv { opacity: 0; transform: translateY(8px); }
 
   /* ============ 底部：版权与场刊信息 ============ */
   .bottom-bar {

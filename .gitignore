@@ -11,3 +11,5 @@ node_modules/
 .DS_Store
 # jetbrains setting folder
 .idea/
+# 字体下载/子集化的临时工作目录
+.fontwork/
