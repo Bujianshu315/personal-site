@@ -298,7 +298,7 @@ import Intro from '../components/Intro.astro';
   .ri-name, .mb-logo, .mb-meta, .bottom-bar, .badge, .post time, .post .meta, .s-note {
     font-family: 'FusionPixel', ui-monospace, Consolas, monospace;
   }
-  .mb-meta { font-size: 12px; letter-spacing: 0.1em; }
+  .mb-meta { font-size: 14px; letter-spacing: 0.08em; }
   .badge { font-size: 12px; }
   .post time, .post .meta { font-size: 12px; }
   .bottom-bar { font-size: 12px; }
@@ -682,14 +682,14 @@ import Intro from '../components/Intro.astro';
     }
   });
 
-  // 语言切换（施工中，先诚实告知）
+  // 语言切换（场内广播：施工中，先诚实告知）
   document.getElementById('lang-toggle')?.addEventListener('click', () => {
-    showToast('字幕组招募中 · 语言切换施工中');
+    showToast('场内广播：字幕组招募中，双语字幕暂未排期');
   });
 
-  // 博客占位文章：施工中 toast（博客系统搭好后换成真实链接）
+  // 博客占位文章：场内广播（博客系统搭好后换成真实链接）
   document.querySelectorAll<HTMLButtonElement>('.posts .post').forEach((el) => {
-    el.addEventListener('click', () => showToast('场刊印刷中 · 博客施工中'));
+    el.addEventListener('click', () => showToast('场内广播：场刊印刷中，敬请期待'));
   });
 
   // 累计观众：不蒜子按需加载。同机 10 分钟内只计一次（localStorage 去重），

@@ -94,7 +94,7 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
 
       // 字符点阵底：整个画框铺满暗点（·），头像从点阵里"显影"出来
       ctx.fillStyle = inkSoft;
-      ctx.globalAlpha = 0.16;
+      ctx.globalAlpha = 0.10;
       const dotRows = Math.floor(h / cellH);
       const dotCols = Math.floor(w / cellW);
       const dox = (w - dotCols * cellW) / 2;
@@ -111,7 +111,7 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
         maxRow = Math.ceil(Math.min(1, (t - bootT) / 0.9) * rowsN);
       }
       ctx.fillStyle = ink;
-      ctx.globalAlpha = 0.92;
+      ctx.globalAlpha = 1;   // 头像主体满对比：字符要"印"在银幕上，不是浮着
       for (let r = 0; r < maxRow; r++) {
         ctx.fillText(cropped[r], ox, oy + r * cellH + fs * 0.8);
       }

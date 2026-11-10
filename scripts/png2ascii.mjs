@@ -78,10 +78,11 @@ function pix(x, y) {
     case 6: return [img[i], img[i + 1], img[i + 2], img[i + 3]];
   }
 }
-const COLS = 60;
+const COLS = 96;
 const ROWS = Math.max(10, Math.round(COLS * (height / width) * 0.55));
 const cellW = width / COLS, cellH = height / ROWS;
-const RAMP = ' .\u00b7:-=+*#%@';
+// 更密的字符梯度（15 级）：中间调用 ;!| 撑起发丝，暗部 %#&@ 压实（眼部黑矩形是角色本体，会落成实块）
+const RAMP = ' .·:;!|=+*x%#&@';
 const rows = [];
 for (let r = 0; r < ROWS; r++) {
   let line = '';
@@ -103,8 +104,8 @@ for (let r = 0; r < ROWS; r++) {
     if (!n || bg / tot > 0.6) v = 0;
     else {
       v = sum / n;
-      v = Math.max(0, Math.min(1, (v - 0.10) / 0.80));
-      v = Math.pow(v, 1.12);
+      v = Math.max(0, Math.min(1, (v - 0.06) / 0.86));
+      v = Math.pow(v, 0.95);
     }
     line += RAMP[Math.round(v * (RAMP.length - 1))];
   }
