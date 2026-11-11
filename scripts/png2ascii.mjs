@@ -114,19 +114,18 @@ const vals = darks.flat().filter((v) => v >= 0).sort((a, b) => a - b);
 const pLow = vals[Math.floor(vals.length * 0.18)] ?? 0;
 const pHigh = vals[Math.floor(vals.length * 0.82)] ?? 1;
 
-// ---- 第二遍：三段映射 alma 式对比：亮部留白（呼吸感）、暗部压实（黑矩形=连续@）、中间 gamma ----
+// ---- 第二遍：三段映射 alma 式对比：亮部留白（呼吸感）、暗部压实（黑矩形=连续█）、中间 gamma ----
+// 背景格输出 '.' 底网标记（画布层用它铺"屏幕点亮"的半调底网，脸部亮部则镂空发光）
 const rows = [];
 for (let r = 0; r < ROWS; r++) {
   let line = '';
   for (let c = 0; c < COLS; c++) {
     const d = darks[r][c];
-    let v = 0;
-    if (d >= 0) {
-      v = Math.max(0, Math.min(1, (d - pLow) / Math.max(0.04, pHigh - pLow)));
-      if (v > 0.80) v = 1;
-      else if (v < 0.22) v = 0;
-      else v = Math.pow((v - 0.22) / 0.58, 1.25);
-    }
+    if (d < 0) { line += '.'; continue; } // 白底背景 → 底网标记
+    let v = Math.max(0, Math.min(1, (d - pLow) / Math.max(0.04, pHigh - pLow)));
+    if (v > 0.80) v = 1;
+    else if (v < 0.22) v = 0;
+    else v = Math.pow((v - 0.22) / 0.58, 1.25);
     line += RAMP[Math.round(v * (RAMP.length - 1))];
   }
   rows.push(line);

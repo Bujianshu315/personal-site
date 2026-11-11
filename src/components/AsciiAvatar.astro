@@ -1,6 +1,7 @@
 ---
 // ASCII 头像（构建时由 scripts/png2ascii.mjs 从 public/avatar.png 生成）
-// 无黑底：字符点阵铺满画框（暗点 = 空位），亮色字符构成头像，自动裁剪居中
+// yetone 式"小银幕"：整版铺半调底网（屏幕点亮的底噪），脸部亮部把底网镂空（发光），
+// 暗部实心色块压在底网之上；叠加扫描线 + CRT 缓慢下扫光带。
 interface Props {
   prompt?: string;
 }
@@ -9,13 +10,15 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
 
 <div class="aa-wrap">
   <canvas id="ascii-avatar" role="img" aria-label="ASCII 头像：由头像图转换的字符画"></canvas>
+  <div class="aa-scan" aria-hidden="true"></div>
+  <div class="aa-sweep" aria-hidden="true"></div>
   <span class="aa-prompt">{prompt}</span>
 </div>
 
 <style>
   .aa-wrap {
     position: relative;
-    background: transparent;   /* 不再用黑底：头像直接长在银幕上 */
+    background: transparent;
     border: 1px solid var(--frame);
     border-radius: 0;
     overflow: hidden;
@@ -25,11 +28,42 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
     width: 100%;
     height: 190px;
   }
+  /* CRT 扫描线 */
+  .aa-scan {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(10, 30, 34, 0.07) 0 1px, transparent 1px 3px);
+  }
+  /* 缓慢下扫的光带（电视刷新感） */
+  .aa-sweep {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -22%;
+    height: 20%;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.16) 55%, transparent);
+    animation: aaSweep 7s linear infinite;
+  }
+  @keyframes aaSweep {
+    0% { top: -22%; }
+    100% { top: 108%; }
+  }
+  /* 日场白幕：光带换成柔和的暗带才看得见 */
+  :global([data-theme='light']) .aa-sweep {
+    background: linear-gradient(180deg, transparent, rgba(20, 51, 58, 0.07) 55%, transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .aa-sweep { animation: none; }
+  }
   .aa-prompt {
     position: absolute;
     left: 8px;
     bottom: 6px;
-    z-index: 2;
+    z-index: 4;
     font-size: 10px;
     color: var(--ink-soft);
     opacity: 0.8;
@@ -51,21 +85,9 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
     const MONO = 'Consolas, Menlo, monospace';
     const art: string[] = (asciiData as { rows: string[] }).rows;
 
-    // 裁剪头像的有效包围盒：去掉四周空白行列，居中才不再偏
-    let r0 = art.length, r1 = -1, c0 = Infinity, c1 = -1;
-    art.forEach((row, r) => {
-      for (let c = 0; c < row.length; c++) {
-        if (row[c] !== ' ') {
-          if (r < r0) r0 = r;
-          if (r > r1) r1 = r;
-          if (c < c0) c0 = c;
-          if (c > c1) c1 = c;
-        }
-      }
-    });
-    const cropped = art.slice(r0, r1 + 1).map((row) => row.slice(c0, c1 + 1));
-    const cols = c1 - c0 + 1;
-    const rowsN = cropped.length;
+    // 数据直接就是整版网格（背景 = '.' 底网标记），不再裁剪包围盒
+    const cols = art[0].length;
+    const rowsN = art.length;
 
     let w = 0, h = 0, bootT: number | null = null;
 
@@ -78,15 +100,16 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
       draw(null);
     }
 
-    function draw(t: number | null) {
-      if (!w || !h || !rowsN) return;
-      ctx.clearRect(0, 0, w, h);
+    // 返回 true = 开机显影动画播完，可以停止逐帧重绘
+    function draw(t: number | null): boolean {
+      if (!w || !h || !rowsN) return true;
       const styles = getComputedStyle(wrap!);
       const ink = styles.getPropertyValue('--ink').trim() || '#14333b';
-      // 实测 █ 的字宽来排版：块字符横向无缝拼成"版面色块"（yetone 式），不留细缝
+
+      // 实测 █ 字宽排版：块字符横向无缝拼成色面
       ctx.font = '10px ' + MONO;
       const adv10 = ctx.measureText('█').width || 6;
-      const fs = Math.max(4, Math.min((w / cols) * (10 / adv10), (h / rowsN) / 1.02));
+      const fs = Math.max(4, Math.min((w / cols) * (10 / adv10), h / rowsN / 1.02));
       const cellW = (adv10 * fs) / 10;
       const cellH = fs * 1.02;
       const ox = (w - cols * cellW) / 2;
@@ -94,26 +117,57 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
       ctx.font = fs + 'px ' + MONO;
       ctx.textBaseline = 'alphabetic';
 
-      // 背景保持纯净（alma 风）：不再铺点阵底，亮部留白交给数据本身
-      let maxRow = rowsN;
-      if (t !== null) {
-        if (bootT === null) bootT = t;
-        maxRow = Math.ceil(Math.min(1, (t - bootT) / 0.9) * rowsN);
-      }
+      ctx.clearRect(0, 0, w, h);
+
+      // 1) 底网：整版低透明度 ░ —— "屏幕是点亮的"，头像从底网里显影
+      const colsP = Math.ceil(w / cellW);
+      const rowsP = Math.ceil(h / cellH);
+      const meshLine = '░'.repeat(colsP);
       ctx.fillStyle = ink;
-      ctx.globalAlpha = 1;   // 头像主体满对比：字符要"印"在银幕上，不是浮着
-      for (let r = 0; r < maxRow; r++) {
-        ctx.fillText(cropped[r], ox, oy + r * cellH + fs * 0.8);
+      ctx.globalAlpha = 0.13;
+      for (let r = 0; r < rowsP; r++) {
+        ctx.fillText(meshLine, 0, r * cellH + fs * 0.8);
       }
       ctx.globalAlpha = 1;
+
+      // 2) 亮部镂空：数据里的空格 = 脸部/高光，把底网擦掉 → 比背景更亮（显像管发光感）
+      for (let r = 0; r < rowsN; r++) {
+        const row = art[r];
+        for (let c = 0; c < row.length; c++) {
+          if (row[c] === ' ') {
+            ctx.clearRect(ox + c * cellW, oy + r * cellH, cellW + 0.6, cellH + 0.6);
+          }
+        }
+      }
+
+      // 3) 主体色块：满对比压上去（'.' 底网标记处不画，底网已铺）
+      let maxRow = rowsN;
+      let done = true;
+      if (t !== null && !reduced) {
+        if (bootT === null) bootT = t;
+        const p = Math.min(1, (t - bootT) / 0.9);
+        maxRow = Math.ceil(p * rowsN);
+        done = p >= 1;
+      }
+      ctx.fillStyle = ink;
+      for (let r = 0; r < maxRow; r++) {
+        const line = art[r].replace(/\./g, ' ');
+        if (line.trim()) ctx.fillText(line, ox, oy + r * cellH + fs * 0.8);
+      }
+      return done;
     }
 
     if (!reduced) {
       (function loop() {
-        draw(performance.now() / 1000);
-        requestAnimationFrame(loop);
+        const done = draw(performance.now() / 1000);
+        if (!done) requestAnimationFrame(loop);
       })();
     }
+    // 主题切换后重绘（墨水是跟随主题的）
+    new MutationObserver(() => draw(null)).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
     if (window.ResizeObserver) new ResizeObserver(resize).observe(wrap!);
     resize();
   }
