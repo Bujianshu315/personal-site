@@ -30,13 +30,11 @@ const SITE = 'https://notree-cinema.pages.dev';
     <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
     <script is:inline>
-      // 主题记忆：localStorage 优先，其次跟随系统，默认暗色。内联执行防闪烁。
+      // 主题记忆：localStorage 优先（用户明确切换过才记忆），否则一律默认暗色。内联执行防闪烁。
       (function () {
         var t = null;
         try { t = localStorage.getItem('theme'); } catch (e) {}
-        if (t !== 'light' && t !== 'dark') {
-          t = matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-        }
+        if (t !== 'light' && t !== 'dark') t = 'dark';
         document.documentElement.dataset.theme = t;
       })();
       // 开场 flash：每会话一次，reduced-motion 直接跳过。pending 期间 UI 处于候场状态。
