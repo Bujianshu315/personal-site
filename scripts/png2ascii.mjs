@@ -78,14 +78,17 @@ function pix(x, y) {
     case 6: return [img[i], img[i + 1], img[i + 2], img[i + 3]];
   }
 }
-const COLS = 96;
+const COLS = 78;
 const ROWS = Math.max(10, Math.round(COLS * (height / width) * 0.55));
 const cellW = width / COLS, cellH = height / ROWS;
-// 更密的字符梯度（15 级）：中间调用 ;!| 撑起发丝，暗部 %#&@ 压实（眼部黑矩形是角色本体，会落成实块）
-const RAMP = ' .·:;!|=+*x%#&@';
-const rows = [];
+// alma.now 式梯度：亮部疏、暗部密，块状字符（%#@）承担阴影，点线字符承担轮廓
+const RAMP = " .·:'-=+*%#@";
+
+// ---- 第一遍：算出每格的"暗度"（0=最亮 1=最暗），白底剔除记为 -1 ----
+// 关键修正：ASCII 艺术的正确语义是暗部用重字符、亮部留白。
+// （此前版本直接用亮度索引 RAMP，明暗一直是反的——黑矩形映射成了空格。）
+const darks = Array.from({ length: ROWS }, () => new Array(COLS).fill(-1));
 for (let r = 0; r < ROWS; r++) {
-  let line = '';
   for (let c = 0; c < COLS; c++) {
     let sum = 0, n = 0, bg = 0, tot = 0;
     const x0 = Math.floor(c * cellW), x1 = Math.min(width, Math.ceil((c + 1) * cellW));
@@ -94,22 +97,55 @@ for (let r = 0; r < ROWS; r++) {
       for (let x = x0; x < x1; x += 2) {
         const p = pix(x, y); tot++;
         const mx = Math.max(p[0], p[1], p[2]), mn = Math.min(p[0], p[1], p[2]);
-        if (mx - mn < 30 && mn > 180 && p[3] > 127) { bg++; continue; } // 白底剔除
+        if (mx - mn < 40 && mn > 170 && p[3] > 127) { bg++; continue; } // 白底剔除（容忍轻微色偏）
         const lum = (0.2126 * p[0] + 0.7152 * p[1] + 0.0722 * p[2]) / 255;
         const al = p[3] / 255;
         sum += lum * al; n += al;
       }
     }
-    let v;
-    if (!n || bg / tot > 0.6) v = 0;
-    else {
-      v = sum / n;
-      v = Math.max(0, Math.min(1, (v - 0.06) / 0.86));
-      v = Math.pow(v, 0.95);
+    if (!n || bg / tot > 0.6) continue; // 背景
+    darks[r][c] = 1 - Math.max(0, Math.min(1, (sum / n - 0.06) / 0.86));
+  }
+}
+
+// ---- 自适应直方图拉伸：anime 原图是"平色调"，先把主体明暗拉开再走三段映射 ----
+const vals = darks.flat().filter((v) => v >= 0).sort((a, b) => a - b);
+const pLow = vals[Math.floor(vals.length * 0.18)] ?? 0;
+const pHigh = vals[Math.floor(vals.length * 0.82)] ?? 1;
+
+// ---- 第二遍：三段映射 alma 式对比：亮部留白（呼吸感）、暗部压实（黑矩形=连续@）、中间 gamma ----
+const rows = [];
+for (let r = 0; r < ROWS; r++) {
+  let line = '';
+  for (let c = 0; c < COLS; c++) {
+    const d = darks[r][c];
+    let v = 0;
+    if (d >= 0) {
+      v = Math.max(0, Math.min(1, (d - pLow) / Math.max(0.04, pHigh - pLow)));
+      if (v > 0.80) v = 1;
+      else if (v < 0.22) v = 0;
+      else v = Math.pow((v - 0.22) / 0.58, 1.25);
     }
     line += RAMP[Math.round(v * (RAMP.length - 1))];
   }
   rows.push(line);
+}
+
+// 孤立轻字符降噪：轻字符（梯度前 1/3）且 8 邻域里非空格不足 2 个 -> 视为噪点抹掉
+const LIGHT = Math.ceil((RAMP.length - 1) / 3);
+const chAt = (r, c) => (rows[r] && rows[r][c]) ?? ' ';
+for (let r = 0; r < rows.length; r++) {
+  for (let c = 0; c < rows[r].length; c++) {
+    const ch = chAt(r, c);
+    if (ch === ' ' || ch === RAMP[0]) continue;
+    const idx = RAMP.indexOf(ch);
+    if (idx < 0 || idx > LIGHT) continue;
+    let neighbors = 0;
+    for (let dr = -1; dr <= 1; dr++)
+      for (let dc = -1; dc <= 1; dc++)
+        if ((dr || dc) && chAt(r + dr, c + dc) !== ' ') neighbors++;
+    if (neighbors < 2) rows[r] = rows[r].slice(0, c) + ' ' + rows[r].slice(c + 1);
+  }
 }
 fs.writeFileSync(outPath, JSON.stringify({ cols: COLS, rows }, null, 1));
 console.error(`avatar-ascii.json 已生成：源图 ${width}x${height} -> ${COLS}x${ROWS}`);

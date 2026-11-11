@@ -83,7 +83,6 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
       ctx.clearRect(0, 0, w, h);
       const styles = getComputedStyle(wrap!);
       const ink = styles.getPropertyValue('--ink').trim() || '#14333b';
-      const inkSoft = styles.getPropertyValue('--ink-soft').trim() || '#2e5a62';
       const fs = Math.max(4, Math.min(w / (cols * 0.62), (h / rowsN) / 1.12));
       const cellW = fs * 0.62;
       const cellH = fs * 1.12;
@@ -92,19 +91,7 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
       ctx.font = fs + 'px ' + MONO;
       ctx.textBaseline = 'alphabetic';
 
-      // 字符点阵底：整个画框铺满暗点（·），头像从点阵里"显影"出来
-      ctx.fillStyle = inkSoft;
-      ctx.globalAlpha = 0.10;
-      const dotRows = Math.floor(h / cellH);
-      const dotCols = Math.floor(w / cellW);
-      const dox = (w - dotCols * cellW) / 2;
-      const doy = (h - dotRows * cellH) / 2;
-      for (let r = 0; r < dotRows; r++) {
-        const line = '·'.repeat(dotCols);
-        ctx.fillText(line, dox, doy + r * cellH + fs * 0.8);
-      }
-      ctx.globalAlpha = 1;
-
+      // 背景保持纯净（alma 风）：不再铺点阵底，亮部留白交给数据本身
       let maxRow = rowsN;
       if (t !== null) {
         if (bootT === null) bootT = t;

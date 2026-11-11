@@ -5,14 +5,14 @@
    ============================================ */
 
 :root {
-  /* 放映厅（外层） */
-  --theater: #06080a;
-  --theater-line: #151b21;
-  --theater-dim: #3d4a52;
+  /* 放映厅（外层）——整体提亮一档：不再只有屏幕亮度拉满才舒适 */
+  --theater: #0e141a;
+  --theater-line: #1e2830;
+  --theater-dim: #55656f;
 
-  /* 大屏幕（薄荷绿 CRT） */
-  --screen-a: #a9dcd0;
-  --screen-b: #8cc9b9;
+  /* 大屏幕（薄荷绿 CRT）——同步微提 */
+  --screen-a: #b7e3d8;
+  --screen-b: #9ad2c3;
   --ink: #14333b;          /* 屏上的深色文字 */
   --ink-soft: #2e5a62;
   --frame: rgba(20, 51, 58, 0.28);
@@ -23,11 +23,11 @@
   --pink-deep: #d84e8e;
 
   /* 两侧菜单 + 画框 */
-  --rail-dim: #4d5d67;
+  --rail-dim: #5f707a;
   --rail-hover: #c2e9de;
-  --rail-bg: #0a0f14;      /* 胶片导轨底色：比放映厅略亮一度 */
-  --rail-line: #1a232b;
-  --panel-line: #1d4a52;   /* ASCII 头像画框描边 */
+  --rail-bg: #121a20;      /* 胶片导轨底色：比放映厅略亮一度 */
+  --rail-line: #232f39;
+  --panel-line: #1f5058;   /* ASCII 头像画框描边 */
   --mint-soft: #c2e9de;    /* 提示气泡文字 */
 
   /* 摄影占位块（浅色模式下随银幕反色，避免色系断裂） */

@@ -1,6 +1,8 @@
 ---
-// 开场 flash：黑场 → 银幕推入+打字机欢迎 → ASCII 握手（诺基亚）→ 字符散开聚成头像 → 亮灯落座
-// 每会话只放一次（sessionStorage 由 Base 头部内联脚本标记 data-intro="pending"），
+// 开场 flash：银幕直接亮起（不做推入）→ 打字机欢迎语 → ASCII 双手相握
+//（致敬诺基亚 Connecting People：大人手 + 小孩手，靠近→轻触→扣握）
+// → 字符散开聚成头像 → 银幕交还页面，左右胶片导轨浮现。
+// 每会话只放一次（Base 头部内联标记 data-intro="pending"），
 // 任意点击/滚动/按键跳过；reduced-motion 用户根本不会进入 pending 状态。
 ---
 
@@ -17,33 +19,38 @@
     position: fixed;
     inset: 0;
     z-index: 80;
-    background: #04070a;
+    background: var(--theater);
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 18px;
   }
   :global(html[data-intro='pending']) .intro-overlay { display: flex; }
-  .intro-overlay.bye { opacity: 0; transition: opacity 0.38s ease; pointer-events: none; }
+  .intro-overlay.bye { opacity: 0; transition: opacity 0.42s ease; pointer-events: none; }
+  /* 银幕直接就位，只给一个很短的亮灯淡入——不做窗口推入 */
   .io-screen {
-    width: min(720px, 88vw);
-    height: min(440px, 62vh);
-    background: #0a2228;
-    border: 1px solid #1d4a52;
+    width: min(880px, 92vw);
+    height: min(520px, 64vh);
+    background: linear-gradient(165deg, var(--screen-a), var(--screen-b));
+    border: 1px solid var(--panel-line);
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    animation: ioFade 0.28s ease 0.08s forwards;
   }
+  @keyframes ioFade { to { opacity: 1; } }
   #io-canvas { display: block; width: 100%; height: 100%; }
   .io-skip {
     margin: 0;
     font-size: 11px;
     letter-spacing: 0.2em;
-    color: #4d5d67;
+    color: var(--rail-dim);
   }
 </style>
 
 <script>
   import asciiData from '../data/avatar-ascii.json';
+  import handsData from '../data/hands-ascii.json';
 
   const rootEl = document.documentElement;
   const overlay = document.getElementById('intro-overlay');
@@ -54,10 +61,13 @@
     const ctx = canvas.getContext('2d')!;
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
     const MONO = 'Consolas, Menlo, monospace';
-    const PINK = '#ee6fa4';
-    const MINT = 'rgba(143,224,205,0.92)';
     let w = 0, h = 0, raf = 0, finished = false;
     const start = performance.now();
+
+    // 主题色（跟随明暗主题）
+    const css = getComputedStyle(rootEl);
+    const PINK = css.getPropertyValue('--pink').trim() || '#ee6fa4';
+    const INK = css.getPropertyValue('--ink').trim() || '#14333b';
 
     function resize() {
       w = screenBox.clientWidth;
@@ -85,15 +95,29 @@
     const cropped = art.slice(r0, r1 + 1).map((row) => row.slice(c0, c1 + 1));
     const cols = c1 - c0 + 1, rowsN = cropped.length;
 
-    // ---- 诺基亚握手：字符帧动画 ----
-    const HANDS = [
-      '>>==                  ==<<',
-      ' >>===              ===<<',
-      '  >>====          ====<<',
-      '   >>=====      =====<<',
-      '    >>=====@@=====<<',
-      '    >>=====@@=====<<',
-    ];
+    // ---- 握手帧：150 列 x 30 行，col 95 分成左右两半（大手 / 小手），滑入时各自带位移 ----
+    const HANDS: string[][] = (handsData as { frames: string[][] }).frames;
+    const HC = HANDS[0][0].length, HR = HANDS[0].length;
+    const SPLIT = 95;
+    let hfs = 0, hox = 0, hoy = 0;
+    function handsLayout() {
+      hfs = Math.min(w / (HC * 0.62), (h * 0.66) / (HR * 1.12));
+      hox = (w - HC * hfs * 0.62) / 2;
+      hoy = h / 2 - (HR * hfs * 1.12) / 2 + hfs * 0.8;
+      ctx.font = hfs + 'px ' + MONO;
+    }
+    function drawHands(fi: number, dxL: number, dxR: number, dy = 0) {
+      ctx.fillStyle = INK;
+      const cw = hfs * 0.62, chh = hfs * 1.12;
+      const f = HANDS[Math.min(fi, HANDS.length - 1)];
+      for (let r = 0; r < f.length; r++) {
+        const row = f[r];
+        const left = row.slice(0, SPLIT).replace(/\s+$/, '');
+        const right = row.slice(SPLIT);
+        if (left) ctx.fillText(left, hox + dxL, hoy + r * chh + dy);
+        if (right.trim()) ctx.fillText(right, hox + SPLIT * cw + dxR, hoy + r * chh + dy);
+      }
+    }
 
     // ---- 粒子目标：头像每个字符的落点 ----
     type Particle = { ch: string; tx: number; ty: number; sx: number; sy: number; delay: number };
@@ -120,38 +144,51 @@
     }
 
     const WELCOME = '欢迎来到 B-TV 放映室';
+    const CAPTION = '· CONNECTING PEOPLE ·';
     const easeOut = (p: number) => 1 - Math.pow(1 - p, 3);
 
     function frame() {
       if (finished) return;
       const t = (performance.now() - start) / 1000;
-      ctx.fillStyle = '#0a2228';
+      // 银幕底色与渐变同步（清屏）
+      const g = ctx.createLinearGradient(0, 0, w * 0.4, h);
+      g.addColorStop(0, css.getPropertyValue('--screen-a').trim() || '#a9dcd0');
+      g.addColorStop(1, css.getPropertyValue('--screen-b').trim() || '#8cc9b9');
+      ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
 
-      if (t < 0.95) {
-        // 第一幕：银幕推入 + 打字机欢迎语
-        const p = Math.min(1, t / 0.5);
-        screenBox.style.transform = `scale(${0.94 + 0.06 * easeOut(p)})`;
-        screenBox.style.opacity = String(Math.min(1, t / 0.3));
+      if (t < 1.2) {
+        // 第一幕：打字机欢迎语（同款粉色字）
         ctx.font = '20px ' + MONO;
         ctx.fillStyle = PINK;
-        const n = Math.floor(Math.max(0, t - 0.25) / 0.055);
+        const n = Math.floor(Math.max(0, t - 0.3) / 0.07);
         const txt = WELCOME.slice(0, n);
-        ctx.fillText(txt + (Math.floor(t * 3) % 2 ? '_' : ' '), w / 2 - ctx.measureText(WELCOME).width / 2, h / 2);
-      } else if (t < 2.15) {
-        // 第二幕：握手
-        screenBox.style.transform = ''; screenBox.style.opacity = '1';
-        ctx.font = '18px ' + MONO;
-        const fi = Math.min(HANDS.length - 1, Math.floor((t - 0.95) / 0.18));
-        const shake = fi === HANDS.length - 1 ? (Math.floor(t * 14) % 2 ? 3 : -3) : 0;
-        ctx.fillStyle = PINK;
-        const line = HANDS[fi];
-        ctx.fillText(line, w / 2 - ctx.measureText(line).width / 2, h / 2 + shake);
+        ctx.fillText(txt + (Math.floor(t * 3) % 2 ? '_' : ''), w / 2 - ctx.measureText(WELCOME).width / 2, h / 2);
+      } else if (t < 3.0) {
+        // 第二幕：双手相握（帧 0 滑入 → 轻触 → 扣握+一抖）
+        handsLayout();
+        const a = Math.min(1, (t - 1.2) / 0.45);
+        const slide = (1 - easeOut(a)) * (w * 0.28);
+        let fi = 0, dy = 0;
+        if (t > 2.05) fi = 1;
+        if (t > 2.45) {
+          fi = 2;
+          if (t < 2.75) dy = Math.floor((t - 2.45) * 16) % 2 ? 2.5 : -2.5; // 扣住的轻轻一抖
+        }
+        drawHands(fi, -slide, slide, dy);
+        // 小字副标：握手相扣时打字出现
+        if (t > 2.45) {
+          ctx.font = '12px ' + MONO;
+          ctx.fillStyle = PINK;
+          const m = Math.floor((t - 2.45) / 0.05);
+          const cpt = CAPTION.slice(0, m);
+          ctx.fillText(cpt, w / 2 - ctx.measureText(CAPTION).width / 2, hoy + HR * hfs * 1.12 + 26);
+        }
       } else {
         // 第三幕：字符散开，吸附成头像
         if (!particles.length) buildParticles();
-        const gt = t - 2.15;
-        ctx.fillStyle = MINT;
+        const gt = t - 3.0;
+        ctx.fillStyle = INK;
         for (const p of particles) {
           const lp = Math.max(0, Math.min(1, (gt - p.delay) / 0.85));
           const e = easeOut(lp);
@@ -161,7 +198,7 @@
           ctx.fillText(p.ch, x, y);
         }
         ctx.globalAlpha = 1;
-        if (gt > 1.45) finish(); // 自然播完
+        if (gt > 1.5) finish(); // 自然播完
       }
       raf = requestAnimationFrame(frame);
     }
@@ -172,8 +209,8 @@
       cancelAnimationFrame(raf);
       rootEl.dataset.intro = 'done';
       overlay!.classList.add('bye');
-      window.setTimeout(() => overlay!.remove(), 420);
-      // 落座后：关于我标题/副标题打字机，kv 行错落浮现
+      window.setTimeout(() => overlay!.remove(), 440);
+      // 落座后：关于我标题/副标题打字机，kv 行错落浮现（导轨由 CSS 过渡推入）
       const kvs = document.querySelectorAll<HTMLElement>('.scene-intro .kv');
       kvs.forEach((el, i) => { el.style.transitionDelay = `${i * 70}ms`; });
       const title = document.querySelector<HTMLElement>('.scene-intro .s-title');
