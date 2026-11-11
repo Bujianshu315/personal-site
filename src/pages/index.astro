@@ -120,26 +120,26 @@ import Intro from '../components/Intro.astro';
           <!-- 04 摄影作品 -->
           <article class="scene" data-idx="3">
             <h2 class="s-title">摄影作品</h2>
-            <p class="s-sub">┌─ $ photos —— 接触印样 · contact sheet</p>
-            <div class="filmstrip" id="filmstrip" aria-label="作品胶片条，可横向拖动浏览">
-              <img src="/photos/01.jpg" alt="富士山与清晨的车站" loading="lazy" decoding="async" />
-              <img src="/photos/02.jpg" alt="天桥上的行人" loading="lazy" decoding="async" />
-              <img src="/photos/03.jpg" alt="海与岛" loading="lazy" decoding="async" />
-              <img src="/photos/04.jpg" alt="楼宇之间" loading="lazy" decoding="async" />
-              <img src="/photos/05.jpg" alt="楼梯剪影" loading="lazy" decoding="async" />
-              <img src="/photos/06.jpg" alt="街头壁画下的人们" loading="lazy" decoding="async" />
-              <img src="/photos/07.jpg" alt="窗外的云" loading="lazy" decoding="async" />
-              <img src="/photos/08.jpg" alt="苔藓与水缸" loading="lazy" decoding="async" />
-              <img src="/photos/09.jpg" alt="便利店与红色轿车" loading="lazy" decoding="async" />
-              <img src="/photos/10.jpg" alt="地铁车厢" loading="lazy" decoding="async" />
-              <img src="/photos/11.jpg" alt="地铁门" loading="lazy" decoding="async" />
-              <img src="/photos/12.jpg" alt="雨中侧脸" loading="lazy" decoding="async" />
-              <img src="/photos/13.jpg" alt="地铁上的男孩" loading="lazy" decoding="async" />
-              <img src="/photos/14.jpg" alt="弹吉他的白裙女孩" loading="lazy" decoding="async" />
-              <img src="/photos/15.jpg" alt="漫展上的明日香" loading="lazy" decoding="async" />
-              <img src="/photos/16.jpg" alt="挂满星星的树" loading="lazy" decoding="async" />
+            <p class="s-sub">┌─ $ photos —— 底片档案 · 点击放大</p>
+            <div class="ph-grid">
+              <button class="ph" type="button" data-cap="富士山与清晨的车站"><img src="/photos/01.jpg" alt="富士山与清晨的车站" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="天桥上的行人"><img src="/photos/02.jpg" alt="天桥上的行人" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="海与岛"><img src="/photos/03.jpg" alt="海与岛" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="楼宇之间"><img src="/photos/04.jpg" alt="楼宇之间" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="楼梯剪影"><img src="/photos/05.jpg" alt="楼梯剪影" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="街头壁画下的人们"><img src="/photos/06.jpg" alt="街头壁画下的人们" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="窗外的云"><img src="/photos/07.jpg" alt="窗外的云" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="苔藓与水缸"><img src="/photos/08.jpg" alt="苔藓与水缸" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="便利店与红色轿车"><img src="/photos/09.jpg" alt="便利店与红色轿车" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="地铁车厢"><img src="/photos/10.jpg" alt="地铁车厢" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="地铁门"><img src="/photos/11.jpg" alt="地铁门" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="雨中侧脸"><img src="/photos/12.jpg" alt="雨中侧脸" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="地铁上的男孩"><img src="/photos/13.jpg" alt="地铁上的男孩" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="弹吉他的白裙女孩"><img src="/photos/14.jpg" alt="弹吉他的白裙女孩" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="漫展上的明日香"><img src="/photos/15.jpg" alt="漫展上的明日香" loading="lazy" decoding="async" /></button>
+              <button class="ph" type="button" data-cap="挂满星星的树"><img src="/photos/16.jpg" alt="挂满星星的树" loading="lazy" decoding="async" /></button>
             </div>
-            <p class="s-note">// 整卷 16 格 · 按住胶片横向拖动（手机直接滑）· 完整作品集与机位地图施工中</p>
+            <p class="s-note">// 本卷 16 张 · 往下滚动翻看 · 点击任意一张放大 · 完整作品集与机位地图施工中</p>
           </article>
         </section>
 
@@ -179,6 +179,12 @@ import Intro from '../components/Intro.astro';
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- 灯箱：散场后的银幕，黑场里只放一张大图 -->
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="查看大图">
+      <img id="lightbox-img" alt="" />
+      <p class="lb-cap" id="lightbox-cap"></p>
+    </div>
 
     <!-- 主题切换黑场：全场熄灯再亮灯（覆盖整个放映厅，不只银幕） -->
     <div class="dimmer" id="dimmer" aria-hidden="true"></div>
@@ -365,7 +371,7 @@ import Intro from '../components/Intro.astro';
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity; /* proximity：摄影档案这类超长场景可以停在场景内部 */
     color: var(--ink);
     scrollbar-width: none;
     transition: transform 0.12s ease-out; /* 轻滚预告的底片移动 */
@@ -468,45 +474,58 @@ import Intro from '../components/Intro.astro';
   .post:hover h3 { color: var(--pink-deep); }
   .post .meta { margin-left: auto; font-size: 10.5px; color: var(--ink-soft); }
 
-  /* 04 摄影作品：35mm 胶片接触印样——黑色片基 + 上下齿孔，作品是画格 */
-  .filmstrip {
-    margin-top: 24px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding: 30px 14px;
-    background: var(--theater);
-    cursor: grab;
-    user-select: none;
+  /* 04 摄影作品：底片档案格——一张一格，点击放大 */
+  .ph-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-top: 22px; }
+  .ph {
     position: relative;
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    border: 1px solid var(--frame);
+    background: none;
+    cursor: zoom-in;
+    overflow: hidden;
   }
-  .filmstrip:active { cursor: grabbing; }
-  .filmstrip::-webkit-scrollbar { display: none; }
-  /* 上下两缘的传动齿孔：孔透出银幕底色 */
-  .filmstrip::before,
-  .filmstrip::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 7px;
-    background: repeating-linear-gradient(90deg, transparent 0 8px, var(--screen-a) 8px 16px);
-    pointer-events: none;
-  }
-  .filmstrip::before { top: 12px; }
-  .filmstrip::after { bottom: 12px; }
-  .filmstrip img {
+  .ph img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    height: min(330px, 40vh);
-    width: auto;
-    flex-shrink: 0;
-    background: #000;
+    transition: transform 0.35s ease, filter 0.35s ease;
   }
-  /* 首尾画格边缘裁切线 */
-  .filmstrip img:first-child { margin-left: 4px; }
-  .filmstrip img:last-child { margin-right: 4px; }
+  .ph:hover img { transform: scale(1.045); filter: brightness(1.06); }
+
+  /* 灯箱：散场后的银幕——黑场里只放一张大图 */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 30px;
+    background: rgba(4, 7, 10, 0.93);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s;
+    cursor: zoom-out;
+  }
+  .lightbox.open { opacity: 1; visibility: visible; }
+  .lightbox img {
+    max-width: min(1100px, 92vw);
+    max-height: 78vh;
+    width: auto;
+    height: auto;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  }
+  .lightbox .lb-cap {
+    margin: 0;
+    font-family: 'FusionPixel', ui-monospace, Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--mint-soft);
+  }
 
   /* ============ 换片熄灯：整块银幕暗下再亮起（影院熄灯，不是翻页） ============ */
   .shutter {
@@ -606,10 +625,9 @@ import Intro from '../components/Intro.astro';
     .intro-avatar { width: min(240px, 72%); }
     .marquee-bar { padding: 10px 16px; }
     .toast { bottom: 24px; }
-    .filmstrip { padding: 22px 10px; gap: 8px; }
-    .filmstrip img { height: min(200px, 26vh); }
-    .filmstrip::before { top: 8px; }
-    .filmstrip::after { bottom: 8px; }
+    .ph-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+    .lightbox { padding: 16px; }
+    .lightbox img { max-height: 70vh; }
   }
 
   /* 窄屏：横排菜单字体再收一档，避免 nowrap 溢出 */
@@ -717,6 +735,20 @@ import Intro from '../components/Intro.astro';
       (e) => {
         e.preventDefault();
         if (lock) return;
+        // 场景比银幕高（如摄影底片档案）：先在场景内部滚，到边缘才换片
+        const sc = scenes[active];
+        const over = sc.offsetHeight - content.clientHeight;
+        if (over > 4) {
+          const atTop = content.scrollTop <= sc.offsetTop + 2;
+          const atBottom = content.scrollTop >= sc.offsetTop + over - 2;
+          const inward = (e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop);
+          if (inward) {
+            content.scrollBy({ top: e.deltaY, behavior: 'auto' });
+            return;
+          }
+          goTo(active + (e.deltaY > 0 ? 1 : -1));
+          return;
+        }
         acc += e.deltaY;
         window.clearTimeout(accTimer);
         accTimer = window.setTimeout(() => {
@@ -750,19 +782,29 @@ import Intro from '../components/Intro.astro';
     }
   });
 
-  // 胶片条：鼠标按住拖动（触屏走原生横滑）
-  const filmstrip = document.getElementById('filmstrip');
-  if (filmstrip) {
-    let down = false, sx = 0, sl = 0;
-    filmstrip.addEventListener('pointerdown', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      down = true; sx = e.clientX; sl = filmstrip.scrollLeft;
+  // 灯箱：点击底片放大，点黑场或 Esc 关掉
+  const lightbox = document.getElementById('lightbox')!;
+  const lbImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lbCap = document.getElementById('lightbox-cap')!;
+  document.querySelectorAll<HTMLButtonElement>('.ph-grid .ph').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const img = btn.querySelector('img');
+      if (!img) return;
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbCap.textContent = '▪ ' + (btn.dataset.cap || img.alt);
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
     });
-    window.addEventListener('pointermove', (e) => {
-      if (down) filmstrip.scrollLeft = sl - (e.clientX - sx);
-    });
-    window.addEventListener('pointerup', () => { down = false; });
-  }
+  });
+  const closeLb = () => {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+  };
+  lightbox.addEventListener('click', closeLb);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLb();
+  });
 
   // 语言切换（场内广播：施工中，先诚实告知）
   document.getElementById('lang-toggle')?.addEventListener('click', () => {
