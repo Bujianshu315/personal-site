@@ -183,7 +183,6 @@ import Intro from '../components/Intro.astro';
     <!-- 灯箱：散场后的银幕，黑场里只放一张大图 -->
     <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="查看大图">
       <img id="lightbox-img" alt="" />
-      <p class="lb-cap" id="lightbox-cap"></p>
     </div>
 
     <!-- 主题切换黑场：全场熄灯再亮灯（覆盖整个放映厅，不只银幕） -->
@@ -514,17 +513,10 @@ import Intro from '../components/Intro.astro';
   .lightbox.open { opacity: 1; visibility: visible; }
   .lightbox img {
     max-width: min(1100px, 92vw);
-    max-height: 78vh;
+    max-height: 84vh;
     width: auto;
     height: auto;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-  }
-  .lightbox .lb-cap {
-    margin: 0;
-    font-family: 'FusionPixel', ui-monospace, Consolas, monospace;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    color: var(--mint-soft);
   }
 
   /* ============ 换片熄灯：整块银幕暗下再亮起（影院熄灯，不是翻页） ============ */
@@ -785,14 +777,12 @@ import Intro from '../components/Intro.astro';
   // 灯箱：点击底片放大，点黑场或 Esc 关掉
   const lightbox = document.getElementById('lightbox')!;
   const lbImg = document.getElementById('lightbox-img') as HTMLImageElement;
-  const lbCap = document.getElementById('lightbox-cap')!;
   document.querySelectorAll<HTMLButtonElement>('.ph-grid .ph').forEach((btn) => {
     btn.addEventListener('click', () => {
       const img = btn.querySelector('img');
       if (!img) return;
       lbImg.src = img.src;
       lbImg.alt = img.alt;
-      lbCap.textContent = '▪ ' + (btn.dataset.cap || img.alt);
       lightbox.classList.add('open');
       lightbox.setAttribute('aria-hidden', 'false');
     });
