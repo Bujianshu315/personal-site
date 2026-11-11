@@ -386,13 +386,13 @@ import Intro from '../components/Intro.astro';
   .intro-avatar :global(#ascii-avatar) { height: 100%; }
   .neofetch {
     flex: 1;
-    align-self: center;
+    align-self: flex-start;   /* 与头像画框顶对齐，不再垂直居中错位 */
     font-family: 'FusionPixel', ui-monospace, Consolas, monospace;
     font-size: 13.5px;
     line-height: 1.9;
   }
   .kv { margin: 0; transition: opacity 0.4s ease, transform 0.4s ease; }
-  .nf-head { font-size: 15px; }
+  .nf-head { font-size: 15px; line-height: 1.3; }
   .nf-user { color: var(--pink); }
   .nf-dim { color: var(--ink-soft); }
   .nf-host { color: var(--ink); }

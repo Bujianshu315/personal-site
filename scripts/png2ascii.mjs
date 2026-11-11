@@ -81,8 +81,9 @@ function pix(x, y) {
 const COLS = 78;
 const ROWS = Math.max(10, Math.round(COLS * (height / width) * 0.55));
 const cellW = width / COLS, cellH = height / ROWS;
-// alma.now 式梯度：亮部疏、暗部密，块状字符（%#@）承担阴影，点线字符承担轮廓
-const RAMP = " .·:'-=+*%#@";
+// yetone 式色块梯度：暗部实心块（█）、中间调半色调网格（▒░）、亮部留白
+// 块字符铺满整个字格，出来的是"版画色块"而不是细字符噪点
+const RAMP = ' ░▒▓█';
 
 // ---- 第一遍：算出每格的"暗度"（0=最亮 1=最暗），白底剔除记为 -1 ----
 // 关键修正：ASCII 艺术的正确语义是暗部用重字符、亮部留白。
@@ -131,8 +132,8 @@ for (let r = 0; r < ROWS; r++) {
   rows.push(line);
 }
 
-// 孤立轻字符降噪：轻字符（梯度前 1/3）且 8 邻域里非空格不足 2 个 -> 视为噪点抹掉
-const LIGHT = Math.ceil((RAMP.length - 1) / 3);
+// 孤立半调网格降噪：最轻的 ░ 且 8 邻域里非空格不足 2 个 -> 视为噪点抹掉
+const LIGHT = 1;
 const chAt = (r, c) => (rows[r] && rows[r][c]) ?? ' ';
 for (let r = 0; r < rows.length; r++) {
   for (let c = 0; c < rows[r].length; c++) {
