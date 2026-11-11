@@ -45,7 +45,7 @@ public/
 
 ## 部署
 
-- 线上地址：https://notree-cinema.pages.dev （Cloudflare Pages，连 GitHub 仓库，push main 自动部署）
+- 线上地址：https://notree-cinema.pages.dev 
 - 仓库：https://github.com/Bujianshu315/personal-site
 
 ## 待办（按优先级）
