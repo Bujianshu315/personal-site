@@ -7,7 +7,6 @@ import Intro from '../components/Intro.astro';
 ---
 
 <Base title="Bujianshu · 个人放映室">
-  <Intro />
   <GrainCanvas />
 
   <main class="theater">
@@ -46,12 +45,21 @@ import Intro from '../components/Intro.astro';
             <p class="s-sub">┌─ $ whoami —— 拉吉塔尼的鹦鹉会笑</p>
             <div class="intro-grid">
               <div class="intro-avatar"><AsciiAvatar /></div>
-              <div class="intro-kv">
-                <div class="kv"><dt>$ born</dt><dd>2004 年出生 · 深圳</dd></div>
-                <div class="kv"><dt>$ interests</dt><dd>摄影 / 电影 / 游泳 / 动漫 / 衣服</dd></div>
-                <div class="kv"><dt>$ learning</dt><dd>AI 编程 / 生成视频 / 在世界上留下一些痕迹</dd></div>
-                <div class="kv"><dt>$ motto</dt><dd class="motto">感恩</dd></div>
-                <div class="kv"><dt>$ contact</dt><dd><a href="mailto:bujianshu315@outlook.com">bujianshu315@outlook.com</a> · <a href="https://github.com/Bujianshu315" target="_blank" rel="noopener">@Bujianshu315</a></dd></div>
+              <!-- neofetch 风：key: value 信息字段 + 色板 + 提示符（致敬 yetone 主页） -->
+              <div class="intro-kv neofetch">
+                <p class="kv nf-head"><span class="nf-user">bujianshu</span><span class="nf-dim">@</span><span class="nf-host">b-tv</span></p>
+                <div class="kv nf-sep" aria-hidden="true"></div>
+                <div class="kv"><dt>Name</dt><dd>Bujianshu / 不见树</dd></div>
+                <div class="kv"><dt>Born</dt><dd>2004 年出生 · 深圳</dd></div>
+                <div class="kv"><dt>Interests</dt><dd>摄影 / 电影 / 游泳 / 动漫 / 衣服</dd></div>
+                <div class="kv"><dt>Learning</dt><dd>AI 编程 / 生成视频 / 在世界上留下一些痕迹</dd></div>
+                <div class="kv"><dt>Motto</dt><dd class="motto">感恩</dd></div>
+                <div class="kv"><dt>Contact</dt><dd><a href="mailto:bujianshu315@outlook.com">bujianshu315@outlook.com</a> · <a href="https://github.com/Bujianshu315" target="_blank" rel="noopener">@Bujianshu315</a></dd></div>
+                <div class="kv nf-palette" aria-hidden="true">
+                  <i style="background:#0e141a"></i><i style="background:#121a20"></i><i style="background:#1f5058"></i><i style="background:#2e5a62"></i><i style="background:#4e8f86"></i><i style="background:#9ad2c3"></i><i style="background:#ee6fa4"></i><i style="background:#d84e8e"></i>
+                  <i style="background:#e7ebee"></i><i style="background:#c7d0d6"></i><i style="background:#7a98a1"></i><i style="background:#5b9a90"></i><i style="background:#b7e3d8"></i><i style="background:#f3a8c6"></i><i style="background:#e0619a"></i><i style="background:#b63a78"></i>
+                </div>
+                <p class="kv nf-prompt"><span class="nf-user">bujianshu</span><span class="nf-dim">@</span><span class="nf-host">b-tv</span><span class="nf-dim">:~$</span> <span class="nf-cursor">_</span></p>
               </div>
             </div>
             <p class="s-note">滚动换片 ↓ 或点左侧胶片目录选片 · 本站全部由 AI 辅助开发，公开承认</p>
@@ -124,6 +132,9 @@ import Intro from '../components/Intro.astro';
 
         <!-- 银幕内的胶片颗粒（噪点只属于画面） -->
         <ScreenGrain />
+
+        <!-- 开场：在银幕内部表演（黑场渐亮 → 打字机欢迎 → 落座） -->
+        <Intro />
       </div>
     </div>
   </div>
@@ -361,7 +372,7 @@ import Intro from '../components/Intro.astro';
   .s-sub { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-soft); }
   .s-note { margin: 14px 0 0; font-size: 11px; color: var(--ink-soft); opacity: 0.8; }
 
-  /* 01 关于我 */
+  /* 01 关于我：neofetch 风（左 ASCII 画 + 右系统信息字段） */
   .intro-grid {
     display: flex;
     gap: 30px;
@@ -373,18 +384,31 @@ import Intro from '../components/Intro.astro';
   /* 正方形画框，ASCII 头像由组件自动居中 */
   .intro-avatar :global(.aa-wrap) { width: 100%; aspect-ratio: 1 / 1; }
   .intro-avatar :global(#ascii-avatar) { height: 100%; }
-  .intro-kv {
+  .neofetch {
     flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px 26px;
-    align-content: center;
+    align-self: center;
+    font-family: 'FusionPixel', ui-monospace, Consolas, monospace;
+    font-size: 13.5px;
+    line-height: 1.9;
   }
-  .kv dt { font-size: 11.5px; color: var(--pink-deep); }
-  .kv dd { margin: 4px 0 0; font-size: 13.5px; line-height: 1.7; color: var(--ink); }
+  .kv { margin: 0; transition: opacity 0.4s ease, transform 0.4s ease; }
+  .nf-head { font-size: 15px; }
+  .nf-user { color: var(--pink); }
+  .nf-dim { color: var(--ink-soft); }
+  .nf-host { color: var(--ink); }
+  .nf-sep { width: 36ch; max-width: 100%; border-top: 1px solid var(--frame); margin: 3px 0 9px; }
+  .kv dt { display: inline-block; min-width: 9.5ch; color: var(--pink-deep); }
+  .kv dt::after { content: ':'; }
+  .kv dd { display: inline; margin: 0 0 0 1ch; color: var(--ink); }
   .kv dd a { color: var(--pink-deep); text-decoration: none; }
   .kv dd a:hover { text-decoration: underline; }
-  .kv .motto { font-size: 22px; color: var(--pink); letter-spacing: 0.3em; }
+  .kv .motto { color: var(--pink); letter-spacing: 0.3em; }
+  /* 色板条：本站全部主题色，两行八格（上暗下亮） */
+  .nf-palette { display: grid; grid-template-columns: repeat(8, 26px); gap: 3px; margin-top: 14px; }
+  .nf-palette i { display: block; height: 14px; }
+  .nf-prompt { margin-top: 14px; }
+  .nf-cursor { animation: nfBlink 1.05s steps(1) infinite; color: var(--ink); }
+  @keyframes nfBlink { 50% { opacity: 0; } }
 
   /* 02 AI作品 */
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 22px; }
@@ -461,13 +485,12 @@ import Intro from '../components/Intro.astro';
     100% { opacity: 0; }  /* 亮灯 */
   }
 
-  /* ============ 开场候场/落座：Intro 播放期间 UI 候场，done 后推入 ============ */
-  .rail, .bottom-bar, .screen-col { transition: opacity 0.5s ease, transform 0.5s ease; }
-  .scene-intro .kv { transition: opacity 0.4s ease, transform 0.4s ease; }
+  /* ============ 开场候场/落座：Intro 在银幕内播放，UI 候场，done 后推入 ============ */
+  .rail, .bottom-bar, .screen-main { transition: opacity 0.5s ease, transform 0.5s ease; }
   :global(html[data-intro='pending']) .rail-scenes { opacity: 0; transform: translateX(-18px); }
   :global(html[data-intro='pending']) .rail-end { opacity: 0; transform: translateX(18px); }
   :global(html[data-intro='pending']) .bottom-bar { opacity: 0; transform: translateY(10px); }
-  :global(html[data-intro='pending']) .screen-col { opacity: 0; }
+  :global(html[data-intro='pending']) .screen-main { opacity: 0; } /* 银幕本体可见（开场在黑场上演），内容候场 */
   :global(html[data-intro='pending']) .scene-intro .kv { opacity: 0; transform: translateY(8px); }
 
   /* ============ 底部：版权与场刊信息 ============ */
