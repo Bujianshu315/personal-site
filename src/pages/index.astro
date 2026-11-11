@@ -82,7 +82,7 @@ import Intro from '../components/Intro.astro';
               </a>
               <a class="card" href="https://github.com/Bujianshu315/OpenAlice" target="_blank" rel="noopener">
                 <h3>OpenAlice</h3>
-                <p>一个人规模的华尔街：覆盖股票 / 加密货币 / 外汇 / 宏观的 AI 交易 Agent，从研究到持仓、风控到退出。（fork）</p>
+                <p>One-person Wall Street: an AI trading agent covering equities, crypto, FX and macro — from research and positions to risk control and exit. (fork)</p>
                 <div class="c-foot"><span class="badge">TypeScript</span><span class="badge">Fork</span></div>
               </a>
               <div class="card ghost">
@@ -120,14 +120,26 @@ import Intro from '../components/Intro.astro';
           <!-- 04 摄影作品 -->
           <article class="scene" data-idx="3">
             <h2 class="s-title">摄影作品</h2>
-            <p class="s-sub">┌─ $ photos —— 待冲洗的底片</p>
-            <div class="ph-grid">
-              <div class="ph g1"><span>机位 · 待冲洗</span></div>
-              <div class="ph g2"><span>机位 · 待冲洗</span></div>
-              <div class="ph g3"><span>机位 · 待冲洗</span></div>
-              <div class="ph g4"><span>首卷 · loading</span></div>
+            <p class="s-sub">┌─ $ photos —— 接触印样 · contact sheet</p>
+            <div class="filmstrip" id="filmstrip" aria-label="作品胶片条，可横向拖动浏览">
+              <img src="/photos/01.jpg" alt="富士山与清晨的车站" loading="lazy" decoding="async" />
+              <img src="/photos/02.jpg" alt="天桥上的行人" loading="lazy" decoding="async" />
+              <img src="/photos/03.jpg" alt="海与岛" loading="lazy" decoding="async" />
+              <img src="/photos/04.jpg" alt="楼宇之间" loading="lazy" decoding="async" />
+              <img src="/photos/05.jpg" alt="楼梯剪影" loading="lazy" decoding="async" />
+              <img src="/photos/06.jpg" alt="街头壁画下的人们" loading="lazy" decoding="async" />
+              <img src="/photos/07.jpg" alt="窗外的云" loading="lazy" decoding="async" />
+              <img src="/photos/08.jpg" alt="苔藓与水缸" loading="lazy" decoding="async" />
+              <img src="/photos/09.jpg" alt="便利店与红色轿车" loading="lazy" decoding="async" />
+              <img src="/photos/10.jpg" alt="地铁车厢" loading="lazy" decoding="async" />
+              <img src="/photos/11.jpg" alt="地铁门" loading="lazy" decoding="async" />
+              <img src="/photos/12.jpg" alt="雨中侧脸" loading="lazy" decoding="async" />
+              <img src="/photos/13.jpg" alt="地铁上的男孩" loading="lazy" decoding="async" />
+              <img src="/photos/14.jpg" alt="弹吉他的白裙女孩" loading="lazy" decoding="async" />
+              <img src="/photos/15.jpg" alt="漫展上的明日香" loading="lazy" decoding="async" />
+              <img src="/photos/16.jpg" alt="挂满星星的树" loading="lazy" decoding="async" />
             </div>
-            <p class="s-note">// 照片墙 + 机位地图施工中：照片会按 EXIF GPS 落到地图上</p>
+            <p class="s-note">// 整卷 16 格 · 按住胶片横向拖动（手机直接滑）· 完整作品集与机位地图施工中</p>
           </article>
         </section>
 
@@ -456,22 +468,45 @@ import Intro from '../components/Intro.astro';
   .post:hover h3 { color: var(--pink-deep); }
   .post .meta { margin-left: auto; font-size: 10.5px; color: var(--ink-soft); }
 
-  /* 04 摄影作品 */
-  .ph-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 22px; }
-  .ph { aspect-ratio: 4 / 3; border-radius: 0; border: 1px solid var(--frame); position: relative; overflow: hidden; }
-  .ph.g1 { background: linear-gradient(135deg, var(--ph1a), var(--ph1b)); }
-  .ph.g2 { background: linear-gradient(135deg, var(--ph2a), var(--ph2b)); }
-  .ph.g3 { background: linear-gradient(135deg, var(--ph3a), var(--ph3b)); }
-  .ph.g4 { background: linear-gradient(135deg, var(--ph4a), var(--ph4b)); }
-  .ph span {
-    position: absolute;
-    left: 9px;
-    bottom: 7px;
-    font-size: 10px;
-    color: #fff;
-    opacity: 0.9;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+  /* 04 摄影作品：35mm 胶片接触印样——黑色片基 + 上下齿孔，作品是画格 */
+  .filmstrip {
+    margin-top: 24px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 30px 14px;
+    background: var(--theater);
+    cursor: grab;
+    user-select: none;
+    position: relative;
   }
+  .filmstrip:active { cursor: grabbing; }
+  .filmstrip::-webkit-scrollbar { display: none; }
+  /* 上下两缘的传动齿孔：孔透出银幕底色 */
+  .filmstrip::before,
+  .filmstrip::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 7px;
+    background: repeating-linear-gradient(90deg, transparent 0 8px, var(--screen-a) 8px 16px);
+    pointer-events: none;
+  }
+  .filmstrip::before { top: 12px; }
+  .filmstrip::after { bottom: 12px; }
+  .filmstrip img {
+    display: block;
+    height: min(330px, 40vh);
+    width: auto;
+    flex-shrink: 0;
+    background: #000;
+  }
+  /* 首尾画格边缘裁切线 */
+  .filmstrip img:first-child { margin-left: 4px; }
+  .filmstrip img:last-child { margin-right: 4px; }
 
   /* ============ 换片熄灯：整块银幕暗下再亮起（影院熄灯，不是翻页） ============ */
   .shutter {
@@ -571,6 +606,10 @@ import Intro from '../components/Intro.astro';
     .intro-avatar { width: min(240px, 72%); }
     .marquee-bar { padding: 10px 16px; }
     .toast { bottom: 24px; }
+    .filmstrip { padding: 22px 10px; gap: 8px; }
+    .filmstrip img { height: min(200px, 26vh); }
+    .filmstrip::before { top: 8px; }
+    .filmstrip::after { bottom: 8px; }
   }
 
   /* 窄屏：横排菜单字体再收一档，避免 nowrap 溢出 */
@@ -710,6 +749,20 @@ import Intro from '../components/Intro.astro';
       goTo(active - 1);
     }
   });
+
+  // 胶片条：鼠标按住拖动（触屏走原生横滑）
+  const filmstrip = document.getElementById('filmstrip');
+  if (filmstrip) {
+    let down = false, sx = 0, sl = 0;
+    filmstrip.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      down = true; sx = e.clientX; sl = filmstrip.scrollLeft;
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (down) filmstrip.scrollLeft = sl - (e.clientX - sx);
+    });
+    window.addEventListener('pointerup', () => { down = false; });
+  }
 
   // 语言切换（场内广播：施工中，先诚实告知）
   document.getElementById('lang-toggle')?.addEventListener('click', () => {
