@@ -1,7 +1,8 @@
 ---
 // ASCII 头像（构建时由 scripts/png2ascii.mjs 从 public/avatar.png 生成）
-// yetone 式"小银幕"：整版铺半调底网（屏幕点亮的底噪），脸部亮部把底网镂空（发光），
-// 暗部实心色块压在底网之上；叠加扫描线 + CRT 缓慢下扫光带。
+// 反相磷光小 CRT：深青底 + 薄荷绿辉光——大银幕（投影幕，亮底深图）的"暗面"，
+// 同一套色系的两极。整版铺半调底网，脸部实心块发光，头发/黑条熄灭进暗底，
+// 叠加扫描线 + CRT 缓慢下扫光带。
 interface Props {
   prompt?: string;
 }
@@ -18,8 +19,11 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
 <style>
   .aa-wrap {
     position: relative;
-    background: transparent;
-    border: 1px solid var(--frame);
+    /* 小 CRT 自己发光：不随明暗主题反相，永远"开着机" */
+    --aa-bg: #0e2a32;
+    --aa-glow: #a9ecd9;
+    background: var(--aa-bg);
+    border: 1px solid var(--panel-line);
     border-radius: 0;
     overflow: hidden;
   }
@@ -34,7 +38,7 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
     inset: 0;
     z-index: 2;
     pointer-events: none;
-    background: repeating-linear-gradient(0deg, rgba(10, 30, 34, 0.07) 0 1px, transparent 1px 3px);
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px);
   }
   /* 缓慢下扫的光带（电视刷新感） */
   .aa-sweep {
@@ -45,16 +49,12 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
     height: 20%;
     z-index: 3;
     pointer-events: none;
-    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.16) 55%, transparent);
+    background: linear-gradient(180deg, transparent, rgba(169, 236, 217, 0.13) 55%, transparent);
     animation: aaSweep 7s linear infinite;
   }
   @keyframes aaSweep {
     0% { top: -22%; }
     100% { top: 108%; }
-  }
-  /* 日场白幕：光带换成柔和的暗带才看得见 */
-  :global([data-theme='light']) .aa-sweep {
-    background: linear-gradient(180deg, transparent, rgba(20, 51, 58, 0.07) 55%, transparent);
   }
   @media (prefers-reduced-motion: reduce) {
     .aa-sweep { animation: none; }
@@ -65,11 +65,12 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
     bottom: 6px;
     z-index: 4;
     font-size: 10px;
-    color: var(--ink-soft);
-    opacity: 0.8;
+    color: var(--aa-glow);
+    opacity: 0.65;
     padding: 2px 6px;
     border-radius: 0;
     pointer-events: none;
+    text-shadow: 0 0 8px rgba(169, 236, 217, 0.5);
   }
 </style>
 
@@ -104,7 +105,7 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
     function draw(t: number | null): boolean {
       if (!w || !h || !rowsN) return true;
       const styles = getComputedStyle(wrap!);
-      const ink = styles.getPropertyValue('--ink').trim() || '#14333b';
+      const glow = styles.getPropertyValue('--aa-glow').trim() || '#a9ecd9';
 
       // 实测 █ 字宽排版：块字符横向无缝拼成色面
       ctx.font = '10px ' + MONO;
@@ -119,18 +120,18 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
 
       ctx.clearRect(0, 0, w, h);
 
-      // 1) 底网：整版低透明度 ░ —— "屏幕是点亮的"，头像从底网里显影
+      // 1) 底网：整版低透明度 ░ —— 磷光屏的"点亮底噪"，暗部靠它托出轮廓
       const colsP = Math.ceil(w / cellW);
       const rowsP = Math.ceil(h / cellH);
       const meshLine = '░'.repeat(colsP);
-      ctx.fillStyle = ink;
-      ctx.globalAlpha = 0.13;
+      ctx.fillStyle = glow;
+      ctx.globalAlpha = 0.14;
       for (let r = 0; r < rowsP; r++) {
         ctx.fillText(meshLine, 0, r * cellH + fs * 0.8);
       }
       ctx.globalAlpha = 1;
 
-      // 2) 亮部镂空：数据里的空格 = 脸部/高光，把底网擦掉 → 比背景更亮（显像管发光感）
+      // 2) 暗部熄灭：数据里的空格 = 头发/黑条/暗部，把底网擦掉 → 比背景更暗的剪影
       for (let r = 0; r < rowsN; r++) {
         const row = art[r];
         for (let c = 0; c < row.length; c++) {
@@ -140,7 +141,7 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
         }
       }
 
-      // 3) 主体色块：满对比压上去（'.' 底网标记处不画，底网已铺）
+      // 3) 发光体：脸部实心块 + 中间调，带磷光辉光
       let maxRow = rowsN;
       let done = true;
       if (t !== null && !reduced) {
@@ -149,11 +150,14 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
         maxRow = Math.ceil(p * rowsN);
         done = p >= 1;
       }
-      ctx.fillStyle = ink;
+      ctx.fillStyle = glow;
+      ctx.shadowColor = glow;
+      ctx.shadowBlur = fs * 0.55;
       for (let r = 0; r < maxRow; r++) {
         const line = art[r].replace(/\./g, ' ');
         if (line.trim()) ctx.fillText(line, ox, oy + r * cellH + fs * 0.8);
       }
+      ctx.shadowBlur = 0;
       return done;
     }
 
@@ -163,11 +167,6 @@ const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
         if (!done) requestAnimationFrame(loop);
       })();
     }
-    // 主题切换后重绘（墨水是跟随主题的）
-    new MutationObserver(() => draw(null)).observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
     if (window.ResizeObserver) new ResizeObserver(resize).observe(wrap!);
     resize();
   }

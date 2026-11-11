@@ -126,7 +126,8 @@ for (let r = 0; r < ROWS; r++) {
     if (v > 0.80) v = 1;
     else if (v < 0.22) v = 0;
     else v = Math.pow((v - 0.22) / 0.58, 1.25);
-    line += RAMP[Math.round(v * (RAMP.length - 1))];
+    // 反相磷光屏：亮部（脸）→ 实心块发光，暗部（头发/黑条）→ 留白熄灭进暗底
+    line += RAMP[Math.round((1 - v) * (RAMP.length - 1))];
   }
   rows.push(line);
 }
