@@ -423,10 +423,10 @@ import Intro from '../components/Intro.astro';
   .kv dd { display: inline; margin: 0 0 0 1ch; color: var(--ink); }
   .kv dd a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--frame); }
   .kv dd a:hover { color: var(--pink); text-decoration-color: var(--pink); }
-  /* Contact：像素图标 + 链接，纵向排开，图标列固定宽、文字严格对齐 */
-  .kv dd.contact-list { display: grid; grid-template-columns: max-content; row-gap: 8px; margin: 2px 0 0 1ch; align-items: center; justify-items: start; }
-  .kv dd.contact-list a { display: inline-flex; align-items: center; gap: 8px; }
-  .px-ico { flex: none; fill: currentColor; }
+  /* Contact：图标挂在左侧空档，文字与上面各行的值对齐 */
+  .kv dd.contact-list { display: grid; grid-template-columns: max-content; row-gap: 8px; margin: 2px 0 0 1ch; justify-items: start; }
+  .kv dd.contact-list a { position: relative; display: inline-flex; align-items: center; }
+  .px-ico { position: absolute; left: -22px; top: 50%; transform: translateY(-50%); flex: none; fill: currentColor; }
   /* 色板条：本站全部主题色，两行八格（上暗下亮） */
   .nf-palette { display: grid; grid-template-columns: repeat(8, 26px); gap: 3px; margin-top: 14px; }
   .nf-palette i { display: block; height: 14px; }
