@@ -18,9 +18,9 @@ import Intro from '../components/Intro.astro';
         <button class="rail-item" data-goto="1" type="button">
           <span class="ri-name">参与项目</span>
         </button>
-        <button class="rail-item" data-goto="2" type="button">
-          <span class="ri-name">博客</span>
-        </button>
+        <a class="rail-item" href="/resume">
+          <span class="ri-name">简历</span>
+        </a>
         <button class="rail-item" data-goto="3" type="button">
           <span class="ri-name">摄影作品</span>
         </button>
@@ -164,9 +164,9 @@ import Intro from '../components/Intro.astro';
       <button class="rail-item" id="map-toggle" type="button">
         <span class="ri-name">旅行地图</span>
       </button>
-      <a class="rail-item" href="/resume">
-        <span class="ri-name">简历</span>
-      </a>
+      <button class="rail-item" data-goto="2" type="button">
+        <span class="ri-name">博客</span>
+      </button>
     </nav>
 
     <!-- 底部：版权与场刊信息 -->
@@ -666,10 +666,11 @@ import Intro from '../components/Intro.astro';
   function setActive(i: number) {
     if (i === active) return;
     active = i;
-    railItems.forEach((el, k) => {
-      const on = k === i;
+    railItems.forEach((el) => {
+      // 只有带 data-goto 的目录项才参与场景高亮（简历是外链，不占场景序号）
+      const on = el.dataset.goto !== undefined && Number(el.dataset.goto) === i;
       el.classList.toggle('active', on);
-      if (el.classList.contains('rail-item')) el.setAttribute('aria-current', on ? 'true' : 'false');
+      if (el.dataset.goto !== undefined) el.setAttribute('aria-current', on ? 'true' : 'false');
     });
     reelNum.textContent = String(i + 1).padStart(2, '0');
     reelNum.classList.remove('tick');

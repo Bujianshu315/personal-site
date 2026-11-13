@@ -156,7 +156,7 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
   }
 
   .r-head { display: flex; align-items: center; gap: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--frame); }
-  .r-avatar { width: 96px; flex: none; }
+  .r-avatar { width: min(300px, 42%); flex: none; }
   .r-id h1 { margin: 0; font-size: 30px; font-weight: 500; letter-spacing: 0.16em; }
   .r-en { margin: 6px 0 0; font-size: 11px; letter-spacing: 0.22em; color: var(--ink-soft); }
   .r-tag { margin: 12px 0 0; font-size: 13px; line-height: 1.7; color: var(--pink-deep); }
@@ -200,6 +200,7 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
   @media (max-width: 560px) {
     .paper { padding: 28px 20px; }
     .r-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .r-avatar { width: min(240px, 72%); }
   }
 
   /* 打印：白纸黑字，藏起导航与噪点 */
