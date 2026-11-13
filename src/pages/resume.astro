@@ -6,8 +6,10 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
 
 <Base title="场刊 · 简历 — Bujianshu" description="不见树的简历：项目经历、技术方向与教育背景。">
   <nav class="resume-tabs" aria-label="简历板块">
+    <a href="#overview">总结</a>
     <a href="#projects">项目</a>
-    <a href="#skills">技术</a>
+    <a href="#intern">实习</a>
+    <a href="#skills">技能</a>
     <a href="#education">教育</a>
     <a href="#contact">联系</a>
     <button id="print-btn" type="button">打印带走</button>
@@ -20,9 +22,20 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
       <div class="r-id">
         <h1>不见树</h1>
         <p class="r-en">BUJIANSHU · B-TV 场刊 · 简历卷</p>
-        <p class="r-tag">技术方向：Web 前端 / 数据可视化 / AI 辅助开发</p>
+        <p class="r-tag">求职意向：AI 产品经理 / 产品运营（base 深圳）· 2026 届 · 可即刻到岗</p>
       </div>
     </header>
+
+    <!-- 个人总结 -->
+    <section id="overview" class="r-sec">
+      <h2 class="r-h2">┌─ $ summary —— 个人总结</h2>
+      <p class="r-sum r-summary">地理信息科学本科，2026 届应届生。在校期间担任团支书、学生会干事一年；有省级空间数据项目的一线生产与质检经历，独立开发 Web GIS 应用并开源，同时以 AI 辅助开发方式持续构建自己的产品（含本放映室）。习惯把「AI 检索 → 人工复核」的管线思维用在数据和代码两条线上。</p>
+      <ul class="r-links">
+        <li><a href="https://github.com/Bujianshu315" target="_blank" rel="noopener">GitHub 主页 —— github.com/Bujianshu315</a></li>
+        <li><a href="https://bujianshu315.github.io/shenzhen-photo-map" target="_blank" rel="noopener">地图项目在线演示 —— bujianshu315.github.io/shenzhen-photo-map</a></li>
+        <li><a href="/" >个人主页 —— 本放映室 notree-cinema.pages.dev</a></li>
+      </ul>
+    </section>
 
     <!-- 项目经历 -->
     <section id="projects" class="r-sec">
@@ -30,55 +43,91 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
 
       <article class="r-item">
         <div class="r-item-head">
+          <h3>深圳拍摄点地图（Web GIS 应用 · 已开源）</h3>
+          <span class="r-meta">产品负责人 / 开发 · 2026.08 至今</span>
+        </div>
+        <p class="r-sum">独立完成从需求定义到开发落地的完整闭环：给摄影师和模特找机位的地图工具。</p>
+        <ul>
+          <li>基于 MapLibre + turf.js 实现地铁沿线筛选、拍摄行程规划、搜索定位等 8 项功能，覆盖 40+ 精选机位。</li>
+          <li>设计「AI 检索 → 人工复核 → 地理编码校验」数据生产管线，以「只外链不分发」模式规避版权风险。</li>
+          <li>采用用户定制档案 + AI 执行的开发模式，用 AI 辅助代码生成与数据处理，显著压缩开发周期。</li>
+          <li>已开源（MIT License），部署于 GitHub Pages，可在线演示。</li>
+        </ul>
+        <p class="r-stack">技术：MapLibre、turf.js、JavaScript、Python、GitHub Pages、CSS、HTML、Astro、Node.js</p>
+      </article>
+
+      <article class="r-item">
+        <div class="r-item-head">
           <h3>个人放映室 B-TV（本站）</h3>
           <span class="r-meta">独立开发 · 2026 至今</span>
         </div>
-        <p class="r-sum">从零设计并开发的个人网站：作品集、博客与摄影的"CRT 放映厅"。全部 UI/交互/视觉由自己拍板，AI 辅助编码。</p>
+        <p class="r-sum">从零设计并开发的个人网站：作品集、博客与摄影的"CRT 放映厅"，全部 UI/交互/视觉自己拍板。</p>
         <ul>
-          <li>Astro 静态站 + Cloudflare Pages 自动部署，push 即上线；性能预算内做到零框架运行时。</li>
-          <li>设计系统：薄荷绿/粉/深青三色纪律、全站直角、CRT 银幕隐喻贯穿（胶片导轨、快门换片、场刊）。</li>
-          <li>Canvas 2D 手写像素头像渲染器（fillRect 色块梯度 + 半调底网 + 扫描线噪点），零字体依赖。</li>
-          <li>工程化细节：像素字体 fontTools 子集化至 27KB 并 preload；深浅双主题变量化；og 分享卡自动生成。</li>
-          <li>交互：scroll-snap 场景换片 + 边缘检测嵌套滚动、灯箱大图、开场动画（respect reduced-motion）。</li>
+          <li>Astro 静态站 + Cloudflare Pages 自动部署，push 即上线，零框架运行时。</li>
+          <li>设计系统：三色纪律、全站直角、影院隐喻贯穿（胶片导轨、快门换片、场刊）。</li>
+          <li>Canvas 2D 手写像素头像渲染器（色块梯度 + 半调底网 + 扫描线），零字体依赖。</li>
+          <li>工程化：像素字体 fontTools 子集化至 27KB、深浅双主题、og 分享卡自动生成。</li>
+        </ul>
+        <p class="r-stack">技术：Astro、TypeScript、Canvas 2D、CSS 变量主题、fontTools、Cloudflare Pages</p>
+      </article>
+    </section>
+
+    <!-- 实习经历 -->
+    <section id="intern" class="r-sec">
+      <h2 class="r-h2">┌─ $ internships —— 实习经历</h2>
+
+      <article class="r-item">
+        <div class="r-item-head">
+          <h3>湖南星图空间信息技术有限公司 · 地理信息数据处理</h3>
+          <span class="r-meta">2025.07 ~ 2025.12</span>
+        </div>
+        <p class="r-sum">省级农村公路路网调整项目。</p>
+        <ul>
+          <li>参与省级农村公路路网调整项目，负责 41 个县区路网数据调整与质量检验，保障省级项目数据交付达标。</li>
+          <li>派驻湖南省公路事务中心，独立承担 38 个区县数据质量审核，协同 2 家合作单位推进项目落地。</li>
+          <li>针对海量数据处理设计批量运算与校验流程，在保证准确率的前提下压缩处理周期。</li>
         </ul>
       </article>
 
       <article class="r-item">
         <div class="r-item-head">
-          <h3>深圳摄影机位地图 shenzhen-photo-map</h3>
-          <span class="r-meta">独立开发 · 2026</span>
+          <h3>常德市测绘院 · 测绘数据处理</h3>
+          <span class="r-meta">2025.03 ~ 2025.05</span>
         </div>
-        <p class="r-sum">给摄影师和模特找拍摄点的地图工具：40 个实拍机位、地铁可达性分析与路线排序。</p>
+        <p class="r-sum">湖南省政区地图编校项目。</p>
         <ul>
-          <li>MapLibre GL 交互地图，深浅双主题样式同步切换。</li>
-          <li>地铁站点缓冲区分析（Python/GeoPandas）筛选"出站即达"机位；多机位一日拍摄路线排序。</li>
-          <li>数据结构化：机位类型/朝向/最佳时段标注，按光线条件筛选。</li>
+          <li>参与湖南省政区土地编校项目，负责土地产权、位置等核心信息整理与录入，累计完成 2 万余条数据校验。</li>
+          <li>梳理录入标准并用 Excel 公式实现批量处理，显著提升单位时间产出。</li>
         </ul>
       </article>
     </section>
 
-    <!-- 技术方向 -->
+    <!-- 专业技能 -->
     <section id="skills" class="r-sec">
-      <h2 class="r-h2">┌─ $ skills —— 技术方向</h2>
+      <h2 class="r-h2">┌─ $ skills —— 专业技能</h2>
       <div class="skill-grid">
-        <div class="skill"><dt>Web 基础</dt><dd>HTML / CSS（Grid、变量主题、scroll-snap）/ JavaScript（ES2022）</dd></div>
-        <div class="skill"><dt>框架工具</dt><dd>Astro、Git/GitHub 协作流（PR/CI）、Cloudflare Pages 部署</dd></div>
-        <div class="skill"><dt>可视化</dt><dd>Canvas 2D 图形编程、MapLibre GL 地图、SVG 图标手绘</dd></div>
-        <div class="skill"><dt>数据脚本</dt><dd>Python：GeoPandas 地理分析、Pillow 批处理、fontTools 字体子集化</dd></div>
-        <div class="skill"><dt>AI 协作</dt><dd>AI 辅助开发全流程：需求拆解、代码评审、工程化落地（本站即成果）</dd></div>
-        <div class="skill"><dt>学习中</dt><dd>生成式视频、Flutter（Dart）跨端开发</dd></div>
+        <div class="skill"><dt>AI 工具</dt><dd>Kimi、DeepSeek、Gemini、Codex、WorkBuddy 等的深度日常使用，覆盖检索、写作与代码生成</dd></div>
+        <div class="skill"><dt>技术基础</dt><dd>Python 数据自动化；GIS 批量运算、地理编码与数据质检；SQL 基础</dd></div>
+        <div class="skill"><dt>Web 开发</dt><dd>HTML / CSS / JavaScript，Astro 静态站全流程；能配合项目需求快速上手（含开源项目经验）</dd></div>
+        <div class="skill"><dt>办公软件</dt><dd>WPS、Microsoft Office（Excel 数据运算、PPT 制作）</dd></div>
+        <div class="skill"><dt>摄影与设计</dt><dd>相机拍摄（个人摄影作品集）、Vlog 剪辑、Photoshop、剪映、达芬奇、墨刀（原型设计）</dd></div>
+        <div class="skill"><dt>产品素养</dt><dd>需求拆解、数据管线设计、AI 辅助开发全流程落地（以本站与开源地图为实践成果）</dd></div>
       </div>
     </section>
 
-    <!-- 教育 -->
+    <!-- 教育背景 -->
     <section id="education" class="r-sec">
       <h2 class="r-h2">┌─ $ education —— 教育背景</h2>
       <article class="r-item">
         <div class="r-item-head">
-          <h3><!-- 待补：学校名称 --></h3>
-          <span class="r-meta"><!-- 待补：时间 --></span>
+          <h3>湖南文理学院 · 地理信息科学（本科）</h3>
+          <span class="r-meta">2022.09 ~ 2026.06</span>
         </div>
-        <p class="r-sum"><!-- 待补：专业/方向，一句话说明 --></p>
+        <ul>
+          <li>主修：GIS 原理、空间数据库、遥感图像处理、地图学、Python 程序设计、数据库原理、Web 前端。</li>
+          <li>2022.09 ~ 2023.06 就读经济与管理学院，主修市场营销、西方经济学、企业经营、管理学。</li>
+          <li>在校担任团支书、学生会干事一年。</li>
+        </ul>
       </article>
     </section>
 
@@ -160,6 +209,12 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
   .r-item ul { margin: 8px 0 0; padding-left: 1.2em; }
   .r-item li { font-size: 12.5px; line-height: 1.85; }
   .r-item li::marker { content: '▪ '; color: var(--pink-deep); }
+  .r-links { margin: 10px 0 0; padding-left: 1.2em; }
+  .r-links li { font-size: 12.5px; line-height: 1.9; }
+  .r-links li::marker { content: '▪ '; color: var(--pink-deep); }
+  .r-links a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--frame); }
+  .r-links a:hover { color: var(--pink-deep); text-decoration-color: var(--pink-deep); }
+  .r-stack { margin: 8px 0 0; font-size: 11.5px; color: var(--ink-soft); }
 
   .skill-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
   .skill { display: flex; gap: 10px; align-items: baseline; font-size: 12.5px; line-height: 1.7; }
