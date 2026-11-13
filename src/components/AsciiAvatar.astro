@@ -99,9 +99,18 @@ const { prompt = 'bujianshu@sz ~ $', height } = Astro.props;
 
     function resize() {
       w = wrap!.clientWidth;
-      // 自适应高度：按字符格 1:1.9 比例算出内容需要的画布高度。
-      // 封顶 190（原观感），下限 120。容器窄时内容不足 190 会露出黑边，故高度跟随内容。
-      h = explicitH != null ? explicitH : Math.max(120, Math.min(190, Math.round((rowsN * (w / cols) * 1.9))));
+      // 高度优先级：① 显式 height prop ② 外层 CSS 布局（如首页的方形卡 aspect-ratio）
+      // ③ 自适应兜底。探测法：把画布高度暂时清零，wrap 若仍保有高度即由 CSS 决定。
+      canvas!.style.height = '0px';
+      const cssH = wrap!.clientHeight;
+      canvas!.style.height = '';
+      if (explicitH != null) {
+        h = explicitH;
+      } else if (cssH > 40) {
+        h = cssH;
+      } else {
+        h = Math.max(120, Math.min(190, Math.round(rowsN * (w / cols) * 1.9)));
+      }
       canvas!.style.height = h + 'px';
       canvas!.width = Math.max(1, Math.round(w * DPR));
       canvas!.height = Math.max(1, Math.round(h * DPR));

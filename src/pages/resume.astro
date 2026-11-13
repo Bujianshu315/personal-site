@@ -157,6 +157,9 @@ import AsciiAvatar from '../components/AsciiAvatar.astro';
 
   .r-head { display: flex; align-items: center; gap: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--frame); }
   .r-avatar { width: min(300px, 42%); flex: none; }
+  /* 和首页一致：方形小 CRT */
+  .r-avatar :global(.aa-wrap) { width: 100%; aspect-ratio: 1 / 1; }
+  .r-avatar :global(#ascii-avatar) { height: 100%; }
   .r-id h1 { margin: 0; font-size: 30px; font-weight: 500; letter-spacing: 0.16em; }
   .r-en { margin: 6px 0 0; font-size: 11px; letter-spacing: 0.22em; color: var(--ink-soft); }
   .r-tag { margin: 12px 0 0; font-size: 13px; line-height: 1.7; color: var(--pink-deep); }
