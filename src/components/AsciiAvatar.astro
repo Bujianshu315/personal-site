@@ -5,13 +5,14 @@
 // 手机等缺块字符字形的环境也不会错位乱码。底网 = 低透明度点阵。
 interface Props {
   prompt?: string;
+  /** 显式固定画布高度（px）。不传则自适应：高度跟随内容按字符比例计算，封顶 190。 */
   height?: number;
 }
-const { prompt = 'bujianshu@sz ~ $', height = 190 } = Astro.props;
+const { prompt = 'bujianshu@sz ~ $', height } = Astro.props;
 ---
 
 <div class="aa-wrap">
-  <canvas id="ascii-avatar" role="img" aria-label="ASCII 头像：由头像图转换的字符画" style={`height:${height}px`}></canvas>
+  <canvas id="ascii-avatar" role="img" aria-label="ASCII 头像：由头像图转换的字符画" style={height != null ? `height:${height}px` : undefined}></canvas>
   <div class="aa-scan" aria-hidden="true"></div>
   <div class="aa-sweep" aria-hidden="true"></div>
   <span class="aa-prompt">{prompt}</span>
@@ -31,7 +32,6 @@ const { prompt = 'bujianshu@sz ~ $', height = 190 } = Astro.props;
   #ascii-avatar {
     display: block;
     width: 100%;
-    height: 190px;
   }
   /* CRT 扫描线 */
   .aa-scan {
@@ -94,10 +94,15 @@ const { prompt = 'bujianshu@sz ~ $', height = 190 } = Astro.props;
 
     // 终端字符格宽高比约 1:1.9，保持比例居中，不随画布拉伸
     let w = 0, h = 0, cellW = 0, cellH = 0, ox = 0, oy = 0, bootT: number | null = null;
+    // 显式固定高度：只有模板传了 height prop 时内联样式才有值
+    const explicitH: number | null = canvas!.style.height ? parseInt(canvas!.style.height, 10) : null;
 
     function resize() {
       w = wrap!.clientWidth;
-      h = canvas!.clientHeight || 190;
+      // 自适应高度：按字符格 1:1.9 比例算出内容需要的画布高度。
+      // 封顶 190（原观感），下限 120。容器窄时内容不足 190 会露出黑边，故高度跟随内容。
+      h = explicitH != null ? explicitH : Math.max(120, Math.min(190, Math.round((rowsN * (w / cols) * 1.9))));
+      canvas!.style.height = h + 'px';
       canvas!.width = Math.max(1, Math.round(w * DPR));
       canvas!.height = Math.max(1, Math.round(h * DPR));
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
