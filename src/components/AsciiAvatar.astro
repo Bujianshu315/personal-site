@@ -5,12 +5,13 @@
 // 手机等缺块字符字形的环境也不会错位乱码。底网 = 低透明度点阵。
 interface Props {
   prompt?: string;
+  height?: number;
 }
-const { prompt = 'bujianshu@sz ~ $' } = Astro.props;
+const { prompt = 'bujianshu@sz ~ $', height = 190 } = Astro.props;
 ---
 
 <div class="aa-wrap">
-  <canvas id="ascii-avatar" role="img" aria-label="ASCII 头像：由头像图转换的字符画"></canvas>
+  <canvas id="ascii-avatar" role="img" aria-label="ASCII 头像：由头像图转换的字符画" style={`height:${height}px`}></canvas>
   <div class="aa-scan" aria-hidden="true"></div>
   <div class="aa-sweep" aria-hidden="true"></div>
   <span class="aa-prompt">{prompt}</span>
