@@ -1,0 +1,195 @@
+---
+import Base from '../layouts/Base.astro';
+import ScreenGrain from '../components/ScreenGrain.astro';
+import AsciiAvatar from '../components/AsciiAvatar.astro';
+---
+
+<Base title="场刊 · 简历 — Bujianshu" description="不见树的简历：项目经历、技术方向与教育背景。">
+  <nav class="resume-tabs" aria-label="简历板块">
+    <a href="#projects">项目</a>
+    <a href="#skills">技术</a>
+    <a href="#education">教育</a>
+    <a href="#contact">联系</a>
+    <button id="print-btn" type="button">打印带走</button>
+  </nav>
+
+  <main class="paper">
+    <!-- 场刊封面头 -->
+    <header class="r-head">
+      <div class="r-avatar"><AsciiAvatar /></div>
+      <div class="r-id">
+        <h1>不见树</h1>
+        <p class="r-en">BUJIANSHU · B-TV 场刊 · 简历卷</p>
+        <p class="r-tag">技术方向：Web 前端 / 数据可视化 / AI 辅助开发</p>
+      </div>
+    </header>
+
+    <!-- 项目经历 -->
+    <section id="projects" class="r-sec">
+      <h2 class="r-h2">┌─ $ projects —— 项目经历</h2>
+
+      <article class="r-item">
+        <div class="r-item-head">
+          <h3>个人放映室 B-TV（本站）</h3>
+          <span class="r-meta">独立开发 · 2026 至今</span>
+        </div>
+        <p class="r-sum">从零设计并开发的个人网站：作品集、博客与摄影的"CRT 放映厅"。全部 UI/交互/视觉由自己拍板，AI 辅助编码。</p>
+        <ul>
+          <li>Astro 静态站 + Cloudflare Pages 自动部署，push 即上线；性能预算内做到零框架运行时。</li>
+          <li>设计系统：薄荷绿/粉/深青三色纪律、全站直角、CRT 银幕隐喻贯穿（胶片导轨、快门换片、场刊）。</li>
+          <li>Canvas 2D 手写像素头像渲染器（fillRect 色块梯度 + 半调底网 + 扫描线噪点），零字体依赖。</li>
+          <li>工程化细节：像素字体 fontTools 子集化至 27KB 并 preload；深浅双主题变量化；og 分享卡自动生成。</li>
+          <li>交互：scroll-snap 场景换片 + 边缘检测嵌套滚动、灯箱大图、开场动画（respect reduced-motion）。</li>
+        </ul>
+      </article>
+
+      <article class="r-item">
+        <div class="r-item-head">
+          <h3>深圳摄影机位地图 shenzhen-photo-map</h3>
+          <span class="r-meta">独立开发 · 2026</span>
+        </div>
+        <p class="r-sum">给摄影师和模特找拍摄点的地图工具：40 个实拍机位、地铁可达性分析与路线排序。</p>
+        <ul>
+          <li>MapLibre GL 交互地图，深浅双主题样式同步切换。</li>
+          <li>地铁站点缓冲区分析（Python/GeoPandas）筛选"出站即达"机位；多机位一日拍摄路线排序。</li>
+          <li>数据结构化：机位类型/朝向/最佳时段标注，按光线条件筛选。</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- 技术方向 -->
+    <section id="skills" class="r-sec">
+      <h2 class="r-h2">┌─ $ skills —— 技术方向</h2>
+      <div class="skill-grid">
+        <div class="skill"><dt>Web 基础</dt><dd>HTML / CSS（Grid、变量主题、scroll-snap）/ JavaScript（ES2022）</dd></div>
+        <div class="skill"><dt>框架工具</dt><dd>Astro、Git/GitHub 协作流（PR/CI）、Cloudflare Pages 部署</dd></div>
+        <div class="skill"><dt>可视化</dt><dd>Canvas 2D 图形编程、MapLibre GL 地图、SVG 图标手绘</dd></div>
+        <div class="skill"><dt>数据脚本</dt><dd>Python：GeoPandas 地理分析、Pillow 批处理、fontTools 字体子集化</dd></div>
+        <div class="skill"><dt>AI 协作</dt><dd>AI 辅助开发全流程：需求拆解、代码评审、工程化落地（本站即成果）</dd></div>
+        <div class="skill"><dt>学习中</dt><dd>生成式视频、Flutter（Dart）跨端开发</dd></div>
+      </div>
+    </section>
+
+    <!-- 教育 -->
+    <section id="education" class="r-sec">
+      <h2 class="r-h2">┌─ $ education —— 教育背景</h2>
+      <article class="r-item">
+        <div class="r-item-head">
+          <h3><!-- 待补：学校名称 --></h3>
+          <span class="r-meta"><!-- 待补：时间 --></span>
+        </div>
+        <p class="r-sum"><!-- 待补：专业/方向，一句话说明 --></p>
+      </article>
+    </section>
+
+    <!-- 联系 -->
+    <section id="contact" class="r-sec">
+      <h2 class="r-h2">┌─ $ contact —— 放映厅出口</h2>
+      <div class="r-contact">
+        <a href="mailto:bujianshu315@outlook.com"><svg class="px-ico" viewBox="0 0 10 5" width="14" height="7" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="2" y="1" width="2" height="1"/><rect x="6" y="1" width="2" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="3" y="2" width="4" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="10" height="1"/></svg>bujianshu315@outlook.com</a>
+        <a href="https://github.com/Bujianshu315" target="_blank" rel="noopener"><svg class="px-ico" viewBox="0 0 8 8" width="13" height="13" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="2" height="1"/><rect x="6" y="0" width="2" height="1"/><rect x="0" y="1" width="8" height="1"/><rect x="0" y="2" width="8" height="1"/><rect x="0" y="3" width="8" height="1"/><rect x="0" y="4" width="2" height="1"/><rect x="3" y="4" width="2" height="1"/><rect x="6" y="4" width="2" height="1"/><rect x="0" y="5" width="8" height="1"/><rect x="1" y="6" width="6" height="1"/><rect x="2" y="7" width="4" height="1"/></svg>github.com/Bujianshu315</a>
+        <a href="https://www.douban.com/people/BuJianShu/" target="_blank" rel="noopener"><svg class="px-ico" viewBox="0 0 8 8" width="13" height="13" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="2" height="1"/><rect x="6" y="0" width="2" height="1"/><rect x="0" y="1" width="3" height="1"/><rect x="5" y="1" width="3" height="1"/><rect x="1" y="2" width="6" height="1"/><rect x="3" y="3" width="2" height="1"/><rect x="3" y="4" width="2" height="1"/><rect x="3" y="5" width="2" height="1"/><rect x="3" y="6" width="2" height="1"/><rect x="2" y="7" width="4" height="1"/></svg>豆瓣 · BuJianShu</a>
+      </div>
+      <p class="r-note">本页为公开版场刊：不含电话、微信与真实姓名，实体联系方式请邮件索取。</p>
+    </section>
+
+    <p class="r-foot">B-TV 场刊 · 简历卷 · <a href="/">← 返回放映厅</a></p>
+    <ScreenGrain />
+  </main>
+</Base>
+
+<style>
+  /* 简历页需要整页滚动（主页把滚动锁在银幕内部，这里解开） */
+  :global(html) { scroll-behavior: smooth; }
+  :global(body) { overflow: auto; }
+
+  /* 顶部板块跳转：像场刊目录 */
+  .resume-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--theater);
+    border-bottom: 1px solid var(--theater-line);
+  }
+  .resume-tabs a, .resume-tabs button {
+    font: inherit;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--mint-soft);
+    background: none;
+    border: 1px solid var(--theater-line);
+    padding: 6px 14px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .resume-tabs a:hover, .resume-tabs button:hover { color: var(--pink); border-color: var(--pink); }
+  .resume-tabs button { margin-left: 18px; }
+
+  /* 场刊纸面：银幕色，深色文字 */
+  .paper {
+    position: relative;
+    width: min(760px, calc(100% - 32px));
+    margin: 26px auto 40px;
+    padding: 44px 40px 36px;
+    background: linear-gradient(165deg, var(--screen-a), var(--screen-b));
+    color: var(--ink);
+    border: 1.5px solid var(--screen-edge);
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+  }
+
+  .r-head { display: flex; align-items: center; gap: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--frame); }
+  .r-avatar { width: 96px; flex: none; }
+  .r-id h1 { margin: 0; font-size: 30px; font-weight: 500; letter-spacing: 0.16em; }
+  .r-en { margin: 6px 0 0; font-size: 11px; letter-spacing: 0.22em; color: var(--ink-soft); }
+  .r-tag { margin: 12px 0 0; font-size: 13px; color: var(--pink-deep); }
+
+  .r-sec { margin-top: 30px; }
+  .r-h2 { margin: 0 0 14px; font-size: 14px; font-weight: 500; letter-spacing: 0.08em; color: var(--ink-soft); }
+
+  .r-item { padding: 14px 0 6px; border-top: 1px dashed var(--frame); }
+  .r-item:first-of-type { border-top: none; padding-top: 0; }
+  .r-item-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .r-item-head h3 { margin: 0; font-size: 15px; font-weight: 500; }
+  .r-meta { font-size: 11.5px; color: var(--ink-soft); white-space: nowrap; }
+  .r-sum { margin: 8px 0 0; font-size: 12.5px; line-height: 1.8; color: var(--ink-soft); }
+  .r-item ul { margin: 8px 0 0; padding-left: 1.2em; }
+  .r-item li { font-size: 12.5px; line-height: 1.85; }
+  .r-item li::marker { content: '▪ '; color: var(--pink-deep); }
+
+  .skill-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .skill { display: flex; gap: 10px; align-items: baseline; font-size: 12.5px; line-height: 1.7; }
+  .skill dt { flex: none; min-width: 9.5ch; color: var(--pink-deep); }
+  .skill dt::after { content: ':'; }
+  .skill dd { margin: 0; color: var(--ink); }
+
+  .r-contact { display: flex; flex-direction: column; gap: 8px; }
+  .r-contact a { display: inline-flex; align-items: center; gap: 8px; width: fit-content; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--frame); }
+  .r-contact a:hover { color: var(--pink-deep); text-decoration-color: var(--pink-deep); }
+  .px-ico { flex: none; fill: currentColor; }
+  .r-note { margin: 16px 0 0; font-size: 11px; color: var(--ink-soft); opacity: 0.85; }
+
+  .r-foot { margin: 34px 0 0; padding-top: 16px; border-top: 1px solid var(--frame); font-size: 11px; color: var(--ink-soft); text-align: center; }
+  .r-foot a { color: var(--pink-deep); text-decoration: none; }
+  .r-foot a:hover { text-decoration: underline; }
+
+  @media (max-width: 560px) {
+    .paper { padding: 28px 20px; }
+    .r-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+  }
+
+  /* 打印：白纸黑字，藏起导航与噪点 */
+  @media print {
+    .resume-tabs, :global(#screen-grain) { display: none !important; }
+    :global(body) { overflow: visible; background: #fff; }
+    .paper { margin: 0; width: 100%; box-shadow: none; border: none; background: #fff; color: #111; }
+  }
+</style>
+
+<script>
+  document.getElementById('print-btn')?.addEventListener('click', () => window.print());
+</script>
