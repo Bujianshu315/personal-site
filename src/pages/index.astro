@@ -60,8 +60,8 @@ import Intro from '../components/Intro.astro';
               </div>
             </div>
             <div class="site-notes">
-              <p class="sn-h">┌─ $ cat 站长的话.txt</p>
-              <p class="sn-body">这里是不见树的私人放映室：做过的事放上银幕循环放映，想说的话写进场刊。不追热点，更新随缘——想到了，就放一部。</p>
+              <p class="sn-h">┌─ 站长的话</p>
+              <p class="sn-body">这里是不见树的私人放映室，欢迎来到本站，随缘更新。</p>
             </div>
           </article>
 
@@ -72,17 +72,17 @@ import Intro from '../components/Intro.astro';
               <a class="card" href="https://github.com/Bujianshu315/shenzhen-photo-map" target="_blank" rel="noopener">
                 <h3>shenzhen-photo-map</h3>
                 <p>深圳摄影机位地图：40 个机位、地铁缓冲分析、路线排序、深浅主题。给摄影师和模特找拍摄点用的一张地图。</p>
-                <div class="c-foot"><span class="badge">HTML</span><span class="badge">MapLibre</span><span class="badge">★ 2</span></div>
+                <div class="c-foot"><span class="badge">HTML</span><span class="badge">MapLibre</span><span class="badge" data-repo="Bujianshu315/shenzhen-photo-map">★ 2</span></div>
               </a>
               <a class="card" href="https://github.com/Bujianshu315/personal-site" target="_blank" rel="noopener">
                 <h3>personal-site</h3>
                 <p>你正在看的这个放映室：Astro 手写的个人网站，CRT 银幕 + 胶片导轨 + 开场熄灯，部署在 Cloudflare Pages。</p>
-                <div class="c-foot"><span class="badge">Astro</span><span class="badge">★ 1</span></div>
+                <div class="c-foot"><span class="badge">Astro</span><span class="badge" data-repo="Bujianshu315/personal-site">★ 1</span></div>
               </a>
               <a class="card" href="https://github.com/Bujianshu315/OpenAlice" target="_blank" rel="noopener">
                 <h3>OpenAlice</h3>
                 <p>One-person Wall Street: an AI trading agent covering equities, crypto, FX and macro — from research and positions to risk control and exit. (fork)</p>
-                <div class="c-foot"><span class="badge">TypeScript</span><span class="badge">Fork</span></div>
+                <div class="c-foot"><span class="badge">TypeScript</span><span class="badge" data-repo="Bujianshu315/OpenAlice">★ --</span><span class="badge">Fork</span></div>
               </a>
               <div class="card ghost">
                 <h3>???</h3>
@@ -117,7 +117,7 @@ import Intro from '../components/Intro.astro';
 
               <div class="rs-grid">
                 <div class="rs-col">
-                  <p class="rs-h">┌─ $ projects —— 我做了什么</p>
+                  <p class="rs-h">┌─ projects —— 项目经历</p>
 
                   <article class="rs-item">
                     <div class="rs-item-head">
@@ -127,7 +127,7 @@ import Intro from '../components/Intro.astro';
                     <ul>
                       <li>MapLibre + turf.js：地铁沿线筛选、拍摄行程规划、搜索定位等 8 项功能，收录 40+ 个实拍机位。</li>
                       <li>数据生产管线：AI 检索 → 人工复核 → 地理编码校验；图片只外链不分发，规避版权风险。</li>
-                      <li>从想法、数据到上线一个人包办，GitHub Pages 上零成本运行至今。</li>
+                      <li>独立完成从想法、数据到上线的全部环节，GitHub Pages 上零成本运行至今。</li>
                     </ul>
                     <p class="rs-stack">MapLibre · turf.js · JavaScript · Python · GitHub Pages</p>
                   </article>
@@ -140,7 +140,7 @@ import Intro from '../components/Intro.astro';
                     <ul>
                       <li>Astro 静态站 + Cloudflare Pages，push 即上线，页面零框架运行时。</li>
                       <li>Canvas 2D 手写像素头像渲染器、fontTools 字体子集化到 27KB、双主题变量系统。</li>
-                      <li>快门换片、场景内嵌套滚动这些交互细节，全是自己一点一点调出来的。</li>
+                      <li>快门换片、场景内嵌套滚动等交互细节均为自行设计实现。</li>
                     </ul>
                     <p class="rs-stack">Astro · TypeScript · Canvas 2D · fontTools · Cloudflare Pages</p>
                   </article>
@@ -151,7 +151,7 @@ import Intro from '../components/Intro.astro';
                       <span class="rs-meta">日常脚本 · 2026</span>
                     </div>
                     <ul>
-                      <li>png2ascii：照片转字符画的命令行工具，本站头像就是它输出的。</li>
+                      <li>png2ascii：照片转字符画的命令行工具，本站头像即由其生成。</li>
                       <li>摄影作品批处理：PDF 提取 → 压缩 → 色彩一致性检查，一条命令上架。</li>
                     </ul>
                     <p class="rs-stack">Python · Pillow · fontTools · Node.js</p>
@@ -159,20 +159,19 @@ import Intro from '../components/Intro.astro';
                 </div>
 
                 <div class="rs-col">
-                  <p class="rs-h">┌─ $ stack —— 技术栈</p>
+                  <p class="rs-h">┌─ stack —— 技术栈</p>
                   <div class="rs-skills">
-                    <div class="rs-skill"><dt>Web 前端</dt><dd>HTML / CSS / JS、Astro 全流程、设计系统</dd></div>
-                    <div class="rs-skill"><dt>地图可视化</dt><dd>MapLibre GL、turf.js、Canvas 2D、SVG</dd></div>
-                    <div class="rs-skill"><dt>数据脚本</dt><dd>Python 批处理与质检、GeoPandas、SQL</dd></div>
-                    <div class="rs-skill"><dt>AI 辅助开发</dt><dd>需求拆解 → AI 生成 → 人工评审 → 工程化落地</dd></div>
-                    <div class="rs-skill"><dt>工程化</dt><dd>Git/GitHub（PR/CI）、Cloudflare Pages、脚本化</dd></div>
-                    <div class="rs-skill"><dt>顺手会的</dt><dd>Photoshop、达芬奇、剪映、墨刀、摄影</dd></div>
+                    <div class="rs-skill"><dt>语言</dt><dd>Python · JavaScript / TypeScript · SQL · HTML / CSS</dd></div>
+                    <div class="rs-skill"><dt>框架与库</dt><dd>Astro · Node.js · MapLibre GL · turf.js · Canvas 2D</dd></div>
+                    <div class="rs-skill"><dt>工具与平台</dt><dd>Git / GitHub（PR/CI）· Cloudflare Pages · GitHub Pages · 脚本化批处理</dd></div>
+                    <div class="rs-skill"><dt>AI 协作</dt><dd>Kimi · DeepSeek · Gemini · Codex · WorkBuddy</dd></div>
+                    <div class="rs-skill"><dt>设计与影像</dt><dd>Photoshop · 达芬奇 · 剪映 · 墨刀 · 摄影</dd></div>
                   </div>
 
-                  <p class="rs-h">┌─ $ path —— 履历</p>
+                  <p class="rs-h">┌─ path —— 履历</p>
                   <div class="rs-path">
-                    <p><span class="rs-when">2022 ~ 2026</span>湖南文理学院 · 地理信息科学本科。地图学、空间数据库、Python 是地基。</p>
-                    <p><span class="rs-when">2025</span>两段 GIS 数据实习：省级路网质检、政区图编校。跟海量数据较劲练出的耐心，全用在了上面这些项目里。</p>
+                    <p><span class="rs-when">2022 ~ 2026</span>湖南文理学院 · 地理信息科学本科，主修地图学、空间数据库、Python。</p>
+                    <p><span class="rs-when">2025</span>两段 GIS 数据实习：省级农村公路路网质检（派驻省公路事务中心独立审核 38 区县）、政区地图编校。</p>
                   </div>
                 </div>
               </div>
@@ -840,6 +839,16 @@ import Intro from '../components/Intro.astro';
 
   // 博客：暂为占位，等外链地址定了换成 <a> 即可
   document.getElementById('blog-link')?.addEventListener('click', () => showToast('博客外链筹备中 · 敬请期待'));
+
+  // GitHub star 实时同步：公开 API（60 次/小时/IP 足够），失败保持 HTML 里的手写值兜底
+  document.querySelectorAll<HTMLElement>('[data-repo]').forEach(async (el) => {
+    try {
+      const r = await fetch(`https://api.github.com/repos/${el.dataset.repo}`, { headers: { Accept: 'application/vnd.github+json' } });
+      if (!r.ok) return;
+      const d = await r.json();
+      if (typeof d.stargazers_count === 'number') el.textContent = '★ ' + d.stargazers_count;
+    } catch { /* 离线/被墙：保持兜底值 */ }
+  });
 
   // 桌面滚轮：直接驱动换片（触屏保留原生滚动 + scroll-snap）
   const fine = window.matchMedia('(pointer: fine)').matches;
