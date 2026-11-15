@@ -13,7 +13,7 @@ import Intro from '../components/Intro.astro';
     <!-- 左：场刊目录（银幕外的独立部件） -->
     <nav class="rail rail-scenes" aria-label="影片目录">
         <button class="rail-item active" data-goto="0" type="button">
-          <span class="ri-name">关于我</span>
+          <span class="ri-name">关于本站</span>
         </button>
         <button class="rail-item" data-goto="1" type="button">
           <span class="ri-name">参与项目</span>
@@ -39,30 +39,29 @@ import Intro from '../components/Intro.astro';
 
         <!-- 内容：滚动换片（scroll-snap） -->
         <section class="content" id="content" aria-label="银幕内容">
-          <!-- 01 关于我 -->
+          <!-- 01 关于本站 -->
           <article class="scene scene-intro" data-idx="0">
-            <h2 class="s-title">关于我</h2>
+            <h2 class="s-title">关于本站</h2>
             <div class="intro-grid">
               <div class="intro-avatar"><AsciiAvatar /></div>
-              <!-- neofetch 风：key: value 信息字段 + 色板 + 提示符（致敬 yetone 主页） -->
+              <!-- neofetch 风：本站档案 -->
               <div class="intro-kv neofetch">
                 <p class="kv nf-head"><span class="nf-user">bujianshu</span><span class="nf-dim">@</span><span class="nf-host">b-tv</span></p>
                 <div class="kv nf-sep" aria-hidden="true"></div>
-                <div class="kv"><dt>Name</dt><dd>Bujianshu / 不见树</dd></div>
-                <div class="kv"><dt>Born</dt><dd>2004 年出生 · 中国</dd></div>
-                <div class="kv"><dt>Interests</dt><dd>摄影 / 电影 / 游泳 / 动漫</dd></div>
-                <div class="kv"><dt>Learning</dt><dd>AI 编程 / 生成视频</dd></div>
-                <div class="kv"><dt>Motto</dt><dd>在世界上留下一些痕迹</dd></div>
-                <div class="kv kv-contact"><dt>Contact</dt><dd class="contact-list">
-                  <a href="mailto:bujianshu315@outlook.com"><svg class="px-ico" viewBox="0 0 10 5" width="14" height="7" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="2" y="1" width="2" height="1"/><rect x="6" y="1" width="2" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="3" y="2" width="4" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="10" height="1"/></svg>bujianshu315@outlook.com</a>
-                  <a href="https://github.com/Bujianshu315" target="_blank" rel="noopener"><svg class="px-ico" viewBox="0 0 8 8" width="13" height="13" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="2" height="1"/><rect x="6" y="0" width="2" height="1"/><rect x="0" y="1" width="8" height="1"/><rect x="0" y="2" width="8" height="1"/><rect x="0" y="3" width="8" height="1"/><rect x="0" y="4" width="2" height="1"/><rect x="3" y="4" width="2" height="1"/><rect x="6" y="4" width="2" height="1"/><rect x="0" y="5" width="8" height="1"/><rect x="1" y="6" width="6" height="1"/><rect x="2" y="7" width="4" height="1"/></svg>GitHub</a>
-                  <a href="https://www.douban.com/people/BuJianShu/" target="_blank" rel="noopener"><svg class="px-ico" viewBox="0 0 8 8" width="13" height="13" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="2" height="1"/><rect x="6" y="0" width="2" height="1"/><rect x="0" y="1" width="3" height="1"/><rect x="5" y="1" width="3" height="1"/><rect x="1" y="2" width="6" height="1"/><rect x="3" y="3" width="2" height="1"/><rect x="3" y="4" width="2" height="1"/><rect x="3" y="5" width="2" height="1"/><rect x="3" y="6" width="2" height="1"/><rect x="2" y="7" width="4" height="1"/></svg>豆瓣</a>
-                </dd></div>
+                <div class="kv"><dt>Site</dt><dd>B-TV · 个人放映室</dd></div>
+                <div class="kv"><dt>Opened</dt><dd>2026 年 11 月开馆</dd></div>
+                <div class="kv"><dt>Stack</dt><dd>Astro · Cloudflare Pages</dd></div>
+                <div class="kv"><dt>Design</dt><dd>CRT 银幕 · 全站直角 · 三色纪律</dd></div>
+                <div class="kv"><dt>Now</dt><dd>四卷循环放映 · 随缘更新</dd></div>
                 <div class="kv nf-palette" aria-hidden="true">
                   <i style="background:#0e141a"></i><i style="background:#121a20"></i><i style="background:#1f5058"></i><i style="background:#2e5a62"></i><i style="background:#4e8f86"></i><i style="background:#9ad2c3"></i><i style="background:#ee6fa4"></i><i style="background:#d84e8e"></i>
                   <i style="background:#e7ebee"></i><i style="background:#c7d0d6"></i><i style="background:#7a98a1"></i><i style="background:#5b9a90"></i><i style="background:#b7e3d8"></i><i style="background:#f3a8c6"></i><i style="background:#e0619a"></i><i style="background:#b63a78"></i>
                 </div>
               </div>
+            </div>
+            <div class="site-notes">
+              <p class="sn-h">┌─ $ cat 站长的话.txt</p>
+              <p class="sn-body">这里是不见树的私人放映室：做过的事放上银幕循环放映，想说的话写进场刊。不追热点，更新随缘——想到了，就放一部。</p>
             </div>
           </article>
 
@@ -100,7 +99,7 @@ import Intro from '../components/Intro.astro';
               <header class="rs-head">
                 <div class="rs-id">
                   <h3>不见树 <span class="rs-en">BUJIANSHU</span></h3>
-                  <p class="rs-tag">Web GIS / 数据工具 / AI 辅助开发 —— 把数据和地图做成好用的产品（base 深圳 · 2026 届）</p>
+                  <p class="rs-tag">Web GIS / 数据工具 / AI 辅助开发 · base 深圳 · 2026 届</p>
                 </div>
                 <div class="rs-links">
                   <a href="mailto:bujianshu315@outlook.com"><svg class="px-ico" viewBox="0 0 10 5" width="14" height="7" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="2" y="1" width="2" height="1"/><rect x="6" y="1" width="2" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="3" y="2" width="4" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="10" height="1"/></svg>邮箱</a>
@@ -108,6 +107,13 @@ import Intro from '../components/Intro.astro';
                   <a href="https://www.douban.com/people/BuJianShu/" target="_blank" rel="noopener"><svg class="px-ico" viewBox="0 0 8 8" width="13" height="13" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="2" height="1"/><rect x="6" y="0" width="2" height="1"/><rect x="0" y="1" width="3" height="1"/><rect x="5" y="1" width="3" height="1"/><rect x="1" y="2" width="6" height="1"/><rect x="3" y="3" width="2" height="1"/><rect x="3" y="4" width="2" height="1"/><rect x="3" y="5" width="2" height="1"/><rect x="3" y="6" width="2" height="1"/><rect x="2" y="7" width="4" height="1"/></svg>豆瓣</a>
                 </div>
               </header>
+
+              <p class="rs-profile">
+                <span>2004 年生 · 中国</span>
+                <span>摄影 / 电影 / 游泳 / 动漫</span>
+                <span>正在学：AI 编程、生成视频</span>
+                <span>Motto：在世界上留下一些痕迹</span>
+              </p>
 
               <div class="rs-grid">
                 <div class="rs-col">
@@ -119,9 +125,9 @@ import Intro from '../components/Intro.astro';
                       <span class="rs-meta">独立开发 · 2026.08 至今 · MIT 开源</span>
                     </div>
                     <ul>
-                      <li>MapLibre + turf.js：地铁沿线筛选、拍摄行程规划、搜索定位等 8 项功能，40+ 精选机位。</li>
-                      <li>自建「AI 检索 → 人工复核 → 地理编码校验」数据管线；「只外链不分发」的合规设计。</li>
-                      <li>一个人完成需求定义、数据生产到开发部署的完整闭环，GitHub Pages 零后端运行。</li>
+                      <li>MapLibre + turf.js：地铁沿线筛选、拍摄行程规划、搜索定位等 8 项功能，收录 40+ 个实拍机位。</li>
+                      <li>数据生产管线：AI 检索 → 人工复核 → 地理编码校验；图片只外链不分发，规避版权风险。</li>
+                      <li>从想法、数据到上线一个人包办，GitHub Pages 上零成本运行至今。</li>
                     </ul>
                     <p class="rs-stack">MapLibre · turf.js · JavaScript · Python · GitHub Pages</p>
                   </article>
@@ -132,9 +138,9 @@ import Intro from '../components/Intro.astro';
                       <span class="rs-meta">独立开发 · 2026 至今 · 开源</span>
                     </div>
                     <ul>
-                      <li>Astro 静态站 + Cloudflare Pages，push 即上线，零框架运行时。</li>
-                      <li>Canvas 2D 手写像素头像渲染器；fontTools 字体子集化到 27KB；双主题变量系统。</li>
-                      <li>scroll-snap 场景换片 + 边缘检测嵌套滚动这类"手搓"交互细节。</li>
+                      <li>Astro 静态站 + Cloudflare Pages，push 即上线，页面零框架运行时。</li>
+                      <li>Canvas 2D 手写像素头像渲染器、fontTools 字体子集化到 27KB、双主题变量系统。</li>
+                      <li>快门换片、场景内嵌套滚动这些交互细节，全是自己一点一点调出来的。</li>
                     </ul>
                     <p class="rs-stack">Astro · TypeScript · Canvas 2D · fontTools · Cloudflare Pages</p>
                   </article>
@@ -145,8 +151,8 @@ import Intro from '../components/Intro.astro';
                       <span class="rs-meta">日常脚本 · 2026</span>
                     </div>
                     <ul>
-                      <li>png2ascii：亮度直方图拉伸 + 三段映射的照片转字符画工具（本站头像即产物）。</li>
-                      <li>摄影作品批处理管线：PDF 提取 → PIL 压缩 → 色彩一致性检查，一条命令上架。</li>
+                      <li>png2ascii：照片转字符画的命令行工具，本站头像就是它输出的。</li>
+                      <li>摄影作品批处理：PDF 提取 → 压缩 → 色彩一致性检查，一条命令上架。</li>
                     </ul>
                     <p class="rs-stack">Python · Pillow · fontTools · Node.js</p>
                   </article>
@@ -163,10 +169,10 @@ import Intro from '../components/Intro.astro';
                     <div class="rs-skill"><dt>顺手会的</dt><dd>Photoshop、达芬奇、剪映、墨刀、摄影</dd></div>
                   </div>
 
-                  <p class="rs-h">┌─ $ path —— 履历，一句话版</p>
+                  <p class="rs-h">┌─ $ path —— 履历</p>
                   <div class="rs-path">
-                    <p><span class="rs-when">2022 ~ 2026</span>湖南文理学院 · 地理信息科学本科——地图学、空间数据库、Python 是地基。</p>
-                    <p><span class="rs-when">2025</span>两段 GIS 数据实习（省级路网质检 · 政区图编校）——练出严谨，也确认了真正想做的是把数据和地图做成好用的产品。</p>
+                    <p><span class="rs-when">2022 ~ 2026</span>湖南文理学院 · 地理信息科学本科。地图学、空间数据库、Python 是地基。</p>
+                    <p><span class="rs-when">2025</span>两段 GIS 数据实习：省级路网质检、政区图编校。跟海量数据较劲练出的耐心，全用在了上面这些项目里。</p>
                   </div>
                 </div>
               </div>
@@ -458,7 +464,6 @@ import Intro from '../components/Intro.astro';
     gap: 30px;
     margin-top: 24px;
     align-items: flex-start;
-    flex: 1;
   }
   .intro-avatar { width: min(300px, 34%); flex-shrink: 0; }
   /* 正方形画框，ASCII 头像由组件自动居中 */
@@ -532,6 +537,11 @@ import Intro from '../components/Intro.astro';
   .post:hover h3 { color: var(--pink-deep); }
   .post .meta { margin-left: auto; font-size: 10.5px; color: var(--ink-soft); }
 
+  /* 01 关于本站：站长的话 */
+  .site-notes { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--frame); max-width: 720px; }
+  .sn-h { margin: 0; font-size: 11px; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .sn-body { margin: 8px 0 0; font-size: 13px; line-height: 1.9; color: var(--ink); }
+
   /* 03 简历：场刊搬上银幕，双栏排版（左项目 / 右技术栈+履历） */
   .resume-scene { margin-top: 6px; max-width: 1080px; }
   .rs-head {
@@ -549,6 +559,10 @@ import Intro from '../components/Intro.astro';
   .rs-links { display: flex; gap: 16px; flex-wrap: wrap; }
   .rs-links a { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--frame); }
   .rs-links a:hover { color: var(--pink-deep); text-decoration-color: var(--pink-deep); }
+
+  /* 个人信息条：从「关于我」浓缩搬来的档案 */
+  .rs-profile { display: flex; flex-wrap: wrap; gap: 6px 0; margin: 12px 0 0; padding-bottom: 12px; border-bottom: 1px dashed var(--frame); font-size: 12px; color: var(--ink-soft); }
+  .rs-profile span + span::before { content: '·'; margin: 0 1.2ch; color: var(--pink-deep); }
 
   .rs-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 26px; margin-top: 16px; align-items: start; }
   .rs-h { margin: 0 0 4px; font-size: 11px; letter-spacing: 0.08em; color: var(--ink-soft); }
