@@ -18,9 +18,9 @@ import Intro from '../components/Intro.astro';
         <button class="rail-item" data-goto="1" type="button">
           <span class="ri-name">参与项目</span>
         </button>
-        <a class="rail-item" href="/resume">
+        <button class="rail-item" data-goto="2" type="button">
           <span class="ri-name">简历</span>
-        </a>
+        </button>
         <button class="rail-item" data-goto="3" type="button">
           <span class="ri-name">摄影作品</span>
         </button>
@@ -93,26 +93,85 @@ import Intro from '../components/Intro.astro';
             </div>
           </article>
 
-          <!-- 03 博客 -->
+          <!-- 03 简历（场刊纸面搬上银幕） -->
           <article class="scene" data-idx="2">
-            <h2 class="s-title">博客</h2>
-            <div class="posts">
-              <!-- 占位文章：等博客系统搭好后从 content/ 目录自动生成 -->
-              <button class="post" type="button">
-                <time>2026-11-09</time>
-                <h3>为什么我又开始写博客了</h3>
-                <span class="meta">草稿</span>
-              </button>
-              <button class="post" type="button">
-                <time>2026-11-01</time>
-                <h3>深圳机位地图：从一个想法到上线</h3>
-                <span class="meta">草稿</span>
-              </button>
-              <button class="post" type="button">
-                <time>2026-10-20</time>
-                <h3>AI 辅助开发一个月，我学会了什么</h3>
-                <span class="meta">草稿</span>
-              </button>
+            <h2 class="s-title">简历</h2>
+            <div class="resume-scene">
+              <header class="rs-head">
+                <div class="rs-id">
+                  <h3>不见树 <span class="rs-en">BUJIANSHU</span></h3>
+                  <p class="rs-tag">Web GIS / 数据工具 / AI 辅助开发 —— 把数据和地图做成好用的产品（base 深圳 · 2026 届）</p>
+                </div>
+                <div class="rs-links">
+                  <a href="mailto:bujianshu315@outlook.com"><svg class="px-ico" viewBox="0 0 10 5" width="14" height="7" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="2" y="1" width="2" height="1"/><rect x="6" y="1" width="2" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="3" y="2" width="4" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="10" height="1"/></svg>邮箱</a>
+                  <a href="https://github.com/Bujianshu315" target="_blank" rel="noopener"><svg class="px-ico" viewBox="0 0 8 8" width="13" height="13" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="2" height="1"/><rect x="6" y="0" width="2" height="1"/><rect x="0" y="1" width="8" height="1"/><rect x="0" y="2" width="8" height="1"/><rect x="0" y="3" width="8" height="1"/><rect x="0" y="4" width="2" height="1"/><rect x="3" y="4" width="2" height="1"/><rect x="6" y="4" width="2" height="1"/><rect x="0" y="5" width="8" height="1"/><rect x="1" y="6" width="6" height="1"/><rect x="2" y="7" width="4" height="1"/></svg>GitHub</a>
+                  <a href="https://www.douban.com/people/BuJianShu/" target="_blank" rel="noopener"><svg class="px-ico" viewBox="0 0 8 8" width="13" height="13" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="2" height="1"/><rect x="6" y="0" width="2" height="1"/><rect x="0" y="1" width="3" height="1"/><rect x="5" y="1" width="3" height="1"/><rect x="1" y="2" width="6" height="1"/><rect x="3" y="3" width="2" height="1"/><rect x="3" y="4" width="2" height="1"/><rect x="3" y="5" width="2" height="1"/><rect x="3" y="6" width="2" height="1"/><rect x="2" y="7" width="4" height="1"/></svg>豆瓣</a>
+                </div>
+              </header>
+
+              <div class="rs-grid">
+                <div class="rs-col">
+                  <p class="rs-h">┌─ $ projects —— 我做了什么</p>
+
+                  <article class="rs-item">
+                    <div class="rs-item-head">
+                      <h4>深圳拍摄点地图 <a class="rs-ext" href="https://bujianshu315.github.io/shenzhen-photo-map" target="_blank" rel="noopener">在线演示 ↗</a></h4>
+                      <span class="rs-meta">独立开发 · 2026.08 至今 · MIT 开源</span>
+                    </div>
+                    <ul>
+                      <li>MapLibre + turf.js：地铁沿线筛选、拍摄行程规划、搜索定位等 8 项功能，40+ 精选机位。</li>
+                      <li>自建「AI 检索 → 人工复核 → 地理编码校验」数据管线；「只外链不分发」的合规设计。</li>
+                      <li>一个人完成需求定义、数据生产到开发部署的完整闭环，GitHub Pages 零后端运行。</li>
+                    </ul>
+                    <p class="rs-stack">MapLibre · turf.js · JavaScript · Python · GitHub Pages</p>
+                  </article>
+
+                  <article class="rs-item">
+                    <div class="rs-item-head">
+                      <h4>个人放映室 B-TV <a class="rs-ext" href="/" >就是本站 ↗</a></h4>
+                      <span class="rs-meta">独立开发 · 2026 至今 · 开源</span>
+                    </div>
+                    <ul>
+                      <li>Astro 静态站 + Cloudflare Pages，push 即上线，零框架运行时。</li>
+                      <li>Canvas 2D 手写像素头像渲染器；fontTools 字体子集化到 27KB；双主题变量系统。</li>
+                      <li>scroll-snap 场景换片 + 边缘检测嵌套滚动这类"手搓"交互细节。</li>
+                    </ul>
+                    <p class="rs-stack">Astro · TypeScript · Canvas 2D · fontTools · Cloudflare Pages</p>
+                  </article>
+
+                  <article class="rs-item">
+                    <div class="rs-item-head">
+                      <h4>随身工具链</h4>
+                      <span class="rs-meta">日常脚本 · 2026</span>
+                    </div>
+                    <ul>
+                      <li>png2ascii：亮度直方图拉伸 + 三段映射的照片转字符画工具（本站头像即产物）。</li>
+                      <li>摄影作品批处理管线：PDF 提取 → PIL 压缩 → 色彩一致性检查，一条命令上架。</li>
+                    </ul>
+                    <p class="rs-stack">Python · Pillow · fontTools · Node.js</p>
+                  </article>
+                </div>
+
+                <div class="rs-col">
+                  <p class="rs-h">┌─ $ stack —— 技术栈</p>
+                  <div class="rs-skills">
+                    <div class="rs-skill"><dt>Web 前端</dt><dd>HTML / CSS / JS、Astro 全流程、设计系统</dd></div>
+                    <div class="rs-skill"><dt>地图可视化</dt><dd>MapLibre GL、turf.js、Canvas 2D、SVG</dd></div>
+                    <div class="rs-skill"><dt>数据脚本</dt><dd>Python 批处理与质检、GeoPandas、SQL</dd></div>
+                    <div class="rs-skill"><dt>AI 辅助开发</dt><dd>需求拆解 → AI 生成 → 人工评审 → 工程化落地</dd></div>
+                    <div class="rs-skill"><dt>工程化</dt><dd>Git/GitHub（PR/CI）、Cloudflare Pages、脚本化</dd></div>
+                    <div class="rs-skill"><dt>顺手会的</dt><dd>Photoshop、达芬奇、剪映、墨刀、摄影</dd></div>
+                  </div>
+
+                  <p class="rs-h">┌─ $ path —— 履历，一句话版</p>
+                  <div class="rs-path">
+                    <p><span class="rs-when">2022 ~ 2026</span>湖南文理学院 · 地理信息科学本科——地图学、空间数据库、Python 是地基。</p>
+                    <p><span class="rs-when">2025</span>两段 GIS 数据实习（省级路网质检 · 政区图编校）——练出严谨，也确认了真正想做的是把数据和地图做成好用的产品。</p>
+                  </div>
+                </div>
+              </div>
+
+              <p class="rs-note">公开版场刊：不含电话、微信与真实姓名，实体联系方式请邮件索取。</p>
             </div>
           </article>
 
@@ -164,7 +223,7 @@ import Intro from '../components/Intro.astro';
       <button class="rail-item" id="map-toggle" type="button">
         <span class="ri-name">旅行地图</span>
       </button>
-      <button class="rail-item" data-goto="2" type="button">
+      <button class="rail-item" id="blog-link" type="button">
         <span class="ri-name">博客</span>
       </button>
     </nav>
@@ -473,6 +532,53 @@ import Intro from '../components/Intro.astro';
   .post:hover h3 { color: var(--pink-deep); }
   .post .meta { margin-left: auto; font-size: 10.5px; color: var(--ink-soft); }
 
+  /* 03 简历：场刊搬上银幕，双栏排版（左项目 / 右技术栈+履历） */
+  .resume-scene { margin-top: 6px; max-width: 1080px; }
+  .rs-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--frame);
+  }
+  .rs-id h3 { margin: 0; font-size: 20px; font-weight: 500; letter-spacing: 0.14em; color: var(--ink); }
+  .rs-en { margin-left: 10px; font-size: 10px; letter-spacing: 0.22em; color: var(--ink-soft); font-weight: 400; }
+  .rs-tag { margin: 6px 0 0; font-size: 12px; line-height: 1.7; color: var(--pink-deep); }
+  .rs-links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .rs-links a { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--frame); }
+  .rs-links a:hover { color: var(--pink-deep); text-decoration-color: var(--pink-deep); }
+
+  .rs-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 26px; margin-top: 16px; align-items: start; }
+  .rs-h { margin: 0 0 4px; font-size: 11px; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .rs-col + .rs-col .rs-h:first-child { margin-top: 0; }
+
+  .rs-item { padding: 10px 0 8px; border-top: 1px dashed var(--frame); }
+  .rs-item:first-of-type { border-top: none; padding-top: 2px; }
+  .rs-item-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .rs-item-head h4 { margin: 0; font-size: 13.5px; font-weight: 500; color: var(--ink); }
+  .rs-meta { font-size: 10.5px; color: var(--ink-soft); white-space: nowrap; }
+  .rs-ext { font-size: 10.5px; font-weight: 400; color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--frame); margin-left: 6px; }
+  .rs-ext:hover { color: var(--pink-deep); }
+  .rs-item ul { margin: 6px 0 0; padding-left: 1.2em; }
+  .rs-item li { font-size: 12px; line-height: 1.75; color: var(--ink); }
+  .rs-item li::marker { content: '▪ '; color: var(--pink-deep); }
+  .rs-stack { margin: 6px 0 0; font-size: 10.5px; color: var(--ink-soft); }
+
+  .rs-skills { display: grid; gap: 6px; margin-bottom: 20px; }
+  .rs-skill { display: flex; gap: 10px; align-items: baseline; font-size: 12px; line-height: 1.65; }
+  .rs-skill dt { flex: none; min-width: 9.5ch; color: var(--pink-deep); }
+  .rs-skill dt::after { content: ':'; }
+  .rs-skill dd { margin: 0; color: var(--ink); }
+  .rs-path p { margin: 8px 0 0; font-size: 12px; line-height: 1.8; color: var(--ink); }
+  .rs-when { display: inline-block; min-width: 11ch; margin-right: 1ch; color: var(--pink-deep); }
+  .rs-note { margin: 18px 0 0; font-size: 10.5px; color: var(--ink-soft); opacity: 0.85; }
+
+  @media (max-width: 900px) {
+    .rs-grid { grid-template-columns: 1fr; gap: 18px; }
+  }
+
   /* 04 摄影作品：底片档案格——一张一格，点击放大 */
   .ph-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-top: 22px; }
   .ph {
@@ -667,7 +773,7 @@ import Intro from '../components/Intro.astro';
     if (i === active) return;
     active = i;
     railItems.forEach((el) => {
-      // 只有带 data-goto 的目录项才参与场景高亮（简历是外链，不占场景序号）
+      // 只有带 data-goto 的目录项才参与场景高亮
       const on = el.dataset.goto !== undefined && Number(el.dataset.goto) === i;
       el.classList.toggle('active', on);
       if (el.dataset.goto !== undefined) el.setAttribute('aria-current', on ? 'true' : 'false');
@@ -717,6 +823,9 @@ import Intro from '../components/Intro.astro';
   document.querySelectorAll<HTMLElement>('[data-goto]').forEach((el) => {
     el.addEventListener('click', () => goTo(Number(el.dataset.goto)));
   });
+
+  // 博客：暂为占位，等外链地址定了换成 <a> 即可
+  document.getElementById('blog-link')?.addEventListener('click', () => showToast('博客外链筹备中 · 敬请期待'));
 
   // 桌面滚轮：直接驱动换片（触屏保留原生滚动 + scroll-snap）
   const fine = window.matchMedia('(pointer: fine)').matches;
