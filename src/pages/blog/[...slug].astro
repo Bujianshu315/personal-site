@@ -62,7 +62,7 @@ const fmt = (d: Date) =>
   .rd-nav {
     display: flex;
     justify-content: space-between;
-    max-width: 860px;
+    width: calc(100% - 156px);   /* 与主站银幕等宽 */
     margin: 18px auto 0;
     padding: 0 16px;
   }
@@ -70,9 +70,9 @@ const fmt = (d: Date) =>
   .rd-nav a:hover { color: var(--pink); }
 
   .paper {
-    width: min(860px, calc(100% - 32px));
+    width: calc(100% - 156px);   /* 与主站银幕等宽 */
     margin: 26px auto 48px;
-    padding: 44px 44px 36px;
+    padding: 44px 48px 36px;
     background: linear-gradient(165deg, var(--screen-a), var(--screen-b));
     color: var(--ink);
     border: 1.5px solid var(--screen-edge);
@@ -92,7 +92,8 @@ const fmt = (d: Date) =>
   .rd-tags { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
   .tag { font-size: 10.5px; padding: 2px 8px; border: 1px solid var(--frame); color: var(--ink-soft); }
 
-  /* 正文排版（Markdown 渲染产物，需 :global） */
+  /* 正文排版（Markdown 渲染产物，需 :global）；纸面等宽银幕，正文限宽居中保可读性 */
+  article { max-width: 1100px; margin: 0 auto; }
   .prose { margin-top: 8px; font-family: var(--font-read); }
   .prose :global(p) { margin: 1em 0 0; font-size: 15px; line-height: 1.95; }
   .prose :global(h2) {
@@ -141,7 +142,8 @@ const fmt = (d: Date) =>
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-    margin: 34px 0 0;
+    max-width: 1100px;
+    margin: 34px auto 0;
     padding-top: 18px;
     border-top: 1px solid var(--frame);
   }
@@ -149,8 +151,9 @@ const fmt = (d: Date) =>
   .rd-foot a:hover { text-decoration: underline; }
   .rd-end { font-size: 11px; color: var(--ink-soft); }
 
-  @media (max-width: 560px) {
-    .paper { padding: 28px 20px; }
+  @media (max-width: 760px) {
+    .paper { width: calc(100% - 32px); padding: 28px 20px; }
+    .rd-nav { width: calc(100% - 32px); }
     .rd-head h1 { font-size: 22px; }
   }
 </style>

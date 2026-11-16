@@ -70,7 +70,7 @@ const fmt = (d: Date) =>
   .bk-nav {
     display: flex;
     justify-content: space-between;
-    max-width: 860px;
+    width: calc(100% - 156px);   /* 与主站银幕等宽（视口减两侧导轨） */
     margin: 18px auto 0;
     padding: 0 16px;
   }
@@ -84,9 +84,9 @@ const fmt = (d: Date) =>
 
   /* 场刊纸面 */
   .paper {
-    width: min(860px, calc(100% - 32px));
+    width: calc(100% - 156px);   /* 与主站银幕等宽 */
     margin: 26px auto 48px;
-    padding: 44px 40px 36px;
+    padding: 44px 48px 36px;
     background: linear-gradient(165deg, var(--screen-a), var(--screen-b));
     color: var(--ink);
     border: 1.5px solid var(--screen-edge);
@@ -186,8 +186,9 @@ const fmt = (d: Date) =>
   @media (max-width: 900px) {
     .post-grid { grid-template-columns: repeat(2, 1fr); }
   }
-  @media (max-width: 600px) {
-    .paper { padding: 28px 20px; }
+  @media (max-width: 760px) {
+    .paper { width: calc(100% - 32px); padding: 28px 20px; }
+    .bk-nav { width: calc(100% - 32px); }
     .post-grid { grid-template-columns: 1fr; gap: 0; }
     .post-cell { border-bottom: 1px dashed var(--frame); }
     .post-feature h2 { font-size: 20px; }
