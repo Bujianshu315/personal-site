@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const fmt = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+---
+
+<Base title={`${post.data.title} — Bujianshu`} description={post.data.description}>
+  <nav class="rd-nav">
+    <a href="/blog">← 场刊目录</a>
+    <a href="/">放映厅</a>
+  </nav>
+
+  <main class="paper">
+    <article>
+      <header class="rd-head">
+        <p class="rd-kicker">┌─ 场刊 · {fmt(post.data.pubDate)}</p>
+        <h1>{post.data.title}</h1>
+        {post.data.tags.length > 0 && (
+          <div class="rd-tags">
+            {post.data.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        )}
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+
+    <footer class="rd-foot">
+      <a href="/blog">← 返回场刊目录</a>
+      <span class="rd-end">■ 全文完 · 感谢观看</span>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  :global(html) { scroll-behavior: smooth; }
+  :global(body) { overflow: auto; }
+
+  /* 阅读正文字体：清晰优先，标题正文用它；导航 Chrome 仍是像素字 */
+  .paper {
+    --font-read: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Source Han Sans SC', sans-serif;
+  }
+
+  .rd-nav {
+    display: flex;
+    justify-content: space-between;
+    max-width: 720px;
+    margin: 18px auto 0;
+    padding: 0 16px;
+  }
+  .rd-nav a { font-size: 12px; letter-spacing: 0.1em; color: var(--mint-soft); text-decoration: none; }
+  .rd-nav a:hover { color: var(--pink); }
+
+  .paper {
+    width: min(720px, calc(100% - 32px));
+    margin: 26px auto 48px;
+    padding: 44px 44px 36px;
+    background: linear-gradient(165deg, var(--screen-a), var(--screen-b));
+    color: var(--ink);
+    border: 1.5px solid var(--screen-edge);
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.35);
+  }
+
+  .rd-head { padding-bottom: 22px; border-bottom: 1px solid var(--frame); }
+  .rd-kicker { margin: 0; font-size: 11px; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .rd-head h1 {
+    margin: 12px 0 0;
+    font-family: var(--font-read);
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+  }
+  .rd-tags { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+  .tag { font-size: 10.5px; padding: 2px 8px; border: 1px solid var(--frame); color: var(--ink-soft); }
+
+  /* 正文排版（Markdown 渲染产物，需 :global） */
+  .prose { margin-top: 8px; font-family: var(--font-read); }
+  .prose :global(p) { margin: 1em 0 0; font-size: 15px; line-height: 1.95; }
+  .prose :global(h2) {
+    margin: 2em 0 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.5;
+    padding-top: 0.4em;
+  }
+  .prose :global(h3) { margin: 1.6em 0 0; font-size: 16px; font-weight: 700; }
+  .prose :global(ol), .prose :global(ul) { margin: 1em 0 0; padding-left: 1.6em; }
+  .prose :global(li) { margin: 0.5em 0 0; font-size: 15px; line-height: 1.9; }
+  .prose :global(li::marker) { color: var(--pink-deep); }
+  .prose :global(strong) { font-weight: 700; }
+  .prose :global(a) {
+    color: var(--pink-deep);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--pink-deep) 40%, transparent);
+  }
+  .prose :global(blockquote) {
+    margin: 1.4em 0 0;
+    padding: 2px 0 2px 14px;
+    border-left: 3px solid var(--pink-deep);
+    color: var(--ink-soft);
+  }
+  .prose :global(code) {
+    font-size: 13px;
+    padding: 1px 6px;
+    background: color-mix(in srgb, var(--ink) 8%, transparent);
+    border: 1px solid var(--frame);
+  }
+  .prose :global(pre) {
+    margin: 1.4em 0 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    background: color-mix(in srgb, var(--ink) 8%, transparent);
+    border: 1px solid var(--frame);
+  }
+  .prose :global(pre code) { padding: 0; background: none; border: none; }
+  .prose :global(hr) { margin: 2em 0 0; border: none; border-top: 1px dashed var(--frame); }
+
+  .rd-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 34px 0 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--frame);
+  }
+  .rd-foot a { font-size: 12px; letter-spacing: 0.1em; color: var(--pink-deep); text-decoration: none; }
+  .rd-foot a:hover { text-decoration: underline; }
+  .rd-end { font-size: 11px; color: var(--ink-soft); }
+
+  @media (max-width: 560px) {
+    .paper { padding: 28px 20px; }
+    .rd-head h1 { font-size: 22px; }
+  }
+</style>

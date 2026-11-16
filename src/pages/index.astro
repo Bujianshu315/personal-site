@@ -86,7 +86,7 @@ import Intro from '../components/Intro.astro';
               </a>
               <div class="card ghost">
                 <h3>???</h3>
-                <p>下一部片子还在拍。这个位置留给生成视频实验和正在写的博客系统。</p>
+                <p>下一部片子还在拍。这个位置留给生成视频实验和还没想好的东西。</p>
                 <div class="c-foot"><span class="badge">拍摄中</span></div>
               </div>
             </div>
@@ -228,9 +228,9 @@ import Intro from '../components/Intro.astro';
       <button class="rail-item" id="map-toggle" type="button">
         <span class="ri-name">旅行地图</span>
       </button>
-      <button class="rail-item" id="blog-link" type="button">
+      <a class="rail-item" href="/blog">
         <span class="ri-name">博客</span>
-      </button>
+      </a>
     </nav>
 
     <!-- 底部：版权与场刊信息 -->
@@ -836,9 +836,6 @@ import Intro from '../components/Intro.astro';
   document.querySelectorAll<HTMLElement>('[data-goto]').forEach((el) => {
     el.addEventListener('click', () => goTo(Number(el.dataset.goto)));
   });
-
-  // 博客：暂为占位，等外链地址定了换成 <a> 即可
-  document.getElementById('blog-link')?.addEventListener('click', () => showToast('博客外链筹备中 · 敬请期待'));
 
   // GitHub star 实时同步：公开 API（60 次/小时/IP 足够），失败保持 HTML 里的手写值兜底
   document.querySelectorAll<HTMLElement>('[data-repo]').forEach(async (el) => {
