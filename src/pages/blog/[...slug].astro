@@ -71,6 +71,7 @@ const fmt = (d: Date) =>
 
   .paper {
     width: calc(100% - 156px);   /* 与主站银幕等宽 */
+    min-height: calc(100dvh - 74px);  /* 与主站银幕等高 */
     margin: 26px auto 48px;
     padding: 44px 48px 36px;
     background: linear-gradient(165deg, var(--screen-a), var(--screen-b));
@@ -95,17 +96,17 @@ const fmt = (d: Date) =>
   /* 正文排版（Markdown 渲染产物，需 :global）；纸面等宽银幕，正文限宽居中保可读性 */
   article { max-width: 1100px; margin: 0 auto; }
   .prose { margin-top: 8px; font-family: var(--font-read); }
-  .prose :global(p) { margin: 1em 0 0; font-size: 15px; line-height: 1.95; }
+  .prose :global(p) { margin: 0.55em 0 0; font-size: 15px; line-height: 1.8; }
   .prose :global(h2) {
-    margin: 2em 0 0;
+    margin: 1.5em 0 0;
     font-size: 18px;
     font-weight: 700;
     line-height: 1.5;
-    padding-top: 0.4em;
+    padding-top: 0.2em;
   }
-  .prose :global(h3) { margin: 1.6em 0 0; font-size: 16px; font-weight: 700; }
-  .prose :global(ol), .prose :global(ul) { margin: 1em 0 0; padding-left: 1.6em; }
-  .prose :global(li) { margin: 0.5em 0 0; font-size: 15px; line-height: 1.9; }
+  .prose :global(h3) { margin: 1.3em 0 0; font-size: 16px; font-weight: 700; }
+  .prose :global(ol), .prose :global(ul) { margin: 0.7em 0 0; padding-left: 1.6em; }
+  .prose :global(li) { margin: 0.3em 0 0; font-size: 15px; line-height: 1.75; }
   .prose :global(li::marker) { color: var(--pink-deep); }
   .prose :global(strong) { font-weight: 700; }
   .prose :global(a) {
@@ -115,7 +116,7 @@ const fmt = (d: Date) =>
     text-decoration-color: color-mix(in srgb, var(--pink-deep) 40%, transparent);
   }
   .prose :global(blockquote) {
-    margin: 1.4em 0 0;
+    margin: 1.1em 0 0;
     padding: 2px 0 2px 14px;
     border-left: 3px solid var(--pink-deep);
     color: var(--ink-soft);
@@ -127,14 +128,14 @@ const fmt = (d: Date) =>
     border: 1px solid var(--frame);
   }
   .prose :global(pre) {
-    margin: 1.4em 0 0;
+    margin: 1.1em 0 0;
     padding: 14px 16px;
     overflow-x: auto;
     background: color-mix(in srgb, var(--ink) 8%, transparent);
     border: 1px solid var(--frame);
   }
   .prose :global(pre code) { padding: 0; background: none; border: none; }
-  .prose :global(hr) { margin: 2em 0 0; border: none; border-top: 1px dashed var(--frame); }
+  .prose :global(hr) { margin: 1.6em 0 0; border: none; border-top: 1px dashed var(--frame); }
 
   .rd-foot {
     display: flex;
@@ -152,7 +153,7 @@ const fmt = (d: Date) =>
   .rd-end { font-size: 11px; color: var(--ink-soft); }
 
   @media (max-width: 760px) {
-    .paper { width: calc(100% - 32px); padding: 28px 20px; }
+    .paper { width: calc(100% - 32px); min-height: calc(100dvh - 70px); padding: 28px 20px; }
     .rd-nav { width: calc(100% - 32px); }
     .rd-head h1 { font-size: 22px; }
   }

@@ -1,10 +1,10 @@
 ---
 // giscus 评论：数据存本仓库 GitHub Discussions，零后端。
-// 配置在加载脚本前由 const 区填入；加载失败或未安装 App 时整块自动隐藏。
+// 评论者需 GitHub 登录；加载失败或未装 App 时整块自动隐藏（message error 监听）。
 const GISCUS_REPO = 'Bujianshu315/personal-site';
 const GISCUS_REPO_ID = 'R_kgDOVnqxFw';
-const GISCUS_CATEGORY = 'Announcements';
-const GISCUS_CATEGORY_ID = ''; // 待 Discussions 开启后填 DIC_xxx
+const GISCUS_CATEGORY = 'Announcements'; // 仅维护者可开帖，评论体验最干净
+const GISCUS_CATEGORY_ID = 'DIC_kwDOVnqxF84DLRST';
 ---
 
 <section class="giscus-wrap" id="giscus-wrap">
@@ -15,7 +15,9 @@ const GISCUS_CATEGORY_ID = ''; // 待 Discussions 开启后填 DIC_xxx
 <script>
   const wrap = document.getElementById('giscus-wrap');
   const box = document.getElementById('giscus-box');
-  const READY = false; /* 填好 CATEGORY_ID 后改成 true */
+
+  const giscusTheme = () =>
+    document.documentElement.dataset.theme === 'light' ? 'light' : 'dark_dimmed';
 
   function mount() {
     const s = document.createElement('script');
@@ -25,27 +27,40 @@ const GISCUS_CATEGORY_ID = ''; // 待 Discussions 开启后填 DIC_xxx
     s.setAttribute('data-repo', 'Bujianshu315/personal-site');
     s.setAttribute('data-repo-id', 'R_kgDOVnqxFw');
     s.setAttribute('data-category', 'Announcements');
-    s.setAttribute('data-category-id', '__FILL_ME__');
+    s.setAttribute('data-category-id', 'DIC_kwDOVnqxF84DLRST');
     s.setAttribute('data-mapping', 'pathname');
     s.setAttribute('data-strict', '1');
     s.setAttribute('data-reactions-enabled', '1');
-    s.setAttribute('data-emit-metadata', '0');
+    s.setAttribute('data-emit-metadata', '1');
     s.setAttribute('data-input-position', 'top');
-    s.setAttribute('data-theme', 'light');
+    s.setAttribute('data-theme', giscusTheme());
     s.setAttribute('data-lang', 'zh-CN');
     box!.appendChild(s);
   }
 
-  // giscus 报错（未装 App / 配置错）→ 静默隐藏整块，页面不留破口
+  // giscus 致命错误（未装 App / 配置错）→ 静默隐藏整块。
+  // 注意 "discussion not found" 是良性提示（首次评论时自动创建讨论），不能隐藏。
   window.addEventListener('message', (e) => {
     if (e.origin !== 'https://giscus.app') return;
     try {
       const m = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-      if (m?.giscus?.error) wrap!.style.display = 'none';
+      const err = m?.giscus?.error;
+      if (err && !String(err).toLowerCase().includes('not found')) wrap!.style.display = 'none';
     } catch { /* 非 giscus 消息，忽略 */ }
   });
 
-  if (READY) mount(); else wrap!.style.display = 'none';
+  // 站点深浅主题切换时同步评论区主题
+  const themeObs = new MutationObserver(() => {
+    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow!.postMessage(
+      { giscus: { setConfig: { theme: giscusTheme() } } },
+      'https://giscus.app'
+    );
+  });
+  themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  mount();
 </script>
 
 <style>
@@ -60,5 +75,11 @@ const GISCUS_CATEGORY_ID = ''; // 待 Discussions 开启后填 DIC_xxx
     letter-spacing: 0.08em;
     color: var(--ink-soft);
   }
-  .giscus-box { min-height: 120px; }
+  .giscus-box {
+    min-height: 120px;
+    padding: 4px 6px 6px;
+  }
+  /* giscus 主题底色：iframe 是透明的，文字色按主题定，底色必须配套才能保对比度 */
+  :global([data-theme='dark']) .giscus-box { background: #22272e; }
+  :global([data-theme='light']) .giscus-box { background: #ffffff; }
 </style>
