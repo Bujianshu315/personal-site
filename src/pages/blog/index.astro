@@ -6,6 +6,8 @@ const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
+const [featured, ...rest] = posts;
+
 const fmt = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 ---
@@ -24,24 +26,38 @@ const fmt = (d: Date) =>
     </header>
 
     <div class="post-list">
-      {posts.map((post) => (
-        <a class="post-row" href={`/blog/${post.slug}/`}>
-          <time>{fmt(post.data.pubDate)}</time>
-          <div class="pr-main">
-            <h2>{post.data.title}</h2>
-            <p>{post.data.description}</p>
-            {post.data.tags.length > 0 && (
-              <div class="pr-tags">
-                {post.data.tags.map((t) => <span class="tag">{t}</span>)}
-              </div>
-            )}
+      {featured && (
+        <a class="post-feature" href={`/blog/${featured.slug}/`}>
+          <div class="pf-meta">
+            {featured.data.tags.length > 0 && <span class="pf-cat">{featured.data.tags[0]}</span>}
+            <i class="pf-line" aria-hidden="true"></i>
+            <time>{fmt(featured.data.pubDate)}</time>
           </div>
-          <span class="pr-arrow" aria-hidden="true">→</span>
+          <h2>{featured.data.title}</h2>
+          <p class="pf-desc">{featured.data.description}</p>
+          <span class="pf-more">── 阅读全文</span>
         </a>
-      ))}
+      )}
+
+      {rest.length > 0 && (
+        <div class="post-grid">
+          {rest.map((post) => (
+            <a class="post-cell" href={`/blog/${post.slug}/`}>
+              <div class="pf-meta">
+                {post.data.tags.length > 0 && <span class="pf-cat">{post.data.tags[0]}</span>}
+                <i class="pf-line" aria-hidden="true"></i>
+                <time>{fmt(post.data.pubDate)}</time>
+              </div>
+              <h3>{post.data.title}</h3>
+              <p class="pf-desc">{post.data.description}</p>
+              <span class="pf-more">── 阅读全文</span>
+            </a>
+          ))}
+        </div>
+      )}
     </div>
 
-    <p class="bk-foot">B-TV 场刊 · 由 Astro 内容集合驱动 · <a href="/">b-tv 主厅</a></p>
+    <p class="bk-foot">© 2026 不见树 · 转载请注明出处 · <a href="/">b-tv 主厅</a> · <a href="/rss.xml">RSS</a></p>
   </main>
 </Base>
 
@@ -82,26 +98,79 @@ const fmt = (d: Date) =>
   .bk-head h1 { margin: 10px 0 0; font-size: 30px; font-weight: 600; letter-spacing: 0.04em; }
   .bk-sub { margin: 10px 0 0; font-size: 13px; color: var(--ink-soft); }
 
-  /* 文章列表：阅读字体 */
+  /* 文章列表：最新一篇做头条，其余进网格 */
   .post-list { display: flex; flex-direction: column; }
-  .post-row {
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
-    padding: 20px 4px;
+
+  /* 头条大卡 */
+  .post-feature {
+    display: block;
+    padding: 26px 0 24px;
     border-bottom: 1px dashed var(--frame);
     text-decoration: none;
     color: inherit;
   }
-  .post-row time { flex: none; padding-top: 4px; font-size: 12px; letter-spacing: 0.06em; color: var(--pink-deep); }
-  .pr-main { min-width: 0; flex: 1; }
-  .pr-main h2 { margin: 0; font-size: 18px; font-weight: 600; line-height: 1.5; transition: color 0.15s; }
-  .post-row:hover h2 { color: var(--pink-deep); }
-  .pr-main p { margin: 6px 0 0; font-size: 13px; line-height: 1.75; color: var(--ink-soft); }
-  .pr-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-  .tag { font-size: 10.5px; padding: 2px 8px; border: 1px solid var(--frame); color: var(--ink-soft); }
-  .pr-arrow { flex: none; padding-top: 4px; color: var(--ink-soft); transition: color 0.15s, transform 0.15s; }
-  .post-row:hover .pr-arrow { color: var(--pink-deep); transform: translateX(3px); }
+  /* 「分类 ── 日期」一行 */
+  .pf-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--pink-deep);
+  }
+  .pf-cat { color: var(--pink-deep); }
+  .pf-line {
+    display: inline-block;
+    width: 44px;
+    height: 1px;
+    background: color-mix(in srgb, var(--pink-deep) 55%, transparent);
+  }
+  .pf-meta time { color: var(--ink-soft); }
+
+  .post-feature h2 {
+    margin: 12px 0 0;
+    font-size: 23px;
+    font-weight: 650;
+    line-height: 1.45;
+    transition: color 0.15s;
+  }
+  .post-feature:hover h2 { color: var(--pink-deep); }
+  .pf-desc { margin: 10px 0 0; font-size: 13.5px; line-height: 1.8; color: var(--ink-soft); }
+  .pf-more {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    transition: color 0.15s;
+  }
+  .post-feature:hover .pf-more,
+  .post-cell:hover .pf-more { color: var(--pink-deep); }
+
+  /* 其余文章：三栏网格 */
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding-top: 6px;
+  }
+  .post-cell {
+    display: flex;
+    flex-direction: column;
+    padding: 22px 0 18px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .post-cell h3 {
+    margin: 10px 0 0;
+    font-size: 16.5px;
+    font-weight: 650;
+    line-height: 1.5;
+    transition: color 0.15s;
+  }
+  .post-cell:hover h3 { color: var(--pink-deep); }
+  .post-cell .pf-desc { margin-top: 8px; font-size: 12.5px; line-height: 1.75; flex: 1; }
+  .post-cell .pf-more { margin-top: 12px; }
 
   .bk-foot {
     margin: 30px 0 0;
@@ -114,9 +183,13 @@ const fmt = (d: Date) =>
   .bk-foot a { color: var(--pink-deep); text-decoration: none; }
   .bk-foot a:hover { text-decoration: underline; }
 
-  @media (max-width: 560px) {
+  @media (max-width: 900px) {
+    .post-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
     .paper { padding: 28px 20px; }
-    .post-row { flex-direction: column; gap: 6px; }
-    .post-row time { padding-top: 0; }
+    .post-grid { grid-template-columns: 1fr; gap: 0; }
+    .post-cell { border-bottom: 1px dashed var(--frame); }
+    .post-feature h2 { font-size: 20px; }
   }
 </style>
