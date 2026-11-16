@@ -499,7 +499,8 @@ import Intro from '../components/Intro.astro';
   /* 02 AI作品 */
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 22px; }
   .card {
-    display: block;
+    display: flex;
+    flex-direction: column;
     background: var(--card);
     border: 1px solid var(--frame);
     border-radius: 0;
@@ -512,7 +513,7 @@ import Intro from '../components/Intro.astro';
   a.card:hover h3 { color: var(--pink-deep); }
   .card p { margin: 0; font-size: 12.5px; line-height: 1.75; color: var(--ink-soft); }
   .card.ghost { border-style: dashed; background: transparent; }
-  .c-foot { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .c-foot { display: flex; gap: 6px; margin-top: auto; padding-top: 12px; flex-wrap: wrap; }  /* 沉底：各卡角标统一在左下 */
   .badge { font-size: 10px; padding: 2px 8px; border: 1px solid var(--frame); border-radius: 0; color: var(--ink-soft); }
 
   /* 03 博客（button 复位：看起来仍是一行文章，点了弹施工 toast） */
