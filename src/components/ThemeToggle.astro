@@ -1,0 +1,39 @@
+---
+// 博客页主题切换：像素日/月图标，点击切换 html[data-theme] 并记忆。
+// 无 dimmer 动画（博客页不做熄灯仪式），giscus 主题由其自身的 MutationObserver 跟随。
+---
+
+<button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换明暗主题">
+  <span class="ico-sun">☀</span><span class="ico-moon">☾</span>
+  <span class="tt-label">明暗</span>
+</button>
+
+<script>
+  const btn = document.getElementById('theme-toggle')!;
+  btn.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch {}
+  });
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: none;
+    border: 1px solid var(--frame);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--theater-dim);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .theme-toggle:hover { color: var(--pink); border-color: var(--pink); }
+  :global([data-theme='dark']) .ico-moon { display: none; }
+  :global([data-theme='light']) .ico-sun { display: none; }
+</style>

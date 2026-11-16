@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Giscus from '../../components/Giscus.astro';
+import ThemeToggle from '../../components/ThemeToggle.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -21,7 +22,10 @@ const fmt = (d: Date) =>
 <Base title={`${post.data.title} — Bujianshu`} description={post.data.description}>
   <nav class="rd-nav">
     <a href="/blog">← 场刊目录</a>
-    <a href="/">放映厅</a>
+    <div class="rd-nav-right">
+      <a href="/">放映厅</a>
+      <ThemeToggle />
+    </div>
   </nav>
 
   <main class="paper">
@@ -62,11 +66,13 @@ const fmt = (d: Date) =>
   .rd-nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: calc(100% - 156px);   /* 与主站银幕等宽 */
     margin: 18px auto 0;
     padding: 0 16px;
   }
-  .rd-nav a { font-size: 12px; letter-spacing: 0.1em; color: var(--mint-soft); text-decoration: none; }
+  .rd-nav-right { display: flex; align-items: center; gap: 14px; }
+  .rd-nav a { font-size: 12px; letter-spacing: 0.1em; color: var(--theater-dim); text-decoration: none; }
   .rd-nav a:hover { color: var(--pink); }
 
   .paper {
@@ -78,6 +84,8 @@ const fmt = (d: Date) =>
     color: var(--ink);
     border: 1.5px solid var(--screen-edge);
     box-shadow: 0 26px 70px rgba(0, 0, 0, 0.35);
+    display: flex;                /* 页脚沉底 */
+    flex-direction: column;
   }
 
   .rd-head { padding-bottom: 22px; border-bottom: 1px solid var(--frame); }
@@ -94,7 +102,7 @@ const fmt = (d: Date) =>
   .tag { font-size: 10.5px; padding: 2px 8px; border: 1px solid var(--frame); color: var(--ink-soft); }
 
   /* 正文排版（Markdown 渲染产物，需 :global）；纸面等宽银幕，正文限宽居中保可读性 */
-  article { max-width: 1100px; margin: 0 auto; }
+  article { max-width: 1100px; margin: 0 auto; flex: 1; }  /* flex:1 让页脚沉到纸面底部 */
   .prose { margin-top: 8px; font-family: var(--font-read); }
   .prose :global(p) { margin: 0.55em 0 0; font-size: 15px; line-height: 1.8; }
   .prose :global(h2) {

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import ThemeToggle from '../../components/ThemeToggle.astro';
 
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -15,7 +16,10 @@ const fmt = (d: Date) =>
 <Base title="场刊目录 · 博客 — Bujianshu" description="不见树的博客：项目记录、开发心得与随想。">
   <nav class="bk-nav">
     <a href="/">← 返回放映厅</a>
-    <a href="/rss.xml" target="_blank" rel="noopener">RSS 订阅 ↗</a>
+    <div class="bk-nav-right">
+      <a href="/rss.xml" target="_blank" rel="noopener">RSS 订阅 ↗</a>
+      <ThemeToggle />
+    </div>
   </nav>
 
   <main class="paper">
@@ -70,14 +74,16 @@ const fmt = (d: Date) =>
   .bk-nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: calc(100% - 156px);   /* 与主站银幕等宽（视口减两侧导轨） */
     margin: 18px auto 0;
     padding: 0 16px;
   }
+  .bk-nav-right { display: flex; align-items: center; gap: 14px; }
   .bk-nav a {
     font-size: 12px;
     letter-spacing: 0.1em;
-    color: var(--mint-soft);
+    color: var(--theater-dim);
     text-decoration: none;
   }
   .bk-nav a:hover { color: var(--pink); }
@@ -92,6 +98,8 @@ const fmt = (d: Date) =>
     color: var(--ink);
     border: 1.5px solid var(--screen-edge);
     box-shadow: 0 26px 70px rgba(0, 0, 0, 0.35);
+    display: flex;                /* 页脚沉底：内容不足时贴住纸面底部 */
+    flex-direction: column;
   }
 
   .bk-head { padding-bottom: 20px; border-bottom: 1px solid var(--frame); }
@@ -100,7 +108,7 @@ const fmt = (d: Date) =>
   .bk-sub { margin: 10px 0 0; font-size: 13px; color: var(--ink-soft); }
 
   /* 文章列表：最新一篇做头条，其余进网格 */
-  .post-list { display: flex; flex-direction: column; }
+  .post-list { display: flex; flex-direction: column; flex: 1; }  /* flex:1 让页脚沉到纸面底部 */
 
   /* 头条大卡 */
   .post-feature {
