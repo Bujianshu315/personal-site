@@ -1,0 +1,64 @@
+---
+// giscus 评论：数据存本仓库 GitHub Discussions，零后端。
+// 配置在加载脚本前由 const 区填入；加载失败或未安装 App 时整块自动隐藏。
+const GISCUS_REPO = 'Bujianshu315/personal-site';
+const GISCUS_REPO_ID = 'R_kgDOVnqxFw';
+const GISCUS_CATEGORY = 'Announcements';
+const GISCUS_CATEGORY_ID = ''; // 待 Discussions 开启后填 DIC_xxx
+---
+
+<section class="giscus-wrap" id="giscus-wrap">
+  <p class="giscus-kicker">┌─ 观后感 · 留言区</p>
+  <div class="giscus-box" id="giscus-box"></div>
+</section>
+
+<script>
+  const wrap = document.getElementById('giscus-wrap');
+  const box = document.getElementById('giscus-box');
+  const READY = false; /* 填好 CATEGORY_ID 后改成 true */
+
+  function mount() {
+    const s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.setAttribute('data-repo', 'Bujianshu315/personal-site');
+    s.setAttribute('data-repo-id', 'R_kgDOVnqxFw');
+    s.setAttribute('data-category', 'Announcements');
+    s.setAttribute('data-category-id', '__FILL_ME__');
+    s.setAttribute('data-mapping', 'pathname');
+    s.setAttribute('data-strict', '1');
+    s.setAttribute('data-reactions-enabled', '1');
+    s.setAttribute('data-emit-metadata', '0');
+    s.setAttribute('data-input-position', 'top');
+    s.setAttribute('data-theme', 'light');
+    s.setAttribute('data-lang', 'zh-CN');
+    box!.appendChild(s);
+  }
+
+  // giscus 报错（未装 App / 配置错）→ 静默隐藏整块，页面不留破口
+  window.addEventListener('message', (e) => {
+    if (e.origin !== 'https://giscus.app') return;
+    try {
+      const m = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+      if (m?.giscus?.error) wrap!.style.display = 'none';
+    } catch { /* 非 giscus 消息，忽略 */ }
+  });
+
+  if (READY) mount(); else wrap!.style.display = 'none';
+</script>
+
+<style>
+  .giscus-wrap {
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--frame);
+  }
+  .giscus-kicker {
+    margin: 0 0 14px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+  .giscus-box { min-height: 120px; }
+</style>

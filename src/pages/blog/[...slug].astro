@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Giscus from '../../components/Giscus.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -39,6 +40,8 @@ const fmt = (d: Date) =>
         <Content />
       </div>
     </article>
+
+    <Giscus />
 
     <footer class="rd-foot">
       <a href="/blog">← 返回场刊目录</a>
